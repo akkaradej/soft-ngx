@@ -1,0 +1,124 @@
+<section class="section">
+  <h2 class="title is-2">ApiClientModule</h2>
+  <div class="box">
+    <h3 class="subtitle">
+      GET
+    </h3>
+    <button class="button"
+      (click)="getPosts()">
+      Get Posts
+    </button>
+    <div>
+      {{ posts | json }}
+    </div>
+    <pre>
+      {{'
+        '}}<strong>{{'this.apiClientService.get'}}</strong>{{'(\'posts\', { userId: 1 }, {}, true)
+          .subscribe(posts => { 
+            this.posts = posts; 
+          });
+      '}}
+    </pre>
+  </div>
+
+  <div class="box">
+    <h3 class="subtitle">
+      POST
+    </h3>
+    <div class="field">
+      <input type="text" class="input" placeholder="title" #title>
+    </div>
+    <div class="field">
+      <textarea class="textarea" placeholder="message" #message></textarea>
+    </div>
+    <button class="button" 
+      (click)="createPost(title.value, message.value)">
+      Create New Post
+    </button>
+    <div>
+      {{ newPost | json }}
+    </div>
+    <pre>
+      {{'
+        '}}<strong>{{'this.apiClientService.post'}}</strong>{{'(\'posts\', { title, body: message, userId: 1 }, {}, true)
+          .subscribe(post => {
+            this.newPost = post;
+          });
+     '}}
+    </pre>
+  </div>
+
+  <div class="box">
+    <h3 class="subtitle">
+      Auth
+    </h3>
+    <button class="button"
+      (click)="login()">
+      Login
+    </button>
+    <button class="button"
+      (click)="logout()">
+      Logout
+    </button>
+    <button class="button"
+      (click)="requestPrivateApi()">
+      Private Api (Auto refresh token)
+    </button>
+    <div>
+      {{ comment | json }}
+    </div>
+    <div class="box is-margin-top">
+      <div>
+        auth result: {{ auth | json }}
+      </div>
+      <div>
+        logged in?: {{ isLoggedIn() }}
+      </div>
+      <div>
+        access_token: {{ getAccessToken() }}
+      </div>
+    </div>
+    <pre>
+      {{'
+        # html
+        &lt;button class=button
+          (click)="login()"&gt;
+          Login
+        &lt;/button&gt;
+        &lt;button class="button"
+          (click)="logout()"&gt;
+          Logout
+        &lt;/button&gt;
+        &lt;div&gt;
+          auth result: \{\{ auth | json \}\}
+        &lt;/div&gt;
+        &lt;div&gt;
+          logged in?: \{\{ isLoggedIn() \}\}
+        &lt;/div&gt;
+        &lt;div&gt;
+          access_token: \{\{ getAccessToken() \}\}
+        &lt;/div&gt;
+
+        # ts
+        login() {
+          '}}<strong>{{'this.authService.login$'}}</strong>{{'(\'uXXXXXX\', \'pYYYYYY\')
+            .subscribe((auth: Auth) => {
+              this.auth = auth;
+            });
+        }
+
+        logout() {
+          '}}<strong>{{'this.authService.logout'}}</strong>{{'();
+        }
+
+        isLoggedIn() {
+          '}}<strong>{{'return this.authService.isLoggedIn'}}</strong>{{';
+        }
+
+        getAccessToken() {
+          return '}}<strong>{{'this.authService.getAccessToken'}}</strong>{{'();
+        }
+    '}}
+    </pre>
+  </div>
+</section>

@@ -1,0 +1,219 @@
+@import '~bulma/sass/utilities/functions';
+
+@function findColorInvert($color) {
+  @if (colorLuminance($color) > 0.55) {
+    @return $color-invert-to-dark;
+  }
+  @else {
+    @return $color-invert-to-light;
+  }
+}
+
+// Responsiveness
+// The container gap, which acts as the offset for breakpoints
+$gap: 20.5px;
+// mobile up to 768px;
+// $tablet: 769px; // from 769px to desktop size
+// 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
+// $desktop: 960px + (2 * $gap); // from 1060px
+$tablet: 1px;
+$desktop: 2px;
+
+$min-supported-screen-width: 1366px;
+$vertical-scrollbar-width: 17px;
+// Main Container = 1366 - 17 = 1349px
+$main-container-width: $min-supported-screen-width - $vertical-scrollbar-width;
+// Main Content = 1349 - (20.5 * 2) = 1308px
+
+// Header
+$header-height: 73px;
+
+// Colors
+$black:        hsl(0, 0%, 4%);
+$black-bis:    hsl(0, 0%, 7%);
+$black-ter:    hsl(0, 0%, 14%);
+$grey-darker:  hsl(0, 0%, 21%);
+$grey-dark:    #4C4F53;
+$grey:         #95989A;
+$grey-light:   #D1D1D1; // 82%
+$grey-lighter: hsl(0, 0%, 86%);
+$white-ter:    #F2F2F2; // 95%
+$white-bis:    hsl(0, 0%, 98%);
+$white:        hsl(0, 0%, 100%);
+$green-white:  #DDF0DC;
+$red-white:    #FFE0E0;
+$orange-dark:  #ED7600;
+$orange:       #F0961C;
+$yellow:       #FFC400;
+$green:        #729F71;
+$green-blue:   #4EBA9D;
+$blue-green:   #22BAC9;
+$blue-lighter: #80A7CB;
+$blue-light:   #0794D4;
+$blue:         #2587D5;
+// $blue-dark:    #318CB8;
+$blue-dark:    #427CA5;
+$blue-darker:  #224E6B;
+$purple:       #B292DB;
+$pink:         #E11383;
+$red:          #D13F5C;
+$red-dark:     #AB0224;
+
+// Meaning Colors
+$primary:   $blue-green;
+$accent:    $pink;
+$secondary: $green-blue; 
+$tertiary:  $blue-darker;
+
+$info:      $blue;
+$success:   $green;
+$warning:   $yellow;
+$danger:    $red;
+
+$light:     $white-ter;
+$dark:      $grey-darker;
+
+$approve: $green;
+$reject:  $red;
+$cancel:  $grey-lighter;
+$edit:    $orange;
+$delete:  $red-dark;
+
+// Backend Enum vs Frontend Display
+// Draft = Waiting for Submission
+// Waiting = Waiting for Approval
+// Rejected = Rejected
+// Approved = Complete
+// Cancelled = Cancelled
+
+$workflow-status-Draft:       $green-blue;
+$workflow-status-Waiting:     $purple;
+$workflow-status-Rejected:    $red;
+$workflow-status-Approved:    $blue-light;
+$workflow-status-Cancelled:   $grey-dark;
+
+$status-NotStartedYet:        $grey;
+$status-DelayedToStart:       $orange-dark;
+$status-OngoingAsPlanned:     $yellow;
+$status-OngoingButDelayed:    $red;
+$status-Completed:            $green;
+
+$cell-performance-header:     $blue-lighter;
+$cell-performance-aspect:     $blue-dark;
+$cell-performance-gri-djsi:   $white;
+$cell-performance-separator:  $white-ter;
+$cell-performance-formula:    $red-white;
+$cell-performance-number:     $green-white;
+$cell-setting-aspect-header:  $green-blue;
+$cell-setting-aspect:         $green-white;
+
+// Invert colors
+$color-invert-to-dark:  $grey-dark;
+$color-invert-to-light: $white;
+
+$primary-invert: findColorInvert($primary);
+$accent-invert: findColorInvert($accent);
+$secondary-invert: findColorInvert($secondary); 
+$tertiary-invert:  findColorInvert($tertiary);
+
+$info-invert: findColorInvert($info);
+$success-invert: findColorInvert($success);
+$warning-invert: findColorInvert($warning);
+$danger-invert: findColorInvert($danger);
+
+$light-invert: $dark;
+$dark-invert: $light;
+
+$colors: (
+  "white": ($white, $black), 
+  "black": ($black, $white), 
+  "grey": ($grey, $white), 
+  "primary": ($primary, $primary-invert), 
+  "accent": ($accent, $accent-invert), 
+  "secondary": ($secondary, $secondary-invert), 
+  "tertiary": ($tertiary, $tertiary-invert), 
+  "info": ($info, $info-invert), 
+  "success": ($success, $success-invert), 
+  "warning": ($warning, $warning-invert), 
+  "danger": ($danger, $danger-invert),
+  "light": ($light, $light-invert), 
+  "dark": ($dark, $dark-invert), 
+
+  "approve": ($approve, findColorInvert($approve)),
+  "reject": ($reject, findColorInvert($reject)),
+  "cancel": ($cancel, findColorInvert($cancel)),
+  "edit": ($edit, findColorInvert($edit)),
+  "delete": ($delete, findColorInvert($delete)),
+  "workflow-status-Draft": ($workflow-status-Draft, findColorInvert($workflow-status-Draft)),
+  "workflow-status-Waiting": ($workflow-status-Waiting, findColorInvert($workflow-status-Waiting)),
+  "workflow-status-Rejected": ($workflow-status-Rejected, findColorInvert($workflow-status-Rejected)),
+  "workflow-status-Approved": ($workflow-status-Approved, findColorInvert($workflow-status-Approved)),
+  "workflow-status-Cancelled": ($workflow-status-Cancelled, findColorInvert($workflow-status-Cancelled)),
+  "status-NotStartedYet": ($status-NotStartedYet, findColorInvert($status-NotStartedYet)),
+  "status-DelayedToStart": ($status-DelayedToStart, findColorInvert($status-DelayedToStart)),
+  "status-OngoingAsPlanned": ($status-OngoingAsPlanned, findColorInvert($status-OngoingAsPlanned)),
+  "status-OngoingButDelayed": ($status-OngoingButDelayed, findColorInvert($status-OngoingButDelayed)),
+  "status-Completed": ($status-Completed, findColorInvert($status-Completed)),
+  "cell-performance-header": ($cell-performance-header, findColorInvert($cell-performance-header)),
+  "cell-performance-aspect": ($cell-performance-aspect, findColorInvert($cell-performance-aspect)),
+  "cell-performance-gri-djsi": ($cell-performance-gri-djsi, findColorInvert($cell-performance-gri-djsi)),
+  "cell-performance-separator": ($cell-performance-separator, findColorInvert($cell-performance-separator)),
+  "cell-performance-formula": ($cell-performance-formula, findColorInvert($cell-performance-formula)),
+  "cell-performance-number": ($cell-performance-number, findColorInvert($cell-performance-number)),
+  "cell-setting-aspect-header": ($cell-setting-aspect-header, findColorInvert($cell-setting-aspect-header)),
+  "cell-setting-aspect": ($cell-setting-aspect, findColorInvert($cell-setting-aspect))
+);
+
+// General colors
+$background:    $white;
+$border:        $grey-lighter;
+$border-hover:  $grey-light;
+
+// Text colors
+$text:        $grey-dark;
+$text-invert: findColorInvert($text);
+$text-light:  $grey;
+$text-strong: $grey-darker;
+$text-disabled: $grey-light;
+
+// Weight
+// $weight-light:    300;
+$weight-normal:   400;
+// $weight-medium:   500;
+// $weight-semibold: 600;
+$weight-bold:     700;
+
+// Link colors
+$link: $pink;
+$link-invert: findColorInvert($pink);
+$link-visited: $link;
+
+$link-hover: invalid-color;
+$link-hover-border: invalid-color;
+
+$link-focus: invalid-color;
+$link-focus-border: invalid-color;
+
+$link-active: invalid-color;
+$link-active-border: invalid-color;
+
+// Typography
+$family-sans-serif: "Helvetica", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Arial", sans-serif;
+$family-primary: $family-sans-serif;
+
+$body-size: 12px;
+$size-small: 0.75rem; // 9px
+$size-normal: 1rem;  // 12px
+$size-medium: 14px;
+$size-large: 17px;
+
+// Spacing for margin, padding
+$space-small: 5px;
+$space-normal: 10px;
+$space-medium: 15px;
+$space-large: 20px;
+
+// Border Radius
+$radius-small: 2px;
+$radius: 3px;
+$radius-large: 5px;

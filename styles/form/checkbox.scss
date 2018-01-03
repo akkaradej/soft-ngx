@@ -1,0 +1,202 @@
+$checkbox-checked-color: $primary !default;
+$checkbox-checked-border-color: $primary !default;
+$checkbox-checked-filled-background-color: $primary !default;
+$checkbox-group-border-color: $border !default;
+$checkbox-group-divide-color: $border !default;
+$checkbox-title-filled-background-color: $dark !default;
+$checkbox-title-filled-color: $light !default;
+
+.checkbox {
+  input[type=checkbox] {
+    position: absolute;
+    visibility: hidden;
+
+    &+span {
+      padding-left: 1.75em;
+  
+      &::before {
+        position: absolute;
+        content: '';
+        border: 1px solid $border;
+        background-color: #fff;
+        height: 1.25em;
+        width: 1.25em;
+        left: 0;
+        transition: background .25s linear;
+        -webkit-transition: background .25s linear;
+      }
+    }
+
+    &:checked+span::before {
+      border-color: $checkbox-checked-border-color;
+    }
+  
+    &:checked+span::after {
+      position: absolute;
+      content: '✓';
+      text-align: center;
+      font-weight: bold;
+      height: 1.25em;
+      width: 1.25em;
+      top: 0;
+      left: 0;
+      transition: background 0.25s linear;
+      -webkit-transition: background 0.25s linear;
+      color: $checkbox-checked-color;
+    }
+  }
+
+  &.is-text-color {
+    input[type=checkbox] {
+      &:checked ~ * {
+        color: $checkbox-checked-color;
+      }
+    }
+  }
+
+  &.is-filled {
+    input[type=checkbox] {
+      &:checked+span::before {
+        background-color: $checkbox-checked-filled-background-color;
+      }
+
+      &:checked+span::after {
+        color: findColorInvert($checkbox-checked-filled-background-color);
+      }
+    }
+  }
+
+  @each $name, $pair in $colors {
+    $color: nth($pair, 1);
+    $color-invert: nth($pair, 2);
+    &.is-#{$name} {
+      input[type=checkbox] {
+        &:checked+span::before {
+          border-color: $color;
+        }
+  
+        &:checked+span::after {
+          color: $color;
+        }
+      }
+
+      &.is-text-color {
+        input[type=checkbox] {
+          &:checked ~ * {
+            color: $color;
+          }
+        }
+      }
+
+      &.is-filled {
+        input[type=checkbox] {
+          &:checked+span::before {
+            background-color: $color;
+          }
+    
+          &:checked+span::after {
+            color: $color-invert;
+          }
+        }
+      }
+    }
+  }
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  .checkbox-title {
+    text-align: left;
+    vertical-align: middle;
+    margin-bottom: 0.5em;
+
+    &.is-filled {
+      color: $checkbox-title-filled-color;
+      background: $checkbox-title-filled-background-color;
+      align-self: stretch;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .checkbox + .checkbox {
+    margin-top: 0.5em;
+  }
+
+  &.is-inline-group {
+    flex-direction: row;
+    align-items: center;
+    
+    .checkbox-title {
+      text-align: right;
+      margin-right: 1rem;
+      margin-bottom: 0;
+
+      &.checkbox-title-filled {
+        text-align: center;
+      }
+    }
+
+    .checkbox + .checkbox {
+      margin-top: 0;
+      margin-left: 1em;
+    }
+  }
+
+  &.is-bordered {
+    border: 1px solid $checkbox-group-border-color;
+
+    &.is-inline-group .checkbox + .checkbox,
+    .checkbox {
+      margin: 0.5em 1em;
+    }
+
+    .checkbox-title + .checkbox {
+      margin-left: 0;
+    }
+  }
+
+  &.has-divide {
+    &.is-bordered.is-inline-group .checkbox + .checkbox,
+    .checkbox {
+      padding-right: 1em;
+      margin-right: 0;
+    }
+
+    .checkbox {
+      border-right: 1px solid $checkbox-group-divide-color;
+      &:last-child {
+        border-right: 0;
+      }
+    }
+  }
+
+  @each $name, $pair in $colors {
+    $color: nth($pair, 1);
+    $color-invert: nth($pair, 2);
+    &.is-#{$name} {
+      &.is-bordered {
+        border-color: $color;
+      }
+      
+      &.has-divide {
+        .checkbox {
+          border-color: $color;
+        }
+      }
+
+      .checkbox-title {
+        &.is-filled {
+          background-color: $color;
+          color: $color-invert;
+        }
+      }
+    }
+  }
+    
+}
+

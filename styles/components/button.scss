@@ -1,0 +1,20 @@
+$button-font-weight: $weight-bold !default;
+
+.button {
+  font-weight: $button-font-weight;
+
+  &.is-fat {
+    min-width: 100px;
+  }
+
+  @each $name, $pair in $colors {
+    $color: nth($pair, 1);
+    $color-invert: nth($pair, 2);
+    &.is-#{$name} {
+      .badge {
+        color: $color;
+        background: $color-invert;
+      }
+    }
+  }
+}

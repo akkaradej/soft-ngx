@@ -1,0 +1,44 @@
+$modal-card-title-font-weight: $weight-bold !default;
+
+.modal {
+  .modal-card.modal-card-no-footer {
+    .modal-card-body {
+      border-bottom-left-radius: $modal-card-foot-radius;
+      border-bottom-right-radius: $modal-card-foot-radius;
+    }
+  }
+
+  .modal-card-title {
+    text-align: center;
+    font-weight: $modal-card-title-font-weight;
+  }
+
+  .modal-card-body {
+    max-height: calc(100vh - 80px);
+  }
+
+  @each $name, $pair in $colors {
+    $color: nth($pair, 1);
+    $color-invert: nth($pair, 2);
+    &.is-#{$name} {
+      .modal-card-head {
+        background-color: $color;
+        .modal-card-title {
+          color: $color-invert;
+        }
+      }
+    }
+  }
+
+  &.modal-large {
+    .modal-card {
+      @include tablet {
+        width: 100%;
+      }
+
+      @include desktop {
+        width: 940px;
+      }
+    }
+  }
+}

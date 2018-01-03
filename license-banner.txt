@@ -1,0 +1,4 @@
+/**
+ * @license soft-ngx
+ * MIT license
+ */

@@ -1,0 +1,28 @@
+tag-input.readonly {
+  .ng2-tag-input {
+    border-bottom: none !important;
+  }
+
+  tag-input-form {
+    display: none;
+  }
+}
+
+.ng2-tag-input {
+  border-bottom: 1px solid #ccc !important;
+
+  tag {
+    background: #e5e5e5 !important;
+  }
+}
+
+.ng2-tag-input__text-input,
+.ng2-tag-input__text-input[disabled=true] {
+  background: none !important;
+}
+
+// fix bug when build with prod, html is removed whitespace cause this tag__text overflow to ecllipse
+.tag__text::after {
+  content: ' ';
+  white-space: pre-line;
+}

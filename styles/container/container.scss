@@ -1,0 +1,11 @@
+$container-fluid-background-color: $light !default;
+
+.container-fluid {
+  background: $container-fluid-background-color;
+  border: 1px solid $border;
+  margin-top: $gap;
+  margin-left: -$gap;
+  margin-right: -$gap;
+  margin-bottom: -$gap;
+  padding: $gap;
+}

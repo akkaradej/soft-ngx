@@ -1,0 +1,64 @@
+$navbar-dropdown-item-color: $text !default;
+
+// .navbar-dropdown behavior for more detailed style
+.navbar {
+  .navbar-item {
+    .navbar-dropdown {
+      a.navbar-item {
+        color: $navbar-dropdown-item-color; // custom var
+    
+        &:hover {
+          background: $navbar-dropdown-item-hover-background-color;
+          color: $navbar-dropdown-item-hover-color;
+        }
+    
+        &.active {
+          color: $navbar-dropdown-item-active-color;
+        }
+      }
+    }
+  }
+}
+
+/* 
+ * By default, Bulma's .navbar-item.has-dropdown has no padding because of .navbar-link padding inside.
+ * This modification will make .navbar-item.has-dropdown has padding same as any .navbar-item,
+ * then remove .navbar-link's padding except its right side, 
+ * and create .navbar-item-content to use as content container same as .navbar-link 
+ * but for non-link content
+ */ 
+.navbar { 
+  .navbar-item {
+    &.has-dropdown {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+
+      .navbar-link {
+        padding-top: 0;
+        padding-right: 1.5em;
+        padding-bottom: 0;
+        padding-left: 0;
+      }
+    }
+
+    &.has-badge {
+      .navbar-item-content { // custom class
+        position: relative;
+        padding-right: 2.5em;
+      }
+
+      .badge {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .navbar-link {
+      &::after {
+        right: 0.25em;
+      }
+    }
+  }
+}

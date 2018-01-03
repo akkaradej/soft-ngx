@@ -1,0 +1,19 @@
+.table {
+  th {
+    text-align: center;
+  }
+
+  tr {
+    @each $name, $pair in $colors {
+      $color: nth($pair, 1);
+      $color-invert: nth($pair, 2);
+      &.is-#{$name} {
+        background: $color;
+        th,td {
+          color: $color-invert;
+          border-color: $border;
+        }
+      }
+    }
+  }
+}

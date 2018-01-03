@@ -1,0 +1,68 @@
+// Flexbox
+.is-flex-1, .is-flex.is-flex-1 {
+  flex: 1;
+}
+
+.is-space-between, .is-flex.is-space-between {
+  justify-content: space-between;
+}
+
+.is-space-around, .is-flex.is-space-around {
+  justify-content: space-around;
+}
+
+.is-justify-center, .is-flex.is-justify-center {
+  justify-content: center;
+}
+
+.is-align-center, .is-flex.is-align-center {
+  align-items: center;
+}
+
+// Vertical Align
+.is-vertical-middle {
+  vertical-align: middle;
+}
+
+.is-vertical-top {
+  vertical-align: top;
+}
+
+// Margin
+.is-margin-right {
+  margin-right: 2rem;
+}
+
+.is-margin-left {
+  margin-left: 2rem;
+}
+
+.is-margin-top {
+  margin-top: 2rem;
+}
+
+.is-margin-bottom {
+  margin-bottom: 2rem;
+}
+
+// Typography
+.has-text-bold {
+  font-weight: bold;
+}
+
+// Other
+.overflow-wrapper {
+  overflow: auto;
+}
+
+.is-pre-wrap {
+  white-space: pre-wrap;
+}
+
+.is-fullwidth {
+  width: 100%;
+}
+
+.control-height {
+  height: 2.25em;
+}

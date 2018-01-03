@@ -1,0 +1,94 @@
+<section class="section">
+  <h2 class="title is-2">PopupModule</h2>
+  <div class="box">
+    <h3 class="subtitle">
+      Alert
+    </h3>
+    <button class="button" 
+      (click)="alert()">
+      Alert
+    </button>
+    <pre>
+      {{'
+        # html
+        &lt;button class="button" 
+          (click)="alert()"&gt;
+          Alert
+        &lt;/button&gt;
+
+        # ts
+        alert() {
+          '}}<strong>{{'this.popupService.alert'}}</strong>{{'(\'Hi! Everybody\', \'I\\\'m Alert Popup\', \'primary\');
+        }
+      '}}
+    </pre>
+  </div>
+
+  <div class="box">
+    <h3 class="subtitle">
+      Confirm
+    </h3>
+    <button class="button" 
+      (click)="confirm()">
+      Confirm
+    </button>
+    <pre>
+      {{'
+        # html
+        &lt;button class="button" 
+          (click)="confirm()"&gt;
+          Confirm
+        &lt;/button&gt;
+
+        # ts
+        confirm() {
+          '}}<strong>{{'this.popupService.confirm'}}</strong>{{'(\'Are your sure?\', \'\', \'warning\')
+            .subscribe((result: boolean) => {
+              if (result) {
+                window.alert(\'Sure!\');
+              }
+            });
+        }
+      '}}
+    </pre>
+  </div>
+
+  <div class="box">
+    <h3 class="subtitle">
+      Confirm Delete
+    </h3>
+    <ul class="is-margin-top">
+      <li *ngFor="let product of products">
+        {{ product.name }} -
+        <button class="button" (click)="delete(product)">Confirm Delete</button>
+      </li>
+    </ul>
+    <pre>
+      {{'
+        # html
+        &lt;ul class="is-margin-top"&gt;
+          &lt;li *ngFor="let product of products"&gt;
+            {\{ product.name }\} -
+            &lt;button class="button" 
+              (click)="delete(product)"&gt;
+              Confirm Delete
+            &lt;/button&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+
+        # ts
+        products = [{ name: \'Product A\' }, { name: \'Product B\' }];
+
+        delete(product: any) {
+          '}}<strong>{{'this.popupService.confirmDelete'}}</strong>{{'(product.name)
+            .subscribe((result: boolean) => {
+              if (result) {
+                this.products.splice(this.products.indexOf(product), 1);
+              }
+            });
+        }
+        
+      '}}
+    </pre>
+  </div>
+</section>
