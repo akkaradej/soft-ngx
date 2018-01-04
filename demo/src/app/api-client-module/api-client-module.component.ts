@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiClientService } from 'soft-ngx';
 
-import { ApiClientService, AuthService, Auth } from 'soft-ngx';
+import { AuthService } from './auth.service';
+import { Auth } from './auth.model';
 
 @Component({
   selector: 'app-api-client-module',
@@ -12,7 +14,7 @@ export class ApiClientModuleComponent implements OnInit {
   posts: any;
   newPost: any;
   comment: any;
-  auth: any;
+  auth: Auth;
 
   constructor(
     private apiClientService: ApiClientService,
@@ -40,6 +42,9 @@ export class ApiClientModuleComponent implements OnInit {
     this.authService.login$('uXXXXXX', 'pYYYYYY')
       .subscribe((auth: Auth) => {
         this.auth = auth;
+        console.info(this.authService.isAdmin);
+        console.info(this.authService.userId);
+        console.info(this.authService.displayName);
       });
   }
 

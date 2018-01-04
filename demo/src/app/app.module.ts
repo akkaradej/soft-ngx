@@ -2,13 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from "./app.component.js";
-import { AuthHelperService as MyAuthHelperService } from './app-custom-providers/auth-helper.service';
 
 import {
-  ApiClientModule, ApiClientConfig, AuthHelperService,
+  ApiClientModule, ApiClientConfig,
   BusyModule,
   ModalModule,
   ModelHelperModule,
@@ -21,10 +19,12 @@ import { ModelHelperModuleComponent } from './model-helper-module/model-helper-m
 import { PipeExtensionModuleComponent } from './pipe-extension-module/pipe-extension-module.component';
 import { PopupModuleComponent } from './popup-module/popup-module.component';
 import { ApiClientModuleComponent } from './api-client-module/api-client-module.component';
+import { AuthService } from './api-client-module/auth.service';
 
 const apiClientConfig: ApiClientConfig = {
   apiBaseUrl: 'https://jsonplaceholder.typicode.com',
-  authApiUrl: 'http://www.mocky.io/v2/5a45c66e2e0000ea2d70890f',
+  authApiUrl: 'http://www.mocky.io/v2/5a4e469d120000b90e24d99f',
+  authAdditionalData: ['is_admin', 'user_id', 'display_name'],
   loginScreenUrl: 'https://google.com',
   storagePrefix: 'demo-'
 };
@@ -32,12 +32,12 @@ const apiClientConfig: ApiClientConfig = {
 @NgModule({
   declarations: [
     AppComponent,
+    ApiClientModuleComponent,
     BusyModuleComponent,
     ModalModuleComponent,
     ModelHelperModuleComponent,
     PipeExtensionModuleComponent,
     PopupModuleComponent,
-    ApiClientModuleComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +52,7 @@ const apiClientConfig: ApiClientConfig = {
     PopupModule.forRoot()
   ],
   providers: [
-    { provide: AuthHelperService, useClass: MyAuthHelperService }
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

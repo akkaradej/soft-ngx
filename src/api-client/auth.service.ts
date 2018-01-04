@@ -8,7 +8,6 @@ import { tap } from 'rxjs/operators';
 import { Auth } from './auth.model';
 export { Auth };
 
-import { AuthHelperService } from './auth-helper.service';
 import { StorageService } from './storage.service';
 
 import { ApiClientConfig, defaultConfig } from './api-client.config';
@@ -25,9 +24,8 @@ export class AuthService {
 
   constructor(
     @Inject(userConfigToken) userConfig: ApiClientConfig,
-    private authHelperService: AuthHelperService,
     private oauthService: OAuthService,
-    private storage: StorageService) {
+    protected storage: StorageService) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
     if (! this.config.authApiUrl) {
@@ -45,14 +43,14 @@ export class AuthService {
   login$(username: string, password: string): Observable<Auth> {
     return fromPromise(<Promise<Auth>>this.oauthService.fetchTokenUsingPasswordFlow(username, password)).pipe(
       tap((auth: Auth) => {
-        this.authHelperService.setAdditionalAuthData(auth);    
+        this.setAdditionalAuthData(auth);    
       })
     );
   }
 
   logout(): void {
     this.oauthService.logOut();
-    this.authHelperService.removeAdditionalAuthData();
+    this.removeAdditionalAuthData();
   }
 
   getAccessToken() {
@@ -60,7 +58,28 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.oauthService.refreshToken();
+    return fromPromise(<Promise<Auth>>this.oauthService.refreshToken()).pipe(
+      tap((auth: Auth) => {
+        this.setAdditionalAuthData(auth);
+      })
+    );
+  }
+
+  setAdditionalAuthData(auth: any) {
+    if (this.config.authAdditionalData) {
+      for (let i = 0; i < this.config.authAdditionalData.length; i++) {
+        if (auth[this.config.authAdditionalData[i]] !== undefined) {
+          this.storage.setItem(this.config.authAdditionalData[i], auth[this.config.authAdditionalData[i]]);
+        }
+      } 
+    }
+  }
+
+  removeAdditionalAuthData() {
+    if (this.config.authAdditionalData) {
+      for (let i = 0; i < this.config.authAdditionalData.length; i++) {
+        this.storage.removeItem(this.config.authAdditionalData[i]);
+      }
+    }
   }
 }
-

@@ -245,7 +245,7 @@ export class ApiClientService {
       console.debug('Start refresh token');
       this.isRefreshing = true;
 
-      return fromPromise(this.authService.refreshToken()).pipe(
+      return this.authService.refreshToken().pipe(
         catchError(err => {
           console.log(err);
           return of(false);
