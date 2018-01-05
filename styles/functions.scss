@@ -1,0 +1,13 @@
+@import '~bulma/sass/utilities/functions';
+
+$color-invert-to-dark:  rgba(#000, 0.7) !default;
+$color-invert-to-light: #fff !default;
+
+@function findColorInvert($color) {
+  @if (colorLuminance($color) > 0.55) {
+    @return $color-invert-to-dark;
+  }
+  @else {
+    @return $color-invert-to-light;
+  }
+}
