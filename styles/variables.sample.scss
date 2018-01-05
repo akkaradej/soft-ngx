@@ -42,7 +42,6 @@ $blue-green:   #22BAC9;
 $blue-lighter: #80A7CB;
 $blue-light:   #0794D4;
 $blue:         #2587D5;
-// $blue-dark:    #318CB8;
 $blue-dark:    #427CA5;
 $blue-darker:  #224E6B;
 $purple:       #B292DB;
@@ -69,34 +68,6 @@ $reject:  $red;
 $cancel:  $grey-lighter;
 $edit:    $orange;
 $delete:  $red-dark;
-
-// Backend Enum vs Frontend Display
-// Draft = Waiting for Submission
-// Waiting = Waiting for Approval
-// Rejected = Rejected
-// Approved = Complete
-// Cancelled = Cancelled
-
-$workflow-status-Draft:       $green-blue;
-$workflow-status-Waiting:     $purple;
-$workflow-status-Rejected:    $red;
-$workflow-status-Approved:    $blue-light;
-$workflow-status-Cancelled:   $grey-dark;
-
-$status-NotStartedYet:        $grey;
-$status-DelayedToStart:       $orange-dark;
-$status-OngoingAsPlanned:     $yellow;
-$status-OngoingButDelayed:    $red;
-$status-Completed:            $green;
-
-$cell-performance-header:     $blue-lighter;
-$cell-performance-aspect:     $blue-dark;
-$cell-performance-gri-djsi:   $white;
-$cell-performance-separator:  $white-ter;
-$cell-performance-formula:    $red-white;
-$cell-performance-number:     $green-white;
-$cell-setting-aspect-header:  $green-blue;
-$cell-setting-aspect:         $green-white;
 
 // Invert colors
 $color-invert-to-dark:  $grey-dark;
@@ -134,25 +105,7 @@ $colors: (
   "reject": ($reject, findColorInvert($reject)),
   "cancel": ($cancel, findColorInvert($cancel)),
   "edit": ($edit, findColorInvert($edit)),
-  "delete": ($delete, findColorInvert($delete)),
-  "workflow-status-Draft": ($workflow-status-Draft, findColorInvert($workflow-status-Draft)),
-  "workflow-status-Waiting": ($workflow-status-Waiting, findColorInvert($workflow-status-Waiting)),
-  "workflow-status-Rejected": ($workflow-status-Rejected, findColorInvert($workflow-status-Rejected)),
-  "workflow-status-Approved": ($workflow-status-Approved, findColorInvert($workflow-status-Approved)),
-  "workflow-status-Cancelled": ($workflow-status-Cancelled, findColorInvert($workflow-status-Cancelled)),
-  "status-NotStartedYet": ($status-NotStartedYet, findColorInvert($status-NotStartedYet)),
-  "status-DelayedToStart": ($status-DelayedToStart, findColorInvert($status-DelayedToStart)),
-  "status-OngoingAsPlanned": ($status-OngoingAsPlanned, findColorInvert($status-OngoingAsPlanned)),
-  "status-OngoingButDelayed": ($status-OngoingButDelayed, findColorInvert($status-OngoingButDelayed)),
-  "status-Completed": ($status-Completed, findColorInvert($status-Completed)),
-  "cell-performance-header": ($cell-performance-header, findColorInvert($cell-performance-header)),
-  "cell-performance-aspect": ($cell-performance-aspect, findColorInvert($cell-performance-aspect)),
-  "cell-performance-gri-djsi": ($cell-performance-gri-djsi, findColorInvert($cell-performance-gri-djsi)),
-  "cell-performance-separator": ($cell-performance-separator, findColorInvert($cell-performance-separator)),
-  "cell-performance-formula": ($cell-performance-formula, findColorInvert($cell-performance-formula)),
-  "cell-performance-number": ($cell-performance-number, findColorInvert($cell-performance-number)),
-  "cell-setting-aspect-header": ($cell-setting-aspect-header, findColorInvert($cell-setting-aspect-header)),
-  "cell-setting-aspect": ($cell-setting-aspect, findColorInvert($cell-setting-aspect))
+  "delete": ($delete, findColorInvert($delete))
 );
 
 // General colors
@@ -168,10 +121,10 @@ $text-strong: $grey-darker;
 $text-disabled: $grey-light;
 
 // Weight
-// $weight-light:    300;
+$weight-light:    300;
 $weight-normal:   400;
-// $weight-medium:   500;
-// $weight-semibold: 600;
+$weight-medium:   500;
+$weight-semibold: 600;
 $weight-bold:     700;
 
 // Link colors
@@ -192,11 +145,11 @@ $link-active-border: invalid-color;
 $family-sans-serif: "Helvetica", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Arial", sans-serif;
 $family-primary: $family-sans-serif;
 
-$body-size: 12px;
-$size-small: 0.75rem; // 9px
-$size-normal: 1rem;  // 12px
-$size-medium: 14px;
-$size-large: 17px;
+$body-size: 14px;
+$size-small: 0.75rem;
+$size-normal: 1rem;
+$size-medium: 1.25rem;
+$size-large: 1.5rem;
 
 // Spacing for margin, padding
 $space-small: 5px;
