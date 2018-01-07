@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.2.1
+* Override Bulma function
+* Add `$color-invert-to-dark` and `$color-invert-to-light` for setting color returned from findColorInvert()
+* Add style to support angular2-dropdown-multiselect
+
 ### v0.2.0
 * Remove AuthHelperService
 * Set additional auth response data via ApiClientConfig
