@@ -39,7 +39,7 @@
         "@angular/common": ">=5.1.2",
         "@angular/core": ">=5.1.2",
         "@angular/forms": ">=5.1.2",
-        "bulma": ">=0.6.1",
+        "bulma": ">=0.6.2",
         "moment": ">=2.19.2",
         "ngx-bootstrap": "^2.0.0-rc.0"
     },
@@ -57,7 +57,7 @@
         "@compodoc/compodoc": "1.0.3",
         "@types/jasmine": "2.6.2",
         "@types/node": "8.0.47",
-        "bulma": "0.6.1",
+        "bulma": "0.6.2",
         "chalk": "2.3.0",
         "codelyzer": "4.0.0",
         "core-js": "2.5.1",

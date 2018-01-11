@@ -1,6 +1,6 @@
 // Public classes.
 export { ApiClientConfig, ApiClientModule, ApiClientService, 
-  Auth, AuthService, StorageService } from './api-client/index';
+  ApiError, Auth, AuthService, StorageService } from './api-client/index';
 export { BusyModule, BusyConfig } from './busy/index';
 export { ModalModule, ModalComponent, ModalContent } from './modal/index';
 export { ModelHelperModule } from './model-helper/index';
