@@ -31,10 +31,10 @@ export class PopupService {
     });
   }
 
-  confirmDelete(itemName: string): Observable<boolean> {
+  confirmDelete(itemName: string, message = 'Warning: This action cannot be undone!'): Observable<boolean> {
     return this.dialogService.addDialog(PopupComponent, {
       title: `Delete "${itemName}"?`, 
-      message: 'Warning: This action cannot be undone!',
+      message,
       colorVar: 'danger',
       type: 'confirm'
     });
