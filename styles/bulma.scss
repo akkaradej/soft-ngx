@@ -82,3 +82,8 @@
 .select:not(.is-multiple)::after {
   z-index: 0;
 }
+
+// Fix: checkbox disabled="false" style
+.checkbox[disabled="false"], .radio[disabled="false"] {
+  cursor: pointer;
+}
