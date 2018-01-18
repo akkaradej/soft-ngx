@@ -38,7 +38,11 @@ export class FileModelDirective implements Validator {
   _required: boolean = false;
   @Input()
   set required(value: boolean) {
-    this._required = value;
+    if (value === '' as any) {
+      this._required = true;
+    } else {
+      this._required = value;
+    }
     if (!this._isFirstRequired) {
       this._setValidity(this._getInputValue(this._element.nativeElement as FileInputEventTarget));
     }
@@ -53,13 +57,21 @@ export class FileModelDirective implements Validator {
   }
 
   validate(control: AbstractControl): ValidationErrors {
-    if (! this._control) {
+    if (!this._control) {
       this._control = control;
     }
 
-    return {
-      required: { valid: !this._hasError(this._control.value) }
-    } as ValidationErrors;
+    const errors: ValidationErrors = Object.assign({}, this._control.errors);
+
+    if (this._hasError(this._control.value)) {
+      errors.required = { valid: false };
+    } else {
+      if (this._control.hasError('required')) {
+        delete errors.required;
+      }
+    }
+
+    return errors;
   }
 
   onChange(eventTarget: EventTarget): void {
