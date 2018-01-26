@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.3
+* Fix: body zoom out when small screen
+
 ### v0.2.2
 * Add: option to custom confirmDelete's message
 * Fix: checkbox disabled=false style
