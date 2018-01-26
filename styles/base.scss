@@ -20,13 +20,6 @@ body {
   min-height: 100vh;
   overflow-x: auto;
   word-break: break-word;
-  
-}
-
-@media screen and (max-width: $min-supported-screen-width - 1px) {
-  body {
-    zoom: 90%;
-  }
 }
 
 #header, #nav {
