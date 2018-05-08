@@ -14,6 +14,11 @@ tag-input.readonly {
 
   tag {
     background: #e5e5e5 !important;
+    cursor: auto !important;
+  }
+
+  delete-icon {
+    cursor: pointer;
   }
 }
 

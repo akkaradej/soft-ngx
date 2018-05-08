@@ -1,5 +1,20 @@
 ## Changelog
 
+### v0.3.0
+* Remove: .container-fluid class
+* Remove: bulma fix for .icon, .icon + span, .icon ~ span
+* Remove: .has-text-bold use bulma standard .has-text-weight-bold instead
+* Add: .icon-em class
+* Add: .box-detail class
+* Add: .section.is-short class
+* Add: .has-text-size-{xxx} class
+* Add: .has-text-light, .has-text-strong class
+* Add: non-responsive sass file
+* Change: container width calculation to support veritical scrollbar width
+* Change: default responsive breakpoint
+* Change: .is-margin-xxx helper from 2rem to 1.5rem
+* Fix: textarea style for IE
+
 ### v0.2.3
 * Fix: body zoom out when small screen
 

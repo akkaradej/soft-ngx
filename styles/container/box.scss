@@ -18,3 +18,16 @@ $box-hightlight-color: $primary !default;
     }
   }
 }
+
+// box-detail
+.box:not(:last-child) + .box-detail {
+  margin-top: -1.5rem;
+}
+
+$box-shadow: 0 2px 3px rgba($black, 0.1), 0 0 0 1px rgba($black, 0.1) !default;
+.box-detail {
+  &:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+  box-shadow: $box-shadow;
+}

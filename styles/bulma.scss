@@ -2,10 +2,10 @@
 
 // utilities
 @import "~bulma/sass/utilities/initial-variables.sass";
-@import 'functions';
+// @import '~bulma/sass/utilities/functions';
 @import "~bulma/sass/utilities/derived-variables.sass";
 @import "~bulma/sass/utilities/animations.sass";
-@import "~bulma/sass/utilities/mixins.sass";
+// @import "~bulma/sass/utilities/mixins";
 @import "~bulma/sass/utilities/controls.sass";
 
 // others
@@ -37,32 +37,6 @@
   }
 }
 
-// Fix: icon size should depends on its element.
-.icon {
-  font-size: 1em;
-  vertical-align: middle;
-
-  &.is-small {
-    font-size: 0.75em;
-  }
-  &.is-medium {
-    font-size: 1.25em;
-  }
-  &.is-large {
-    font-size: 1.5em;
-  }
-  & + span {
-    margin-left: 0.5em;
-  }
-  & ~ span {
-    vertical-align: middle;
-  }
-}
-.icon, .icon.is-small, .icon.is-normal, .icon.is-medium, .icon.is-large {
-  width: 1.2em;
-  height: 1em;
-}
-
 // Fix: Search input type has different style from text input type
 .input[type="search"], .textarea[type="search"] {
   border-radius: $radius;
@@ -86,4 +60,9 @@
 // Fix: checkbox disabled="false" style
 .checkbox[disabled="false"], .radio[disabled="false"] {
   cursor: pointer;
+}
+
+// Fix IE: textarea not expand to defined rows number
+.textarea[rows] {
+  height: auto;
 }

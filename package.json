@@ -1,6 +1,6 @@
 {
     "name": "soft-ngx",
-    "version": "0.2.3",
+    "version": "0.3.0",
     "description": "Useful Angular libs by Softever",
     "main": "./bundles/soft-ngx.umd.js",
     "module": "./esm5/soft-ngx.js",
@@ -39,9 +39,9 @@
         "@angular/common": ">=5.1.2",
         "@angular/core": ">=5.1.2",
         "@angular/forms": ">=5.1.2",
-        "bulma": ">=0.6.2",
+        "bulma": ">=0.7.1",
         "moment": ">=2.19.2",
-        "ngx-bootstrap": "^2.0.0-rc.0"
+        "ngx-bootstrap": ">=2.0.3"
     },
     "devDependencies": {
         "@angular/animations": "5.1.2",
@@ -57,7 +57,7 @@
         "@compodoc/compodoc": "1.0.3",
         "@types/jasmine": "2.6.2",
         "@types/node": "8.0.47",
-        "bulma": "0.6.2",
+        "bulma": "0.7.1",
         "chalk": "2.3.0",
         "codelyzer": "4.0.0",
         "core-js": "2.5.1",

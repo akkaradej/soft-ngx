@@ -4,8 +4,8 @@
     <h3 class="subtitle">
       Alert
     </h3>
-    <button class="button" 
-      (click)="alert()">
+    <button class="button"
+            (click)="alert()">
       Alert
     </button>
     <pre>
@@ -28,12 +28,11 @@
     <h3 class="subtitle">
       Confirm
     </h3>
-    <button class="button" 
-      (click)="confirm()">
+    <button class="button"
+            (click)="confirm()">
       Confirm
     </button>
     <pre>
-      {{'
         # html
         &lt;button class="button" 
           (click)="confirm()"&gt;
@@ -41,15 +40,14 @@
         &lt;/button&gt;
 
         # ts
-        confirm() {
-          '}}<strong>{{'this.popupService.confirm'}}</strong>{{'(\'Are your sure?\', \'\', \'warning\')
-            .subscribe((result: boolean) => {
-              if (result) {
-                window.alert(\'Sure!\');
-              }
-            });
-        }
-      '}}
+        confirm() &#123;
+          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
+            .subscribe((result: boolean) => &#123;
+              if (result) &#123;
+                window.alert('Sure!');
+              &#125;
+            &#125;);
+        &#125;
     </pre>
   </div>
 
@@ -60,35 +58,34 @@
     <ul class="is-margin-top">
       <li *ngFor="let product of products">
         {{ product.name }} -
-        <button class="button" (click)="delete(product)">Confirm Delete</button>
+        <button class="button"
+                (click)="delete(product)">Confirm Delete</button>
       </li>
     </ul>
     <pre>
-      {{'
-        # html
-        &lt;ul class="is-margin-top"&gt;
-          &lt;li *ngFor="let product of products"&gt;
-            {\{ product.name }\} -
-            &lt;button class="button" 
-              (click)="delete(product)"&gt;
-              Confirm Delete
-            &lt;/button&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
+      # html
+      &lt;ul class="is-margin-top"&gt;
+        &lt;li *ngFor="let product of products"&gt;
+          {{ product.name }<!---->} -
+          &lt;button class="button" 
+            (click)="delete(product)"&gt;
+            Confirm Delete
+          &lt;/button&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
 
-        # ts
-        products = [{ name: \'Product A\' }, { name: \'Product B\' }];
+      # ts
+      products = [&#123; name: 'Product A' &#125;, &#123; name: 'Product B' &#125;];
 
-        delete(product: any) {
-          '}}<strong>{{'this.popupService.confirmDelete'}}</strong>{{'(product.name)
-            .subscribe((result: boolean) => {
-              if (result) {
-                this.products.splice(this.products.indexOf(product), 1);
-              }
-            });
-        }
+      delete(product: any) &#123;
+        <strong>this.popupService.confirmDelete</strong>(product.name)
+          .subscribe((result: boolean) => &#123;
+            if (result) &#123;
+              this.products.splice(this.products.indexOf(product), 1);
+            &#125;
+          &#125;);
+      &#125;
         
-      '}}
     </pre>
   </div>
 </section>

@@ -1,4 +1,4 @@
-$ngx-datatable-row-detail-background-color: #F5F5F5 !default;
+$ngx-datatable-row-detail-background-color: $background !default;
 
 .ngx-datatable.material {
   &.has-filter-on-header {

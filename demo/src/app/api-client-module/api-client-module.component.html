@@ -5,19 +5,17 @@
       GET
     </h3>
     <button class="button"
-      (click)="getPosts()">
+            (click)="getPosts()">
       Get Posts
     </button>
     <div>
       {{ posts | json }}
     </div>
     <pre>
-      {{'
-        '}}<strong>{{'this.apiClientService.get'}}</strong>{{'(\'posts\', { userId: 1 }, {}, true)
-          .subscribe(posts => { 
+      <strong>this.apiClientService.get</strong>('posts', &#123; userId: 1 &#125;, &#123;&#125;, true)
+          .subscribe(posts => &#123;
             this.posts = posts; 
-          });
-      '}}
+          &#125;);
     </pre>
   </div>
 
@@ -26,25 +24,28 @@
       POST
     </h3>
     <div class="field">
-      <input type="text" class="input" placeholder="title" #title>
+      <input type="text"
+             class="input"
+             placeholder="title"
+             #title>
     </div>
     <div class="field">
-      <textarea class="textarea" placeholder="message" #message></textarea>
+      <textarea class="textarea"
+                placeholder="message"
+                #message></textarea>
     </div>
-    <button class="button" 
-      (click)="createPost(title.value, message.value)">
+    <button class="button"
+            (click)="createPost(title.value, message.value)">
       Create New Post
     </button>
     <div>
       {{ newPost | json }}
     </div>
     <pre>
-      {{'
-        '}}<strong>{{'this.apiClientService.post'}}</strong>{{'(\'posts\', { title, body: message, userId: 1 }, {}, true)
-          .subscribe(post => {
+      <strong>this.apiClientService.post</strong>('posts', &#123; title, body: message, userId: 1 &#125;, &#123;&#125;, true)
+          .subscribe(post => &#123;
             this.newPost = post;
-          });
-     '}}
+          &#125;);
     </pre>
   </div>
 
@@ -53,15 +54,15 @@
       Auth
     </h3>
     <button class="button"
-      (click)="login()">
+            (click)="login()">
       Login
     </button>
     <button class="button"
-      (click)="logout()">
+            (click)="logout()">
       Logout
     </button>
     <button class="button"
-      (click)="requestPrivateApi()">
+            (click)="requestPrivateApi()">
       Private Api (Auto refresh token)
     </button>
     <div>
@@ -79,7 +80,6 @@
       </div>
     </div>
     <pre>
-      {{'
         # html
         &lt;button class=button
           (click)="login()"&gt;
@@ -90,35 +90,34 @@
           Logout
         &lt;/button&gt;
         &lt;div&gt;
-          auth result: \{\{ auth | json \}\}
+          auth result: {{ auth | json }<!---->}
         &lt;/div&gt;
         &lt;div&gt;
-          logged in?: \{\{ isLoggedIn() \}\}
+          logged in?: {{ isLoggedIn() }<!---->}
         &lt;/div&gt;
         &lt;div&gt;
-          access_token: \{\{ getAccessToken() \}\}
+          access_token: {{ getAccessToken() }<!---->}
         &lt;/div&gt;
 
         # ts
-        login() {
-          '}}<strong>{{'this.authService.login$'}}</strong>{{'(\'uXXXXXX\', \'pYYYYYY\')
-            .subscribe((auth: Auth) => {
+        login() &#123;
+          <strong>this.authService.login$</strong>('uXXXXXX', 'pYYYYYY')
+            .subscribe((auth: Auth) => &#123;
               this.auth = auth;
-            });
-        }
+             &#125;);
+        &#125;
 
-        logout() {
-          '}}<strong>{{'this.authService.logout'}}</strong>{{'();
-        }
+        logout() &#123;
+          <strong>this.authService.logout</strong>();
+        &#125;
 
-        isLoggedIn() {
-          '}}<strong>{{'return this.authService.isLoggedIn'}}</strong>{{';
-        }
+        isLoggedIn() &#123;
+          <strong>return this.authService.isLoggedIn</strong>;
+        &#125;
 
-        getAccessToken() {
-          return '}}<strong>{{'this.authService.getAccessToken'}}</strong>{{'();
-        }
-    '}}
+        getAccessToken() &#123;
+          return <strong>this.authService.getAccessToken</strong>();
+        &#125;
     </pre>
   </div>
 </section>

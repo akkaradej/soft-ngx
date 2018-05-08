@@ -1,0 +1,81 @@
+// === soft-ngx component vars ===
+
+// = components
+// $badge-box-shadow: 0 0 0 .2rem #fff;
+// $badge-font-size: $size-normal;
+// $badge-border-radius: 100%;
+// $button-font-weight: $weight-bold;
+// $modal-card-title-font-weight: $weight-bold;
+// $navbar-dropdown-item-color: $text;
+// $page-title-color: $text;
+// $tab-highlight-color: $primary;
+
+// = container
+// $box-hightlight-color: $primary;
+
+// = forms
+// $checkbox-checked-color: $primary;
+// $checkbox-checked-border-color: $primary;
+// $checkbox-checked-filled-background-color: $primary;
+// $checkbox-group-border-color: $border;
+// $checkbox-group-divide-color: $border;
+// $checkbox-title-filled-background-color: $dark;
+// $checkbox-title-filled-color: $light;
+// $radio-border-color: $primary;
+// $radio-background-color: $primary;
+
+// = lib
+// $completer-selected-row-background-color: $primary;
+// $completer-selected-row-color: $primary-invert;
+// $ngx-datatable-row-detail-background-color: $background;
+
+// ------------------------------------------------------//
+
+// === bulma component vars ===
+
+// = elements
+// $box-radius: $radius-large;
+$box-radius: 0;
+
+// $button-focus-border-color: $link-focus-border;
+// $button-focus-box-shadow-color: rgba($link, 0.25);
+// $button-active-border-color: $link-active-border;
+$button-focus-border-color: invalid-color;
+$button-focus-box-shadow-color: invalid-color;
+$button-active-border-color: invalid-color;
+
+// $input-hover-color: $grey-darker;
+// $input-hover-border-color: $grey-light;
+// $input-focus-border-color: $link;
+// $input-focus-box-shadow-size: 0 0 0 0.125em;
+$input-hover-color: invalid-color;
+$input-hover-border-color: invalid-color;
+$input-focus-border-color: invalid-color;
+$input-focus-box-shadow-color: invalid-color;
+
+// = components
+// $navbar-item-hover-color: $link;
+// $navbar-item-hover-background-color: $white-bis;
+// $navbar-dropdown-item-hover-color: $black;
+// $navbar-dropdown-item-hover-background-color: $background;
+$navbar-item-hover-color: $primary;
+$navbar-item-hover-background-color: $background;
+
+// $modal-z: 40;
+// $modal-card-head-background-color: $background;
+// $modal-card-head-padding: 20px;
+// $modal-card-head-radius: $radius-large;
+// $modal-card-foot-radius: $radius-large;
+// $modal-card-title-color: $text-strong;
+// $modal-card-title-size: 1.5rem;
+// $modal-card-body-padding: 20px;
+$modal-z: 1020;
+$modal-card-head-background-color: $primary;
+$modal-card-head-padding:	1.5rem;
+$modal-card-head-radius: 0;
+$modal-card-foot-radius: 0;
+$modal-card-title-color: $primary-invert;
+$modal-card-title-size: $size-medium;
+$modal-card-body-padding: 2rem;
+
+// ------------------------------------------------------//

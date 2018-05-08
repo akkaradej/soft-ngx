@@ -1,11 +1,28 @@
-$container-fluid-background-color: $light !default;
-
-.container-fluid {
-  background: $container-fluid-background-color;
-  border: 1px solid $border;
-  margin-top: $gap;
-  margin-left: -$gap;
-  margin-right: -$gap;
-  margin-bottom: -$gap;
-  padding: $gap;
+.container {
+  @include desktop {
+    max-width: $desktop - (2 * $gap) - $vertical-scrollbar-width;
+    width: $desktop - (2 * $gap) - $vertical-scrollbar-width;
+    &.is-fluid {
+      margin-left: $gap + $vertical-scrollbar-width / 2;
+      margin-right: $gap + $vertical-scrollbar-width / 2;
+    }
+  }
+  @include until-widescreen {
+    &.is-widescreen {
+      max-width: $widescreen - (2 * $gap) - $vertical-scrollbar-width;
+    }
+  }
+  @include until-fullhd {
+    &.is-fullhd {
+      max-width: $fullhd - (2 * $gap) - $vertical-scrollbar-width;
+    }
+  }
+  @include widescreen {
+    max-width: $widescreen - (2 * $gap) - $vertical-scrollbar-width;
+    width: $widescreen - (2 * $gap) - $vertical-scrollbar-width;
+  }
+  @include fullhd {
+    max-width: $fullhd - (2 * $gap) - $vertical-scrollbar-width;
+    width: $fullhd - (2 * $gap) - $vertical-scrollbar-width;
+  }
 }

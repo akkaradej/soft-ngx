@@ -43,6 +43,9 @@
       "exclude": "**/node_modules/**"
     }
   ],
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  },
   "defaults": {
     "styleExt": "scss",
     "component": {}

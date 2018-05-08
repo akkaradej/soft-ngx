@@ -5,21 +5,20 @@
     <h3 class="subtitle">
       busyState
     </h3>
-    <div [busyState]="busy" style="position: relative;">
+    <div [busyState]="busy"
+         style="position: relative;">
       <br> Long loading content
       <br>
       <br>
     </div>
     <pre>
-      {{'
-        # html
-        &lt;div '}}<strong>{{'[busyState]="busy"'}}</strong>{{' style="position: relative;"&gt;
-          Long loading content
-        &lt;/div&gt;
+      # html
+      &lt;div <strong>[busyState]="busy"</strong> style="position: relative;"&gt;
+        Long loading content
+      &lt;/div&gt;
 
-        # ts
-        this.busy = of().pipe(delay(Number.MAX_SAFE_INTEGER)).subscribe();
-      '}}
+      # ts
+      this.busy = of().pipe(delay(Number.MAX_SAFE_INTEGER)).subscribe();
     </pre>
   </div>
 
@@ -27,31 +26,32 @@
     <h3 class="subtitle">
       loadingState & disabledState
     </h3>
-    <button class="button" [loadingState]="loadingSub" (click)="testLoading()">
+    <button class="button"
+            [loadingState]="loadingSub"
+            (click)="testLoading()">
       Click here
     </button>
-    <button class="button" [disabledState]="loadingSub">
+    <button class="button"
+            [disabledState]="loadingSub">
       Another Button
     </button>
     <pre>
-      {{'
-        # html
-        &lt;button class="button"
-          '}}<strong>{{'[loadingState]="loadingSub"'}}</strong>{{'
-          (click)="testLoading()"&gt;
-          Click here
-        &lt;/button&gt;
+      # html
+      &lt;button class="button"
+        <strong>[loadingState]="loadingSub"</strong>
+        (click)="testLoading()"&gt;
+        Click here
+      &lt;/button&gt;
 
-        &lt;button class="button"
-          '}}<strong>{{'[disabledState]="loadingSub"'}}</strong>{{'&gt;
-          Another Button
-        &lt;/button&gt;
+      &lt;button class="button"
+        <strong>[disabledState]="loadingSub"</strong>&gt;
+        Another Button
+      &lt;/button&gt;
 
-        # ts
-        testLoading() {
-          this.loadingSub = of().pipe(delay(3000)).subscribe();
-        }
-      '}}
+      # ts
+      testLoading() &#123;
+        this.loadingSub = of().pipe(delay(3000)).subscribe();
+      &#125;
     </pre>
   </div>
 </section>
