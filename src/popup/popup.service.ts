@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { DialogService } from "ng2-bootstrap-modal";
 import { PopupComponent, PopupModel } from './popup.component';
-
 
 @Injectable()
 export class PopupService {
@@ -15,7 +14,7 @@ export class PopupService {
 
   alert(title: string, message = '', colorVar = 'primary') {
     return this.dialogService.addDialog(PopupComponent, {
-      title, 
+      title,
       message,
       colorVar,
       type: 'alert'
@@ -24,7 +23,7 @@ export class PopupService {
 
   confirm(title: string, message = '', colorVar = 'primary'): Observable<boolean> {
     return this.dialogService.addDialog(PopupComponent, {
-      title, 
+      title,
       message,
       colorVar,
       type: 'confirm'
@@ -33,12 +32,12 @@ export class PopupService {
 
   confirmDelete(itemName: string, message = 'Warning: This action cannot be undone!'): Observable<boolean> {
     return this.dialogService.addDialog(PopupComponent, {
-      title: `Delete "${itemName}"?`, 
+      title: `Delete "${itemName}"?`,
       message,
       colorVar: 'danger',
       type: 'confirm'
     });
   }
-  
-  
+
+
 }

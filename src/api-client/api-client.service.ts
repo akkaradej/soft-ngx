@@ -1,13 +1,10 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { Subject } from 'rxjs/Subject';
-import { _throw } from 'rxjs/observable/throw';
-import { empty } from 'rxjs/observable/empty';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { of } from 'rxjs/observable/of';
+import {
+  Observable, Observer, Subject,
+  throwError, empty, of
+} from 'rxjs';
 import { catchError, delay, map, mergeMap, retryWhen, tap } from 'rxjs/operators';
 
 import { PopupService } from '../popup/popup.service';
@@ -48,7 +45,7 @@ export class ApiClientService {
     private popupService: PopupService) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
-    if (! this.config.apiBaseUrl) {
+    if (!this.config.apiBaseUrl) {
       throw new TypeError('ApiClientConfig is needed to set apiBaseUrl');
     }
   }
@@ -86,7 +83,7 @@ export class ApiClientService {
             if (count < 2 && error.status >= 500) {
               return of(error);
             }
-            return _throw(error);
+            return throwError(error);
           }),
           delay(500)
         )
@@ -103,7 +100,7 @@ export class ApiClientService {
         }),
       );
 
-      if (! readHeaderResponse) {
+      if (!readHeaderResponse) {
         req = req.pipe(
           map((res: any) => res.data)
         );
@@ -165,7 +162,7 @@ export class ApiClientService {
       err.ignoreGlobalErrorAlert = () => {
         this.window.clearTimeout(alertTimeout);
       };
-      return _throw(err);
+      return throwError(err);
     })
   }
 
@@ -194,7 +191,7 @@ export class ApiClientService {
         if (err.status == 401) {
           return this.refreshToken(method, url, options);
         }
-        return _throw(err);
+        return throwError(err);
       }),
       map(res => {
         if (options.observe == 'response') {
@@ -240,7 +237,7 @@ export class ApiClientService {
             return empty();
           }
         })
-        );
+      );
     } else {
       console.debug('Start refresh token');
       this.isRefreshing = true;

@@ -1,8 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 
-import { Observable } from 'rxjs/Observable';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { Observable, from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { Auth } from './auth.model';
@@ -41,7 +40,7 @@ export class AuthService {
   }
 
   login$(username: string, password: string): Observable<Auth> {
-    return fromPromise(<Promise<Auth>>this.oauthService.fetchTokenUsingPasswordFlow(username, password)).pipe(
+    return from(<Promise<Auth>>this.oauthService.fetchTokenUsingPasswordFlow(username, password)).pipe(
       tap((auth: Auth) => {
         this.setAdditionalAuthData(auth);
       })
@@ -58,7 +57,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    return fromPromise(<Promise<Auth>>this.oauthService.refreshToken()).pipe(
+    return from(<Promise<Auth>>this.oauthService.refreshToken()).pipe(
       tap((auth: Auth) => {
         this.setAdditionalAuthData(auth);
       })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { of } from 'rxjs/observable/of';
-import { delay } from 'rxjs/operators/delay';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-busy-module',
