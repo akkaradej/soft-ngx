@@ -24,11 +24,11 @@ export class AuthService {
 
   constructor(
     @Inject(userConfigToken) userConfig: ApiClientConfig,
-    private oauthService: OAuthService,
+    protected oauthService: OAuthService,
     protected storage: StorageService) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
-    if (! this.config.authApiUrl) {
+    if (!this.config.authApiUrl) {
       throw new TypeError('ApiClientConfig is needed to set authApiUrl');
     }
     authConfig.tokenEndpoint = this.config.authApiUrl;
@@ -43,7 +43,7 @@ export class AuthService {
   login$(username: string, password: string): Observable<Auth> {
     return fromPromise(<Promise<Auth>>this.oauthService.fetchTokenUsingPasswordFlow(username, password)).pipe(
       tap((auth: Auth) => {
-        this.setAdditionalAuthData(auth);    
+        this.setAdditionalAuthData(auth);
       })
     );
   }
@@ -71,7 +71,7 @@ export class AuthService {
         if (auth[this.config.authAdditionalData[i]] !== undefined) {
           this.storage.setItem(this.config.authAdditionalData[i], auth[this.config.authAdditionalData[i]]);
         }
-      } 
+      }
     }
   }
 
