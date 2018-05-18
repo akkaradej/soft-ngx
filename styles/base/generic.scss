@@ -77,3 +77,9 @@ input[type="number"] {
 :focus {
   outline: 0;
 }
+
+// IE has no break-word
+body {
+  word-break: break-all;
+  word-break: break-word;
+}
