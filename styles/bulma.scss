@@ -47,6 +47,15 @@
   margin: 0;
 }
 
+// Fix: long title
+.modal-card-title {
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 10px;   
+}
+
 // Fix: navbar-menu height does not equal navbar
 .navbar-menu {
   min-height: $navbar-height;
