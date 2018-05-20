@@ -73,7 +73,7 @@ export class ApiClientService {
       }
     }
 
-    let req = this.requestHelper('Get', url, { body: '', params }, isPublic, readHeaderResponse || isPaging).pipe(
+    let req = this.requestHelper('Get', url, { body: undefined, params }, isPublic, readHeaderResponse || isPaging).pipe(
       // retry againg if server error
       retryWhen((errors) => {
         let count = 0;
@@ -122,8 +122,8 @@ export class ApiClientService {
     );
   }
 
-  public delete(url: string, params?: Params, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
-    return this.requestHelper('Delete', url, { body: '', params }, isPublic, readHeaderResponse).pipe(
+  public delete(url: string, params?: Params, body?: any, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
+    return this.requestHelper('Delete', url, { body, params }, isPublic, readHeaderResponse).pipe(
       this.globalErrorHandler()
     );
   }
@@ -181,7 +181,11 @@ export class ApiClientService {
     if (isPublic) {
       // bypass
     } else if (this.authService.isLoggedIn) {
-      options.headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.getAccessToken());
+      let scheme = '';
+      if (this.authService.authenticationScheme) {
+        scheme = this.authService.authenticationScheme + ' ';
+      }
+      options.headers = new HttpHeaders().set('Authorization', scheme + this.authService.getAccessToken());
     } else {
       return this.refreshToken(method, url, options);
     }
@@ -218,6 +222,12 @@ export class ApiClientService {
   }
 
   private refreshToken(method: string, url: string, options: any): Observable<any> {
+    if (!this.authService.hasRefreshToken) {
+      // re-login
+      this.window.location.href = this.config.loginScreenUrl || '/';
+      return empty();
+    }
+
     // if is refreshing token, wait next false value
     if (this.isRefreshing) {
       console.debug('Another request is refreshing token');

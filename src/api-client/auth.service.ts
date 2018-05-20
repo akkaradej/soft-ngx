@@ -4,6 +4,7 @@ import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Observable, from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+import { AuthServiceInterface } from './auth.service.interface';
 import { Auth } from './auth.model';
 export { Auth };
 
@@ -18,8 +19,11 @@ const authConfig: AuthConfig = {
 };
 
 @Injectable()
-export class AuthService {
-  private config: ApiClientConfig = <ApiClientConfig>{};
+export class AuthService implements AuthServiceInterface {
+
+  readonly authenticationScheme = 'Bearer';
+  readonly hasRefreshToken: boolean = true;
+  config: ApiClientConfig = <ApiClientConfig>{};
 
   constructor(
     @Inject(userConfigToken) userConfig: ApiClientConfig,
@@ -52,11 +56,11 @@ export class AuthService {
     this.removeAdditionalAuthData();
   }
 
-  getAccessToken() {
+  getAccessToken(): string {
     return this.oauthService.getAccessToken();
   }
 
-  refreshToken() {
+  refreshToken(): Observable<Auth> {
     return from(<Promise<Auth>>this.oauthService.refreshToken()).pipe(
       tap((auth: Auth) => {
         this.setAdditionalAuthData(auth);
@@ -64,7 +68,7 @@ export class AuthService {
     );
   }
 
-  setAdditionalAuthData(auth: any) {
+  setAdditionalAuthData(auth: any): void {
     if (this.config.authAdditionalData) {
       for (let i = 0; i < this.config.authAdditionalData.length; i++) {
         if (auth[this.config.authAdditionalData[i]] !== undefined) {
@@ -74,7 +78,7 @@ export class AuthService {
     }
   }
 
-  removeAdditionalAuthData() {
+  removeAdditionalAuthData(): void {
     if (this.config.authAdditionalData) {
       for (let i = 0; i < this.config.authAdditionalData.length; i++) {
         this.storage.removeItem(this.config.authAdditionalData[i]);

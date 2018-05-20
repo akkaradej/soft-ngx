@@ -1,7 +1,8 @@
 <section class="section">
   <h2 class="title is-2">ModalModule</h2>
   <div class="box">
-    <button (click)="modal.open()">Open</button>
+    <button class="button"
+            (click)="modal.open()">Open</button>
     <soft-modal #modal>
       <modal-title>
         My Title
@@ -11,7 +12,7 @@
       </div>
     </soft-modal>
     <pre>
-      &lt;button (click)="modal.open()"&gt;Open&lt;/button&gt;
+      &lt;button class="button" (click)="modal.open()"&gt;Open&lt;/button&gt;
 
       &lt;soft-modal #modal&gt;
         &lt;modal-title&gt;

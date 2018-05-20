@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, Provider, ClassProvider } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 
@@ -9,6 +9,7 @@ import { windowToken, getWindow } from '../window';
 import { ApiClientConfig } from './api-client.config';
 import { ApiClientService } from './api-client.service';
 import { AuthService } from './auth.service';
+import { AuthServiceInterface } from './auth.service.interface';
 import { StorageService } from './storage.service';
 import { userConfigToken } from './user-config.token';
 
@@ -21,16 +22,27 @@ import { userConfigToken } from './user-config.token';
   ]
 })
 export class ApiClientModule {
-  static forRoot(config: ApiClientConfig): ModuleWithProviders {
+  static forRoot(
+    config: ApiClientConfig,
+    CustomAuthService?: (new (...args: any[]) => AuthServiceInterface)
+  ): ModuleWithProviders {
+
+    let providers: Provider[] = [
+      { provide: userConfigToken, useValue: config },
+      { provide: windowToken, useFactory: getWindow },
+      ApiClientService,
+      StorageService
+    ];
+
+    if (CustomAuthService) {
+      providers.push({ provide: AuthService, useClass: CustomAuthService });
+    } else {
+      providers.push(AuthService);
+    }
+
     return {
       ngModule: ApiClientModule,
-      providers: [
-        { provide: userConfigToken, useValue: config },
-        { provide: windowToken, useFactory: getWindow },
-        ApiClientService,
-        AuthService,
-        StorageService
-      ]
+      providers: providers
     };
   }
 }
