@@ -1,5 +1,14 @@
 ## Changelog
 
+### v0.4.0
+* Upgrade to Angular 6, Rxjs 6
+* Fix: IE has no break-word
+* Fix: too long text on modal card title should display dot dot dot
+* Add: support popup message newline character
+* Add: Api client - allow to send body in delete() as optional
+* Add: ApiClientModule - allow to use custom AuthService class
+* Add: provide AuthServiceInterface for implement custom AuthService class
+
 ### v0.3.0
 * Remove: .container-fluid class
 * Remove: bulma fix for .icon, .icon + span, .icon ~ span

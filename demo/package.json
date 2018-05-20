@@ -24,7 +24,7 @@
     "moment": "2.22.1",
     "ngx-bootstrap": "3.0.0",
     "rxjs": "^6.1.0",
-    "soft-ngx": "file:../soft-ngx-0.3.0.tgz",
+    "soft-ngx": "file:../soft-ngx-0.4.0.tgz",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
