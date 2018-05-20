@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiClientService } from 'soft-ngx';
 
-import { AuthService } from './auth.service';
+import { CustomAuthService } from './custom-auth.service';
 import { Auth } from './auth.model';
 
 @Component({
@@ -18,7 +18,7 @@ export class ApiClientModuleComponent implements OnInit {
 
   constructor(
     private apiClientService: ApiClientService,
-    private authService: AuthService) { 
+    private authService: CustomAuthService) {
   }
 
   ngOnInit() {

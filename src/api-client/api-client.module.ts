@@ -27,22 +27,15 @@ export class ApiClientModule {
     CustomAuthService?: (new (...args: any[]) => AuthServiceInterface)
   ): ModuleWithProviders {
 
-    let providers: Provider[] = [
-      { provide: userConfigToken, useValue: config },
-      { provide: windowToken, useFactory: getWindow },
-      ApiClientService,
-      StorageService
-    ];
-
-    if (CustomAuthService) {
-      providers.push({ provide: AuthService, useClass: CustomAuthService });
-    } else {
-      providers.push(AuthService);
-    }
-
     return {
       ngModule: ApiClientModule,
-      providers: providers
+      providers: [
+        { provide: userConfigToken, useValue: config },
+        { provide: windowToken, useFactory: getWindow },
+        ApiClientService,
+        StorageService,
+        CustomAuthService ? { provide: AuthService, useClass: CustomAuthService } : AuthService
+      ]
     };
   }
 }

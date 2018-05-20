@@ -31,9 +31,9 @@
     ],
     "angularCompilerOptions": {
         "skipTemplateCodegen": true,
+        "strictMetadataEmit": true,
         "fullTemplateTypeCheck": true,
         "annotateForClosureCompiler": true,
-        "strictMetadataEmit": true,
         "flatModuleOutFile": "soft-ngx.js",
         "flatModuleId": "soft-ngx"
     }

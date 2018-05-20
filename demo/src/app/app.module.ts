@@ -19,7 +19,7 @@ import { ModelHelperModuleComponent } from './model-helper-module/model-helper-m
 import { PipeExtensionModuleComponent } from './pipe-extension-module/pipe-extension-module.component';
 import { PopupModuleComponent } from './popup-module/popup-module.component';
 import { ApiClientModuleComponent } from './api-client-module/api-client-module.component';
-import { AuthService } from './api-client-module/auth.service';
+import { CustomAuthService } from './api-client-module/custom-auth.service';
 
 const apiClientConfig: ApiClientConfig = {
   apiBaseUrl: 'https://jsonplaceholder.typicode.com',
@@ -44,7 +44,7 @@ const apiClientConfig: ApiClientConfig = {
     FormsModule,
     BsDatepickerModule.forRoot(),
 
-    ApiClientModule.forRoot(apiClientConfig),
+    ApiClientModule.forRoot(apiClientConfig, CustomAuthService),
     BusyModule.forRoot(),
     ModalModule.forRoot(),
     ModelHelperModule.forRoot(),
@@ -52,7 +52,7 @@ const apiClientConfig: ApiClientConfig = {
     PopupModule.forRoot()
   ],
   providers: [
-    AuthService
+    CustomAuthService
   ],
   bootstrap: [AppComponent]
 })
