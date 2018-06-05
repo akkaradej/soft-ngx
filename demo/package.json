@@ -20,10 +20,10 @@
     "@angular/platform-browser-dynamic": "6.0.1",
     "@angular/router": "6.0.1",
     "bulma": "0.7.1",
-    "core-js": "2.5.6",
-    "moment": "2.22.1",
+    "core-js": "2.5.7",
+    "moment": "2.22.2",
     "ngx-bootstrap": "3.0.0",
-    "rxjs": "^6.1.0",
+    "rxjs": "^6.2.0",
     "soft-ngx": "file:../soft-ngx-0.4.0.tgz",
     "zone.js": "^0.8.26"
   },
