@@ -1,3 +1,6 @@
+$box-shadow: 0 2px 3px rgba($black, 0.1), 0 0 0 1px rgba($black, 0.1) !default;
+$box-shadow-hovered: 1px 3px 10px 2px rgba($black, 0.1), 0 0 0 1px rgba($black, 0.1) !default;
+
 // Flexbox
 .is-flex-1, .is-flex.is-flex-1 {
   flex: 1;
