@@ -42,11 +42,6 @@
   border-radius: $radius;
 }
 
-// Fix IE: Modal is not centered
-.modal-content, .modal-card {
-  margin: 0;
-}
-
 // Fix: long title
 .modal-card-title {
   flex: 1;
@@ -74,4 +69,10 @@
 // Fix IE: textarea not expand to defined rows number
 .textarea[rows] {
   height: auto;
+}
+
+// fix seeing file input at corner when file button has radius
+.file-input {
+  left: $radius-large;
+  top: $radius-large;
 }

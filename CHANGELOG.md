@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.4.1
+* Add helper classes .is-single-line, .is-double-line, .has-shadow, .has-shadow-hovered, .is-clickable, .is-disabled 
+* Add .section.is-fit class
+* Add .section.has-background class
+* Change .section.is-short to has small vertical gap
+
 ### v0.4.0
 * Upgrade to Angular 6, Rxjs 6
 * Fix: IE has no break-word

@@ -80,6 +80,7 @@ input[type="number"] {
 
 // IE has no break-word
 body {
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   word-break: break-word;
 }

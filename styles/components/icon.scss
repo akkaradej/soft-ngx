@@ -27,6 +27,13 @@
   }
 }
 
+.icon.icon-em.icon-img {
+  vertical-align: text-top;
+  img {
+    width: 100%;
+  }
+}
+
 .navbar-item, .navbar-link {
   .icon.icon-em {
     &:only-child {

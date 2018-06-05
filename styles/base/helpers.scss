@@ -73,10 +73,24 @@
 .has-text-light { // has-text-light color is different to is-light
   color: $text-light !important;
 }
+
 .has-text-strong {
   color: $text-strong !important;
 }
 
+.is-single-line {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.is-double-line {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 
 // Other
 .overflow-wrapper {
@@ -94,3 +108,35 @@
 .control-height {
   height: 2.25em;
 }
+
+.has-shadow {
+  box-shadow: $box-shadow;
+}
+
+.has-shadow-hovered {
+  transition: .2s ease;
+
+  &:hover {
+    box-shadow: $box-shadow-hovered;
+  }
+}
+
+.is-clickable {
+  cursor: pointer;
+}
+
+.is-disabled {
+  filter: grayscale(100%);
+  opacity: 0.5;
+  position:relative;
+
+  &:after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
