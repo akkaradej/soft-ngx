@@ -2,11 +2,13 @@ import { Observable } from 'rxjs';
 
 export interface AuthServiceInterface {
 
-  readonly authenticationScheme: string;
+  authenticationScheme: string;
+
+  hasRefreshToken: boolean;
+
+  loginScreenUrl: string;
 
   readonly isLoggedIn: boolean;
-
-  readonly hasRefreshToken: boolean;
 
   login$(username: string, password: string): Observable<any>,
 

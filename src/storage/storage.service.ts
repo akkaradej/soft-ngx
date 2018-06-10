@@ -1,27 +1,28 @@
 import { Injectable, Inject } from '@angular/core';
 
-import { ApiClientConfig, defaultConfig } from './api-client.config';
+import { StorageConfig, defaultConfig } from './storage.config';
 import { userConfigToken } from './user-config.token';
 
 @Injectable()
 export class StorageService implements Storage {
-  private config: ApiClientConfig = <ApiClientConfig>{};
+
+  private config = {} as StorageConfig;
   private storage: Storage;
 
   [key: string]: any;
   [index: number]: string;
 
   constructor(
-    @Inject(userConfigToken) userConfig: ApiClientConfig) {
+    @Inject(userConfigToken) userConfig: StorageConfig) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
     this.storage = this.config.storageType as Storage;
   }
-  
+
   get length(): number {
     return this.storage.length;
   }
-  
+
   clear(): void {
     this.storage.clear();
   }
@@ -40,7 +41,7 @@ export class StorageService implements Storage {
   }
 
   getBoolean(key: string): boolean {
-    return this.getItem(key) === 'true';
+    return this.getItem(key) == 'true';
   }
 
   setItem(key: string, data: any): void {

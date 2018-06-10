@@ -1,28 +1,20 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
-import {
-  Observable, Observer, Subject,
-  throwError, empty, of
-} from 'rxjs';
+import { Observable, Observer, throwError, of, empty } from 'rxjs';
 import { catchError, delay, map, mergeMap, retryWhen, tap } from 'rxjs/operators';
 
+import { AuthService } from '../auth/auth.service';
 import { PopupService } from '../popup/popup.service';
 import { WindowClass, windowToken } from '../window';
 
 import { ApiClientConfig, defaultConfig } from './api-client.config';
 import { ApiError } from './api-error.model';
-import { AuthService } from './auth.service';
+
 import { userConfigToken } from './user-config.token';
 import { readdir } from 'fs';
 
 export type HttpMethod = 'get' | 'post';
-
-export interface Options {
-  body?: any,
-  params?: Params,
-  [param: string]: any
-}
 
 export interface Params {
   [param: string]: any;
@@ -34,11 +26,24 @@ export interface HeaderResponse {
   [key: string]: any
 }
 
+interface HttpClientRequestOptions {
+  body?: any;
+  headers?: HttpHeaders | {
+    [header: string]: string | string[];
+  };
+  observe?: 'body' | 'response';
+  params?: HttpParams | {
+    [param: string]: string | string[];
+  };
+  reportProgress?: boolean;
+  responseType?: 'text';
+  withCredentials?: boolean;
+}
+
 @Injectable()
 export class ApiClientService {
-  private config: ApiClientConfig = <ApiClientConfig>{};
-  private isRefreshing: boolean = false;
-  private refresherStream: Subject<boolean> = new Subject<boolean>();
+
+  private config = {} as ApiClientConfig;
 
   constructor(
     @Inject(userConfigToken) userConfig: ApiClientConfig,
@@ -57,7 +62,7 @@ export class ApiClientService {
     return this.config.apiBaseUrl;
   }
 
-  public request(httpMethod: HttpMethod, url: string, options: Options, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+  public request(httpMethod: HttpMethod, url: string, options: HttpClientRequestOptions, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     if (httpMethod.toLowerCase() == 'get') {
       return this.get(url, options.params, isPublic, headerResponse);
     } else if (httpMethod.toLowerCase() == 'post') {
@@ -161,7 +166,7 @@ export class ApiClientService {
     })
   }
 
-  private requestHelper(method: string, url: string, options: any, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<Response> {
+  private requestHelper(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<Response> {
     url = `${this.config.apiBaseUrl}/${url}`;
     options.responseType = 'text'; // want to manual parsing json
     if (headerResponse !== undefined) {
@@ -177,12 +182,13 @@ export class ApiClientService {
             let value = res.headers.get(key);
             // auto check and convert to expected type
             if (value) {
-              value = +value;
-              if (value == NaN) {
+              if (isNaN(value)) {
                 if (value == 'true')
                   value = true
                 else if (value == 'false')
                   value = false
+              } else {
+                value = +value;
               }
             }
             headerResponse[key] = value;
@@ -194,23 +200,42 @@ export class ApiClientService {
     );
   }
 
-  private execute(method: string, url: string, options: any, isPublic?: boolean): Observable<Response> {
-    if (isPublic) {
-      // bypass
-    } else if (this.authService.isLoggedIn) {
-      let scheme = '';
-      if (this.authService.authenticationScheme) {
-        scheme = this.authService.authenticationScheme + ' ';
+  private execute(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
+    if (!isPublic) {
+      if (this.authService.isLoggedIn) {
+        // add Authorization header
+        let scheme = '';
+        if (this.authService.authenticationScheme) {
+          scheme = this.authService.authenticationScheme + ' ';
+        }
+        options.headers = new HttpHeaders().set('Authorization', scheme + this.authService.getAccessToken());
+      } else {
+        // refresh token
+        return this.authService.refreshToken().pipe(
+          mergeMap(refreshSuccess => {
+            if (refreshSuccess) {
+              return this.execute(method, url, options);
+            }
+            return empty();
+          })
+        );
       }
-      options.headers = new HttpHeaders().set('Authorization', scheme + this.authService.getAccessToken());
-    } else {
-      return this.refreshToken(method, url, options);
     }
 
     return this.http.request(method, url, options).pipe(
       catchError(err => {
         if (err.status == 401) {
-          return this.refreshToken(method, url, options);
+          if (typeof this.authService.refreshToken == 'function') {
+            return this.authService.refreshToken().pipe(
+              mergeMap(refreshSuccess => {
+                if (refreshSuccess) {
+                  return this.execute(method, url, options);
+                }
+                return empty();
+              })
+            );
+          }
+          return empty();
         }
         return throwError(err);
       }),
@@ -238,62 +263,9 @@ export class ApiClientService {
     return '';
   }
 
-  private refreshToken(method: string, url: string, options: any): Observable<any> {
-    if (!this.authService.hasRefreshToken) {
-      // re-login
-      this.window.location.href = this.config.loginScreenUrl || '/';
-      return empty();
-    }
-
-    // if is refreshing token, wait next false value
-    if (this.isRefreshing) {
-      console.debug('Another request is refreshing token');
-      return Observable.create((observer: Observer<boolean>) => {
-        this.refresherStream
-          .subscribe(isSuccess => {
-            console.debug('refresh success:', isSuccess);
-            observer.next(isSuccess);
-            observer.complete();
-          });
-      }).pipe(
-        mergeMap(isSuccess => {
-          console.debug('Another request get refreshed token');
-          if (isSuccess) {
-            return this.execute(method, url, options);
-          } else {
-            return empty();
-          }
-        })
-      );
-    } else {
-      console.debug('Start refresh token');
-      this.isRefreshing = true;
-
-      return this.authService.refreshToken().pipe(
-        catchError(err => {
-          console.log(err);
-          return of(false);
-        }),
-        mergeMap(res => {
-          console.debug('Finish refresh token');
-          this.isRefreshing = false;
-          let isSuccess = !!res;
-          this.refresherStream.next(isSuccess);
-          if (isSuccess) {
-            return this.execute(method, url, options);
-          } else {
-            // re-login
-            this.window.location.href = this.config.loginScreenUrl || '/';
-            return empty();
-          }
-        })
-      );
-    }
-  }
-
   private dateReviver(key: string, value: string) {
     var a;
-    if (typeof value === 'string' && value.length === 20) {
+    if (typeof value == 'string' && value.length == 20) {
       a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
       if (a) {
         return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4], +a[5], +a[6]));
