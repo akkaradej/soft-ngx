@@ -5,11 +5,19 @@ export interface ApiClientConfig {
   loginScreenUrl?: string;
   storagePrefix?: string;
   storageType?: Storage;
+  pageHeaderResponseKeys?: {
+    pageCount: string;
+    totalCount: string;
+  }
 }
 
 export const defaultConfig = {
   authAdditionalData: <string[]>[],
   loginScreenUrl: '/',
   storagePrefix: '',
-  storageType: window.localStorage
+  storageType: window.localStorage,
+  pageHeaderResponseKeys: {
+    pageCount: 'X-PageCount',
+    totalCount: 'X-TotalCount'
+  }
 };

@@ -14,21 +14,24 @@ import { ApiClientConfig, defaultConfig } from './api-client.config';
 import { ApiError } from './api-error.model';
 import { AuthService } from './auth.service';
 import { userConfigToken } from './user-config.token';
+import { readdir } from 'fs';
+
+export type HttpMethod = 'get' | 'post';
+
+export interface Options {
+  body?: any,
+  params?: Params,
+  [param: string]: any
+}
 
 export interface Params {
   [param: string]: any;
 }
 
-export interface GetOptions {
-  page?: {
-    page: number;
-    perPage: number;
-    totalCount: number;
-  };
-  sort?: {
-    prop: string;
-    dir: string;
-  }
+export interface HeaderResponse {
+  pageCount?: number,
+  pageTotal?: number,
+  [key: string]: any
 }
 
 @Injectable()
@@ -54,26 +57,23 @@ export class ApiClientService {
     return this.config.apiBaseUrl;
   }
 
-  public get(url: string, params: Params = {}, opt?: GetOptions, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
-    let isPaging: boolean = false;
-    if (opt) {
-      if (opt.page && opt.page.page && opt.page.perPage) {
-        Object.assign(params, {
-          page: opt.page.page,
-          pageSize: opt.page.perPage
-        });
-        isPaging = true;
-      }
-
-      if (opt.sort && opt.sort.prop) {
-        Object.assign(params, {
-          orderBy: opt.sort.prop,
-          ascending: opt.sort.dir == 'asc'
-        });
-      }
+  public request(httpMethod: HttpMethod, url: string, options: Options, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    if (httpMethod.toLowerCase() == 'get') {
+      return this.get(url, options.params, isPublic, headerResponse);
+    } else if (httpMethod.toLowerCase() == 'post') {
+      return this.post(url, options.body, options.params, isPublic, headerResponse);
+    } else if (httpMethod.toLowerCase() == 'put') {
+      return this.put(url, options.body, options.params, isPublic, headerResponse);
+    } else if (httpMethod.toLowerCase() == 'delete') {
+      return this.delete(url, options.params, isPublic, headerResponse);
     }
+    return of();
+  }
 
-    let req = this.requestHelper('Get', url, { body: undefined, params }, isPublic, readHeaderResponse || isPaging).pipe(
+  public get(url: string, params: Params = {}, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    let isPaging: boolean = params.page !== undefined;
+
+    let req = this.requestHelper('Get', url, { body: undefined, params }, isPublic, headerResponse).pipe(
       // retry againg if server error
       retryWhen((errors) => {
         let count = 0;
@@ -94,54 +94,49 @@ export class ApiClientService {
     if (isPaging) {
       req = req.pipe(
         tap((res: any) => {
-          if (opt != null && opt.page != null) {
-            opt.page.totalCount = +res.headers.get('X-Paging-TotalRecordCount');
+          if (headerResponse !== undefined && this.config.pageHeaderResponseKeys) {
+            headerResponse.pageCount = headerResponse[this.config.pageHeaderResponseKeys.pageCount];
+            headerResponse.totalCount = headerResponse[this.config.pageHeaderResponseKeys.totalCount];
           }
         }),
       );
-
-      if (!readHeaderResponse) {
-        req = req.pipe(
-          map((res: any) => res.data)
-        );
-      }
     }
 
     return req;
   }
 
-  public post(url: string, body: any, params?: Params, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
-    return this.requestHelper('Post', url, { body, params }, isPublic, readHeaderResponse).pipe(
+  public post(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Post', url, { body, params }, isPublic, headerResponse).pipe(
       this.globalErrorHandler()
     );
   }
 
-  public put(url: string, body: any, params?: Params, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
-    return this.requestHelper('Put', url, { body, params }, isPublic, readHeaderResponse).pipe(
+  public put(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Put', url, { body, params }, isPublic, headerResponse).pipe(
       this.globalErrorHandler()
     );
   }
 
-  public delete(url: string, params?: Params, body?: any, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
-    return this.requestHelper('Delete', url, { body, params }, isPublic, readHeaderResponse).pipe(
+  public delete(url: string, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Delete', url, { params }, isPublic, headerResponse).pipe(
       this.globalErrorHandler()
     );
   }
 
-  public multipartPost(url: string, body: any, params?: Params, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
+  public multipartPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const formData = new FormData();
     for (let key in body) {
       formData.append(key, body[key]);
     }
-    return this.post(url, formData, params, isPublic, readHeaderResponse);
+    return this.post(url, formData, params, isPublic, headerResponse);
   }
 
-  public multipartPut(url: string, body: any, params?: Params, isPublic?: boolean, readHeaderResponse?: boolean): Observable<any> {
+  public multipartPut(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const formData = new FormData();
     for (let key in body) {
       formData.append(key, body[key]);
     }
-    return this.put(url, formData, params, isPublic, readHeaderResponse);
+    return this.put(url, formData, params, isPublic, headerResponse);
   }
 
   private globalErrorHandler() {
@@ -166,18 +161,40 @@ export class ApiClientService {
     })
   }
 
-  private requestHelper(method: string, url: string, options: any, isPublic?: boolean, readHeaderResponse?: boolean): Observable<Response> {
+  private requestHelper(method: string, url: string, options: any, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<Response> {
     url = `${this.config.apiBaseUrl}/${url}`;
-    options.responseType = 'text'; // manual parsing json
-    if (readHeaderResponse) {
+    options.responseType = 'text'; // want to manual parsing json
+    if (headerResponse !== undefined) {
       options.observe = 'response';
     } else {
       options.observe = 'body';
     }
-    return this.request(method, url, options, isPublic);
+    return this.execute(method, url, options, isPublic).pipe(
+      map((res: any) => {
+        if (headerResponse !== undefined) {
+          const keys = Object.keys(headerResponse);
+          for (let key of keys) {
+            let value = res.headers.get(key);
+            // auto check and convert to expected type
+            if (value) {
+              value = +value;
+              if (value == NaN) {
+                if (value == 'true')
+                  value = true
+                else if (value == 'false')
+                  value = false
+              }
+            }
+            headerResponse[key] = value;
+          }
+          return res.data;
+        }
+        return res;
+      })
+    );
   }
 
-  private request(method: string, url: string, options: any, isPublic?: boolean): Observable<Response> {
+  private execute(method: string, url: string, options: any, isPublic?: boolean): Observable<Response> {
     if (isPublic) {
       // bypass
     } else if (this.authService.isLoggedIn) {
@@ -242,7 +259,7 @@ export class ApiClientService {
         mergeMap(isSuccess => {
           console.debug('Another request get refreshed token');
           if (isSuccess) {
-            return this.request(method, url, options);
+            return this.execute(method, url, options);
           } else {
             return empty();
           }
@@ -263,7 +280,7 @@ export class ApiClientService {
           let isSuccess = !!res;
           this.refresherStream.next(isSuccess);
           if (isSuccess) {
-            return this.request(method, url, options);
+            return this.execute(method, url, options);
           } else {
             // re-login
             this.window.location.href = this.config.loginScreenUrl || '/';

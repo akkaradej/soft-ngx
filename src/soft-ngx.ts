@@ -3,6 +3,7 @@ export { ApiClientConfig } from './api-client/api-client.config';
 export { ApiClientModule } from './api-client/api-client.module';
 export { ApiError } from './api-client/api-error.model';
 export { ApiClientService } from './api-client/api-client.service';
+export { HeaderResponse } from './api-client/api-client.service';
 export { Auth } from './api-client/auth.model';
 export { AuthService } from './api-client/auth.service';
 export { AuthServiceInterface } from './api-client/auth.service.interface';

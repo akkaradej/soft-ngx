@@ -1,5 +1,12 @@
 ## Changelog
 
+### v0.5.0
+* Chage ApiClientService following
+* Remove delete$'s body params
+* Remove get$'s getOption param
+* Remove readHeaderResponse param
+* Add ApiClientService headerResponse param as optional to set header response to itself
+
 ### v0.4.1
 * Add helper classes .is-single-line, .is-double-line, .has-shadow, .has-shadow-hovered, .is-clickable, .is-disabled 
 * Add .section.is-fit class
