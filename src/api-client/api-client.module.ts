@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AuthModule } from '../auth/auth.module';
 import { PopupModule } from '../popup/popup.module';
-import { windowToken, getWindow } from '../window';
+import { WindowClass, getWindow } from '../window';
 
 import { ApiClientConfig } from './api-client.config';
 import { ApiClientService } from './api-client.service';
@@ -27,7 +27,7 @@ export class ApiClientModule {
       ngModule: ApiClientModule,
       providers: [
         { provide: userConfigToken, useValue: config },
-        { provide: windowToken, useFactory: getWindow },
+        { provide: WindowClass, useFactory: getWindow },
         ApiClientService
       ]
     };

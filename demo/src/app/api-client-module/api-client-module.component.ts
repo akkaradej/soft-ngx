@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiClientService } from 'soft-ngx';
+import { ApiClientService, AuthService } from 'soft-ngx';
 
 import { CustomAuthService } from './custom-auth.service';
 import { Auth } from './auth.model';
@@ -25,7 +25,7 @@ export class ApiClientModuleComponent implements OnInit {
   }
 
   getPosts() {
-    this.apiClientService.get('posts', { userId: 1 }, {}, true)
+    this.apiClientService.get('posts', { userId: 1 }, true)
       .subscribe(posts => {
         this.posts = posts;
       });
@@ -39,12 +39,9 @@ export class ApiClientModuleComponent implements OnInit {
   }
 
   login() {
-    this.authService.login$('uXXXXXX', 'pYYYYYY')
+    this.authService.requestTokenWithPasswordFlow$('uXXXXXX', 'pYYYYYY')
       .subscribe((auth: Auth) => {
         this.auth = auth;
-        console.info(this.authService.isAdmin);
-        console.info(this.authService.userId);
-        console.info(this.authService.displayName);
       });
   }
 
@@ -53,7 +50,7 @@ export class ApiClientModuleComponent implements OnInit {
   }
 
   requestPrivateApi() {
-    this.apiClientService.get('comments/1')
+    this.apiClientService.get('/comments/1')
       .subscribe(comment => {
         this.comment = comment;
       });

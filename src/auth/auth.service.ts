@@ -1,17 +1,16 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { AuthConfig as AOOAuthConfig, OAuthService } from 'angular-oauth2-oidc';
 
-import { Observable, from, empty, Subject, Observer, of } from 'rxjs';
-import { tap, mergeMap, catchError } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { AuthServiceInterface } from './auth.service.interface';
 import { Auth } from './auth.model';
 export { Auth };
 
 import { StorageService } from '../storage/storage.service';
-import { WindowClass, windowToken } from '../window';
 
-import { AuthConfig, defaultConfig } from './auth.config';
+import { AuthConfig } from './auth.config';
 import { userConfigToken } from './user-config.token';
 
 const authConfig: AOOAuthConfig = {
@@ -22,44 +21,36 @@ const authConfig: AOOAuthConfig = {
 @Injectable()
 export class AuthService implements AuthServiceInterface {
 
-  config = {} as AuthConfig;
-  authenticationScheme: string;
-  hasRefreshToken: boolean;
-  loginScreenUrl: string;
+  private _authApiUrl!: string;
 
-  private isRefreshing: boolean = false;
-  private refresherStream: Subject<boolean> = new Subject<boolean>();
-
-  constructor(
-    @Inject(userConfigToken) userConfig: AuthConfig,
-    @Inject(windowToken) private window: WindowClass,
-    protected oauthService: OAuthService,
-    protected storage: StorageService) {
-
-    this.config = Object.assign({}, defaultConfig, userConfig);
-    if (!this.config.authApiUrl) {
-      throw new TypeError('AuthConfig is needed to set authApiUrl');
-    }
-    authConfig.tokenEndpoint = this.config.authApiUrl;
-    this.authenticationScheme = this.config.authenticationScheme!;
-    this.hasRefreshToken = this.config.hasRefreshToken!;
-    this.loginScreenUrl = this.config.loginScreenUrl!;
-    this.oauthService.configure(authConfig);
-    this.oauthService.setStorage(storage);
+  get authApiUrl(): string {
+    return this._authApiUrl;
   }
 
   get isLoggedIn(): boolean {
     return this.oauthService.hasValidAccessToken();
   }
 
-  login$(username: string, password: string): Observable<Auth> {
-    return from(<Promise<Auth>>this.oauthService.fetchTokenUsingPasswordFlow(username, password)).pipe(
-      tap((auth: Auth) => {
-        this.setAdditionalAuthData(auth);
-      })
-    );
+  constructor(
+    protected oauthService: OAuthService,
+    protected storage: StorageService,
+    @Optional() @Inject(userConfigToken) userConfig?: AuthConfig) {
+
+    if (userConfig) {
+      if (userConfig.authApiUrl !== undefined) {
+        this.setAuthApiUrl(userConfig.authApiUrl);
+      }
+    }
+
+    this.oauthService.setStorage(storage);
   }
 
+  protected setAuthApiUrl(url: string) {
+    this._authApiUrl = url;
+    this.oauthService.configure(Object.assign({}, authConfig, { tokenEndpoint: url }));
+  }
+
+  // remove token and auth data in storage
   logout(): void {
     this.oauthService.logOut();
     this.removeAdditionalAuthData();
@@ -69,80 +60,52 @@ export class AuthService implements AuthServiceInterface {
     return this.oauthService.getAccessToken();
   }
 
-  refreshToken(): Observable<boolean> {
-    if (!this.hasRefreshToken) {
-      if (this.loginScreenUrl) {
-        // re-login
-        this.window.location.href = this.loginScreenUrl;
-      }
-      return empty();
+  // request token and keep token and auth data in storage
+  requestTokenWithPasswordFlow$(username: string, password: string): Observable<Auth> {
+    if (!this.authApiUrl) {
+      throw new Error('authApiUrl is needed to be set');
     }
+    return from(<Promise<Auth>>this.oauthService.fetchTokenUsingPasswordFlow(username, password)).pipe(
+      tap((auth: Auth) => {
+        if (auth) {
+          this.setAdditionalAuthData(auth);
+        }
+      })
+    );
+  }
 
-    // if refreshing, wait next refresherStream
-    if (this.isRefreshing) {
-      console.debug('Another request is refreshing token');
-      return Observable.create((observer: Observer<boolean>) => {
-        this.refresherStream
-          .subscribe(isSuccess => {
-            console.debug('refresh success:', isSuccess);
-            observer.next(isSuccess);
-            observer.complete();
-          });
-      }).pipe(
-        mergeMap(isSuccess => {
-          console.debug('Another request get refreshed token');
-          if (isSuccess) {
-            return of(true);
-          } else {
-            return of(false);
-          }
-        })
-      );
-    } else {
-      console.debug('Start refresh token');
-      this.isRefreshing = true;
-
-      return from(<Promise<Auth>>this.oauthService.refreshToken()).pipe(
-        catchError(err => {
-          console.log(err);
-          return of(null);
-        }),
-        mergeMap(auth => {
-          console.debug('Finish refresh token');
-          let isSuccess = !!auth;
-          this.isRefreshing = false;
-          this.refresherStream.next(isSuccess);
-          this.refresherStream.complete();
-          if (isSuccess) {
-            this.setAdditionalAuthData(auth);
-            return of(true);
-          } else {
-            if (this.loginScreenUrl) {
-              // re-login
-              this.window.location.href = this.loginScreenUrl;
-            }
-            return of(false);
-          }
-        })
-      );
+  // request refreshToken and keep new token and auth data in storage
+  requestRefreshToken$(): Observable<Auth> {
+    if (!this.authApiUrl) {
+      throw new Error('authApiUrl is need to be set');
     }
+    return from(<Promise<Auth>>this.oauthService.refreshToken()).pipe(
+      tap((auth: Auth) => {
+        if (auth) {
+          this.setAdditionalAuthData(auth);
+        }
+      })
+    );
+  }
+
+  // override if any additional auth response data that need to keep
+  getAdditionalAuthData(): string[] {
+    return [];
   }
 
   setAdditionalAuthData(auth: any): void {
-    if (this.config.authAdditionalData) {
-      for (let i = 0; i < this.config.authAdditionalData.length; i++) {
-        if (auth[this.config.authAdditionalData[i]] !== undefined) {
-          this.storage.setItem(this.config.authAdditionalData[i], auth[this.config.authAdditionalData[i]]);
-        }
+    let data = this.getAdditionalAuthData();
+    for (let i = 0; i < data.length; i++) {
+      if (auth[data[i]] !== undefined) {
+        this.storage.setItem(data[i], auth[data[i]]);
       }
     }
   }
 
   removeAdditionalAuthData(): void {
-    if (this.config.authAdditionalData) {
-      for (let i = 0; i < this.config.authAdditionalData.length; i++) {
-        this.storage.removeItem(this.config.authAdditionalData[i]);
-      }
+    let data = this.getAdditionalAuthData();
+    for (let i = 0; i < data.length; i++) {
+      this.storage.removeItem(data[i]);
     }
   }
 }

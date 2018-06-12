@@ -1,18 +1,16 @@
-import { Injectable, Inject, InjectionToken } from '@angular/core';
+import { Injectable, Inject, InjectionToken, Optional } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
-import { Observable, Observer, throwError, of, empty } from 'rxjs';
+import { Observable, Observer, throwError, of, empty, OperatorFunction } from 'rxjs';
 import { catchError, delay, map, mergeMap, retryWhen, tap } from 'rxjs/operators';
 
-import { AuthService } from '../auth/auth.service';
 import { PopupService } from '../popup/popup.service';
-import { WindowClass, windowToken } from '../window';
+import { WindowClass, getWindow } from '../window';
 
 import { ApiClientConfig, defaultConfig } from './api-client.config';
 import { ApiError } from './api-error.model';
 
 import { userConfigToken } from './user-config.token';
-import { readdir } from 'fs';
 
 export type HttpMethod = 'get' | 'post';
 
@@ -26,14 +24,14 @@ export interface HeaderResponse {
   [key: string]: any
 }
 
-interface HttpClientRequestOptions {
+export interface HttpClientRequestOptions {
   body?: any;
   headers?: HttpHeaders | {
     [header: string]: string | string[];
   };
   observe?: 'body' | 'response';
-  params?: HttpParams | {
-    [param: string]: string | string[];
+  params?: {
+    [param: string]: string;
   };
   reportProgress?: boolean;
   responseType?: 'text';
@@ -43,14 +41,14 @@ interface HttpClientRequestOptions {
 @Injectable()
 export class ApiClientService {
 
-  private config = {} as ApiClientConfig;
+  config = {} as ApiClientConfig;
 
   constructor(
+    protected http: HttpClient,
+    protected popupService: PopupService,
     @Inject(userConfigToken) userConfig: ApiClientConfig,
-    @Inject(windowToken) private window: WindowClass,
-    private authService: AuthService,
-    private http: HttpClient,
-    private popupService: PopupService) {
+    // inject window that make easy to test
+    protected window: WindowClass = getWindow()) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
     if (!this.config.apiBaseUrl) {
@@ -144,7 +142,7 @@ export class ApiClientService {
     return this.put(url, formData, params, isPublic, headerResponse);
   }
 
-  private globalErrorHandler() {
+  private globalErrorHandler(): OperatorFunction<any, any> {
     return catchError((err: ApiError) => {
       let message = 'Something wrong, please try again.';
       if (err.error) {
@@ -167,13 +165,24 @@ export class ApiClientService {
   }
 
   private requestHelper(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<Response> {
-    url = `${this.config.apiBaseUrl}/${url}`;
+    url = `${this.config.apiBaseUrl}${url}`;
     options.responseType = 'text'; // want to manual parsing json
     if (headerResponse !== undefined) {
       options.observe = 'response';
     } else {
       options.observe = 'body';
     }
+
+    if (options.params) {
+      // remove url params with undefined or null
+      options.params = Object.getOwnPropertyNames(options.params)
+        .filter((propName: string) => options.params![propName] !== undefined && options.params![propName] !== null)
+        .reduce((acc, cur) => {
+          acc[cur] = options.params![cur];
+          return acc;
+        }, {} as { [key: string]: string });
+    }
+
     return this.execute(method, url, options, isPublic).pipe(
       map((res: any) => {
         if (headerResponse !== undefined) {
@@ -202,41 +211,11 @@ export class ApiClientService {
 
   private execute(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
     if (!isPublic) {
-      if (this.authService.isLoggedIn) {
-        // add Authorization header
-        let scheme = '';
-        if (this.authService.authenticationScheme) {
-          scheme = this.authService.authenticationScheme + ' ';
-        }
-        options.headers = new HttpHeaders().set('Authorization', scheme + this.authService.getAccessToken());
-      } else {
-        // refresh token
-        return this.authService.refreshToken().pipe(
-          mergeMap(refreshSuccess => {
-            if (refreshSuccess) {
-              return this.execute(method, url, options);
-            }
-            return empty();
-          })
-        );
-      }
+      options.withCredentials = true;
     }
 
     return this.http.request(method, url, options).pipe(
       catchError(err => {
-        if (err.status == 401) {
-          if (typeof this.authService.refreshToken == 'function') {
-            return this.authService.refreshToken().pipe(
-              mergeMap(refreshSuccess => {
-                if (refreshSuccess) {
-                  return this.execute(method, url, options);
-                }
-                return empty();
-              })
-            );
-          }
-          return empty();
-        }
         return throwError(err);
       }),
       map(res => {

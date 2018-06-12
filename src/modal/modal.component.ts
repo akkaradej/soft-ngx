@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject, Input, Output, EventEmitter, ContentChild } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter, ContentChild, Optional } from '@angular/core';
 
-import { WindowClass, windowToken } from '../window';
+import { WindowClass, getWindow } from '../window';
 
 import { ModalContent } from './modal-content';
 
@@ -28,7 +28,7 @@ import { ModalContent } from './modal-content';
 })
 export class ModalComponent implements OnInit {
   @Input() modalClass: string = '';
-  
+
   @Output('open') onOpen = new EventEmitter();
   @Output('close') onClose = new EventEmitter();
   @Output('remove') onRemove = new EventEmitter();
@@ -36,14 +36,15 @@ export class ModalComponent implements OnInit {
   @ContentChild('modalContent') modalContent: ModalContent;
 
   // Tip: Use with ngIf for re-create modalContent every time opening
-  isOpen: boolean = false;  
-  
+  isOpen: boolean = false;
+
   // Tip: Use with ngIf for prevent modalContent execute before open, 
   // and would not re-create modalContent every time opening.
-  isFirstOpen: boolean = false; 
+  isFirstOpen: boolean = false;
 
   constructor(
-    @Inject(windowToken) private window: WindowClass) {
+    // inject window that make easy to test
+    protected window: WindowClass = getWindow()) {
   }
 
   ngOnInit() {
@@ -80,4 +81,4 @@ export class ModalComponent implements OnInit {
   selector: 'modal-title',
   template: '<ng-content></ng-content>'
 })
-export class ModalTitleComponent {}
+export class ModalTitleComponent { }

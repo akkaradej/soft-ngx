@@ -1,8 +1,8 @@
-import { Directive, Inject, Input, ElementRef } from '@angular/core';
+import { Directive, Inject, Input, ElementRef, Optional } from '@angular/core';
 import { PromiseBtnDirective } from 'angular2-promise-buttons';
 import { PromiseBtnConfig } from 'angular2-promise-buttons/dist/promise-btn-config';
 
-import { WindowClass, windowToken } from '../window';
+import { WindowClass, getWindow } from '../window';
 
 import { BusyConfig, defaultConfig } from './busy.config';
 import { userConfigToken } from './user-config.token';
@@ -14,12 +14,18 @@ export class BusyStateDirective extends PromiseBtnDirective {
   config: BusyConfig;
 
   constructor(
-    @Inject(userConfigToken) userConfig: BusyConfig, 
-    @Inject(windowToken) private window: WindowClass, 
-    el: ElementRef) {
+    el: ElementRef,
+    @Inject(userConfigToken) userConfig: BusyConfig,
+    // inject window that make easy to test
+    protected window: WindowClass = getWindow()) {
 
     super(el, {});
     this.config = Object.assign({}, defaultConfig, userConfig);
+
+    console.log(this.window);
+    if (!this.window) {
+      this.window = getWindow();
+    }
   }
 
   @Input()
@@ -59,7 +65,7 @@ export class BusyStateDirective extends PromiseBtnDirective {
   // Override to add delay before start
   initLoadingState(btnEl: HTMLElement) {
     this.window.setTimeout(() => {
-      if (! this.isPromiseDone) {
+      if (!this.isPromiseDone) {
         this.addLoadingClass(btnEl);
       }
     }, this.config.busyDelay);

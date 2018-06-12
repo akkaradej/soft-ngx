@@ -3,13 +3,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpParams, HttpRequest } from '@angular/common/http';
 
 import { ApiClientModule, ApiClientConfig, ApiClientService } from './../soft-ngx';
-import { windowToken } from './../src/window';
+import { WindowClass } from './../src/window';
 
 const apiClientConfig: ApiClientConfig = {
-  apiBaseUrl: 'https://example.com',
-  authApiUrl: 'https://example.com/auth',
-  loginScreenUrl: 'https://example.com/login',
-  storagePrefix: 'test-',
+  apiBaseUrl: 'https://example.com'
 }
 
 describe('ApiClientService', () => {
@@ -29,7 +26,7 @@ describe('ApiClientService', () => {
         ApiClientModule.forRoot(apiClientConfig)
       ],
       providers: [
-        { provide: windowToken, useValue: windowMock } 
+        { provide: WindowClass, useValue: windowMock }
       ]
     });
   });
@@ -38,7 +35,7 @@ describe('ApiClientService', () => {
     async(
       inject([ApiClientService, HttpTestingController],
         (apiClientService: ApiClientService, backend: HttpTestingController) => {
-          apiClientService.get('posts', { userId: 2 }, {}, true).subscribe();
+          apiClientService.get('posts', { userId: 2 }, true).subscribe();
           backend.expectOne((req: HttpRequest<any>) => {
             return req.method == 'GET'
               && req.urlWithParams == `${apiClientConfig.apiBaseUrl}/posts?userId=2`
@@ -96,34 +93,34 @@ describe('ApiClientService', () => {
     )
   );
 
-  it('should be auto refresh token',
-    async(
-      inject([ApiClientService, HttpTestingController],
-        (apiClientService: ApiClientService, backend: HttpTestingController) => {
-          window.localStorage.clear();
-          apiClientService.get('posts').subscribe();
-          backend.expectOne((req: HttpRequest<any>) => {
-            return req.method == 'POST'
-              && req.urlWithParams == `${apiClientConfig.authApiUrl}`;
-          });
-        }
-      )
-    )
-  );
+  // it('should be auto refresh token',
+  //   async(
+  //     inject([ApiClientService, HttpTestingController],
+  //       (apiClientService: ApiClientService, backend: HttpTestingController) => {
+  //         window.localStorage.clear();
+  //         apiClientService.get('posts').subscribe();
+  //         backend.expectOne((req: HttpRequest<any>) => {
+  //           return req.method == 'POST'
+  //             && req.urlWithParams == `${apiClientConfig.authApiUrl}`;
+  //         });
+  //       }
+  //     )
+  //   )
+  // );
 
-  it('should be redirect to login url when refresh token fail',
-    async(
-      inject([ApiClientService, HttpTestingController],
-        (apiClientService: ApiClientService, backend: HttpTestingController) => {
-          window.localStorage.clear();
-          apiClientService.get('posts').subscribe(() => {
-            expect(windowMock.location.href).toContain(`${apiClientConfig.loginScreenUrl}`);
-          });
-          backend.expectOne(`${apiClientConfig.authApiUrl}`)
-            .flush({}, { status: 401, statusText: 'Unauthorized' });
-        }
-      )
-    )
-  );
+  // it('should be redirect to login url when refresh token fail',
+  //   async(
+  //     inject([ApiClientService, HttpTestingController],
+  //       (apiClientService: ApiClientService, backend: HttpTestingController) => {
+  //         window.localStorage.clear();
+  //         apiClientService.get('posts').subscribe(() => {
+  //           expect(windowMock.location.href).toContain(`${apiClientConfig.loginScreenUrl}`);
+  //         });
+  //         backend.expectOne(`${apiClientConfig.authApiUrl}`)
+  //           .flush({}, { status: 401, statusText: 'Unauthorized' });
+  //       }
+  //     )
+  //   )
+  // );
 
 });

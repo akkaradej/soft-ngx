@@ -7,6 +7,8 @@ import { AppComponent } from "./app.component.js";
 
 import {
   ApiClientModule, ApiClientConfig,
+  AuthConfig, authUserConfigToken, // AuthModule,
+  StorageModule, StorageConfig,
   BusyModule,
   ModalModule,
   ModelHelperModule,
@@ -21,11 +23,20 @@ import { PopupModuleComponent } from './popup-module/popup-module.component';
 import { ApiClientModuleComponent } from './api-client-module/api-client-module.component';
 import { CustomAuthService } from './api-client-module/custom-auth.service';
 
+import { CustomAuthInterceptor } from './api-client-module/custom-auth.intercepter.js';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 const apiClientConfig: ApiClientConfig = {
-  apiBaseUrl: 'https://jsonplaceholder.typicode.com',
+  apiBaseUrl: 'https://jsonplaceholder.typicode.com'
+};
+
+const authConfig: AuthConfig = {
   authApiUrl: 'http://www.mocky.io/v2/5a4e469d120000b90e24d99f',
-  authAdditionalData: ['is_admin', 'user_id', 'display_name'],
-  loginScreenUrl: 'https://google.com',
+  autoRefreshToken: true,
+  loginScreenUrl: 'https://google.com'
+};
+
+const storageConfig: StorageConfig = {
   storagePrefix: 'demo-'
 };
 
@@ -44,7 +55,9 @@ const apiClientConfig: ApiClientConfig = {
     FormsModule,
     BsDatepickerModule.forRoot(),
 
-    ApiClientModule.forRoot(apiClientConfig, CustomAuthService),
+    ApiClientModule.forRoot(apiClientConfig),
+    // AuthModule.forRoot(authConfig),
+    StorageModule.forRoot(storageConfig),
     BusyModule.forRoot(),
     ModalModule.forRoot(),
     ModelHelperModule.forRoot(),
@@ -52,7 +65,10 @@ const apiClientConfig: ApiClientConfig = {
     PopupModule.forRoot()
   ],
   providers: [
-    CustomAuthService
+    // try to not import AuthModule but provide with custom
+    CustomAuthService,
+    { provide: authUserConfigToken, useValue: authConfig },
+    { provide: HTTP_INTERCEPTORS, useClass: CustomAuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

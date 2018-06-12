@@ -6,8 +6,8 @@ import { userConfigToken } from './user-config.token';
 @Injectable()
 export class StorageService implements Storage {
 
-  private config = {} as StorageConfig;
-  private storage: Storage;
+  config = {} as StorageConfig;
+  storage: Storage;
 
   [key: string]: any;
   [index: number]: string;

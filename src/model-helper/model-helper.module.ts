@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { windowToken, getWindow } from '../window';
+import { WindowClass, getWindow } from '../window';
 
 import { BsDatepickerExtendDirective } from './bs-datepicker-extend.directive';
 import { CompareByDirective, CompareBySelectOption } from './compare-by.directive';
@@ -31,7 +31,7 @@ export class ModelHelperModule {
     return {
       ngModule: ModelHelperModule,
       providers: [
-        { provide: windowToken, useFactory: getWindow }
+        { provide: WindowClass, useFactory: getWindow }
       ]
     };
   }

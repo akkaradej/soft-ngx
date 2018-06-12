@@ -1,25 +1,25 @@
-import { Directive, OnInit, Inject, Input, Output, EventEmitter, forwardRef, Renderer2, ElementRef } from '@angular/core';
+import { Directive, OnInit, Inject, Input, Output, EventEmitter, forwardRef, Renderer2, ElementRef, Optional } from '@angular/core';
 import { NG_VALIDATORS, AbstractControl, ValidationErrors, Validator } from '@angular/forms';
 
 import * as momentjs from 'moment';
 const moment = (momentjs as any).default || momentjs;
 
-import { WindowClass, windowToken } from '../window';
+import { WindowClass, getWindow } from '../window';
 
 // ----------- Compatible with Ngx-bootstrap 2.0.0-beta5 --------------------//
 
 export interface BsDatepickerExtendOptions {
-  time?: 'StartOfDay'|'EndOfDay'|'Current'|null;
+  time?: 'StartOfDay' | 'EndOfDay' | 'Current' | null;
 }
 
 @Directive({
   selector: '[bsDatepickerExtend]',
   host: {
-    '(bsValueChange)' : 'onChange($event)',
+    '(bsValueChange)': 'onChange($event)',
   }
 })
 export class BsDatepickerExtendDirective implements OnInit {
-  
+
   @Input() bsValue: any;
   @Input() bsDatepickerExtend: any;
   @Output() ngModelChange: EventEmitter<any> = new EventEmitter();
@@ -32,9 +32,10 @@ export class BsDatepickerExtendDirective implements OnInit {
   };
 
   constructor(
-    @Inject(windowToken) private window: WindowClass,
-    private _renderer: Renderer2, 
-    private _elementRef: ElementRef) {
+    private _renderer: Renderer2,
+    private _elementRef: ElementRef,
+    // inject window that make easy to test
+    protected window: WindowClass = getWindow()) {
   }
 
   ngOnInit() {
@@ -48,18 +49,18 @@ export class BsDatepickerExtendDirective implements OnInit {
   }
 
   onChange(value: any): void {
-    if (! this.isInit) {
+    if (!this.isInit) {
       return;
     }
 
     if (value) {
       // Set date variable
-      if (! this.date) {
+      if (!this.date) {
         this.date = this.convertTime(moment(value));
       }
 
       // Convert time
-      if (! this.date.isSame(moment(value))) {
+      if (!this.date.isSame(moment(value))) {
         this.date = this.convertTime(moment(value));
         this.window.setTimeout(() => {
           this.ngModelChange.emit(this.date.toDate());
