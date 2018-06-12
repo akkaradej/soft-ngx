@@ -10,7 +10,7 @@ export { Auth } from './auth/auth.model';
 export { AuthConfig } from './auth/auth.config';
 export { AuthInterceptor } from './auth/auth.interceptor';
 export { AuthModule } from './auth/auth.module';
-export { AuthService } from './auth/auth.service';
+export { AuthServiceBase } from './auth/auth.service';
 export { AuthServiceInterface } from './auth/auth.service.interface';
 export { userConfigToken as authUserConfigToken } from './auth/user-config.token';
 

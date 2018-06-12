@@ -6,6 +6,8 @@
 * Remove get$'s getOption param
 * Remove readHeaderResponse param
 * Add ApiClientService headerResponse param as optional to set header response to itself
+* Change AuthService 
+* Change login$() to requestTokenWithPasswordFlow$()
 
 ### v0.4.1
 * Add helper classes .is-single-line, .is-double-line, .has-shadow, .has-shadow-hovered, .is-clickable, .is-disabled 

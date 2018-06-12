@@ -7,7 +7,7 @@ import {
 
 import { WindowClass, getWindow } from "./../window";
 
-import { AuthService } from './auth.service';
+import { AuthServiceBase } from './auth.service';
 import { Observable, empty, throwError, of, Observer, Subject } from 'rxjs';
 import { mergeMap, catchError, take } from 'rxjs/operators';
 
@@ -37,7 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   constructor(
-    @Inject(AuthService) protected authService: AuthServiceInterface,
+    @Inject(AuthServiceBase) protected authService: AuthServiceInterface,
     @Optional() @Inject(userConfigToken) userConfig?: AuthConfig,
     // inject window that make easy to test
     protected window: WindowClass = getWindow()) {

@@ -19,7 +19,7 @@ const authConfig: AOOAuthConfig = {
 };
 
 @Injectable()
-export class AuthService implements AuthServiceInterface {
+export class AuthServiceBase implements AuthServiceInterface {
 
   private _authApiUrl!: string;
 

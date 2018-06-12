@@ -18,10 +18,10 @@ export class CustomAuthService extends AuthService { // or implements AuthServic
 
   // // Example: To create constructor
   // constructor(
+  //   @Inject(apiClientUserConfigToken) userConfig: ApiClientConfig,
   //   oauthService: OAuthService,
   //   storage: StorageService,
-  //   private http: HttpClient,
-  //   @Inject(authUserConfigToken) config: AuthConfig) {
+  //   private http: HttpClient) {
 
   //   super(oauthService, storage, config);
   // }

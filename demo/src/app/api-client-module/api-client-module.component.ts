@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiClientService, AuthService } from 'soft-ngx';
+import { ApiClientService } from 'soft-ngx';
 
 import { CustomAuthService } from './custom-auth.service';
 import { Auth } from './auth.model';
