@@ -1,23 +1,28 @@
 // Public classes.
 export { ApiClientConfig } from './api-client/api-client.config';
+export { userApiClientConfigToken } from './api-client/user-config.token';
 export { ApiClientModule } from './api-client/api-client.module';
 export { ApiError } from './api-client/api-error.model';
 export { ApiClientService } from './api-client/api-client.service';
 export { HeaderResponse } from './api-client/api-client.service';
-export { userConfigToken as apiClientUserConfigToken } from './api-client/user-config.token';
 
-export { Auth } from './auth/auth.model';
-export { AuthConfig } from './auth/auth.config';
+export {
+  AuthServiceConfig, AuthInterceptorConfig,
+  NonOAuthRequestKey, NonOAuthResponseKey
+} from './auth/auth.config';
+export {
+  userAuthServiceConfigToken, userAuthInterceptorConfigToken,
+  userNonOAuthRequestKeyToken, userNonOAuthResponseKeyToken
+} from './auth/user-config.token';
 export { AuthInterceptor } from './auth/auth.interceptor';
 export { AuthModule } from './auth/auth.module';
-export { AuthServiceBase } from './auth/auth.service';
+export { AuthServiceBase } from './auth/auth.service.base';
 export { AuthServiceInterface } from './auth/auth.service.interface';
-export { userConfigToken as authUserConfigToken } from './auth/user-config.token';
 
 export { StorageConfig } from './storage/storage.config';
+export { userStorageConfigToken } from './storage/user-config.token';
 export { StorageModule } from './storage/storage.module';
 export { StorageService } from './storage/storage.service';
-export { userConfigToken as storageUserConfigToken } from './storage/user-config.token';
 
 export { BusyConfig } from './busy/busy.config';
 export { BusyModule } from './busy/busy.module';

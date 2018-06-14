@@ -30,7 +30,7 @@ const globals = {
     '@angular/common': 'ng.common',
     '@angular/common/http': 'ng.common.http',
     '@angular/forms': 'ng.forms',
-    
+
     'rxjs/Observable': 'Rx',
     'rxjs/Observer': 'Rx',
     'rxjs/Subject': 'Rx',
@@ -41,7 +41,6 @@ const globals = {
     'rxjs/observable/of': 'Rx.Observable',
     'rxjs/operators': 'Rx.Observable.prototype',
 
-    'angular-oauth2-oidc': 'angular-oauth2-oidc',
     'angular2-promise-buttons': 'angular2-promise-buttons',
     'moment': 'moment',
     'ng2-bootstrap-modal': 'ng2-bootstrap-modal',
@@ -50,7 +49,7 @@ const globals = {
 export default {
     external: Object.keys(globals),
     plugins: [
-        resolve(), 
+        resolve(),
         sourcemaps()
     ],
     onwarn: () => { return },

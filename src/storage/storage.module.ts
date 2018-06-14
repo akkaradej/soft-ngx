@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, ModuleWithProviders, Provider, ClassProvider } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { StorageConfig } from './storage.config';
 import { StorageService } from './storage.service';
-import { userConfigToken } from './user-config.token';
+import { userStorageConfigToken } from './user-config.token';
 
 @NgModule({
   imports: [
@@ -20,7 +18,7 @@ export class StorageModule {
     return {
       ngModule: StorageModule,
       providers: [
-        { provide: userConfigToken, useValue: config },
+        { provide: userStorageConfigToken, useValue: config },
         StorageService
       ]
     };

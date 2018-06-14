@@ -1,2 +1,2 @@
 import { InjectionToken } from '@angular/core';
-export const userConfigToken = new InjectionToken('userConfigToken');
+export const userApiClientConfigToken = new InjectionToken('userApiClientConfigToken');

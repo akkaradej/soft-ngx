@@ -1,6 +1,29 @@
-export interface AuthConfig {
-  authApiUrl: string;
+export interface AuthServiceConfig {
+  // auth service
   authenticationScheme?: string;
+  tokenUrl: string;
+  refreshTokenUrl?: string;
+  isFormData: boolean;
+  isJWT: boolean;
+  isOAuth: boolean; // if true, it will be force isFormData = true
+  scope?: string;
+  clientId?: string;
+}
+
+export interface AuthInterceptorConfig {
   autoRefreshToken?: boolean;
   loginScreenUrl?: string;
+}
+
+export interface NonOAuthRequestKey {
+  username: string;
+  password: string;
+  refresh_token?: string;
+}
+
+export interface NonOAuthResponseKey {
+  access_token: string;
+  refresh_token?: string;
+  expires_in?: string;
+  scope?: string;
 }

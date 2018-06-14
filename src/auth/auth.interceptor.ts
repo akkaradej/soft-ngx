@@ -2,68 +2,56 @@ import { Injectable, Optional, Inject } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpEvent
 } from '@angular/common/http';
 
 import { WindowClass, getWindow } from "./../window";
 
-import { AuthServiceBase } from './auth.service';
+import { AuthServiceBase } from './auth.service.base';
 import { Observable, empty, throwError, of, Observer, Subject } from 'rxjs';
 import { mergeMap, catchError, take } from 'rxjs/operators';
 
-import { AuthConfig } from './auth.config';
-import { userConfigToken } from './user-config.token';
+import { AuthInterceptorConfig } from './auth.config';
+import { userAuthInterceptorConfigToken } from './user-config.token';
 import { AuthServiceInterface } from './auth.service.interface';
+
+// TODO: remove custom mapped type when upgrade to Typescript 2.8
+export type Required<T> = {
+  [P in keyof T]: T[P];
+};
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  protected authenticationScheme: string = 'Bearer';
-  protected loginScreenUrl: string = ''; // redirect to this login url if cannot get new token
+  protected config: Required<AuthInterceptorConfig> = {
+    autoRefreshToken: false,
+    loginScreenUrl: '' // redirect to this login url if cannot get new token
+  };
 
-  private _autoRefreshToken: boolean = false;
   private _isRefreshing: boolean = false;
   private _refresherStream: Subject<boolean> = new Subject<boolean>();
 
-  protected get autoRefreshToken(): boolean {
-    return this._autoRefreshToken;
-  }
-
-  protected set autoRefreshToken(isAuto: boolean) {
-    if (typeof this.authService.requestRefreshToken$ != 'function') {
-      throw Error('authService is neeeded to implement requestRefreshToken$()');
-    }
-    this._autoRefreshToken = isAuto;
-  }
-
   constructor(
     @Inject(AuthServiceBase) protected authService: AuthServiceInterface,
-    @Optional() @Inject(userConfigToken) userConfig?: AuthConfig,
+    @Optional() @Inject(userAuthInterceptorConfigToken) userConfig?: AuthInterceptorConfig,
     // inject window that make easy to test
     protected window: WindowClass = getWindow()) {
 
     if (userConfig) {
-      if (userConfig.authenticationScheme !== undefined) {
-        this.authenticationScheme = userConfig.authenticationScheme;
-      }
-      if (userConfig.autoRefreshToken !== undefined) {
-        this.autoRefreshToken = userConfig.autoRefreshToken;
-      }
-      if (userConfig.loginScreenUrl !== undefined) {
-        this.loginScreenUrl = userConfig.loginScreenUrl;
-      }
+      Object.assign(this.config, userConfig);
     }
   }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (request.withCredentials) {
       if (this.authService.isLoggedIn) {
         request = this.setAuthHeader(request);
       } else {
-        if (this.autoRefreshToken) {
+        if (this.config.autoRefreshToken) {
           return this.refreshTokenAndRetry$(request, next);
         }
-        if (this.loginScreenUrl) {
+        if (this.config.loginScreenUrl) {
           this.redirectToLoginUrl();
           return empty();
         }
@@ -72,10 +60,10 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError(err => {
         if (err.status == 401) {
-          if (this.autoRefreshToken) {
+          if (this.config.autoRefreshToken) {
             return this.refreshTokenAndRetry$(request, next);
           }
-          if (this.loginScreenUrl) {
+          if (this.config.loginScreenUrl) {
             this.redirectToLoginUrl();
             return empty();
           }
@@ -83,23 +71,10 @@ export class AuthInterceptor implements HttpInterceptor {
         return throwError(err);
       })
     );
-
-    // .pipe(
-    //   tap((event: HttpEvent<any>) => { }, (err: any) => {
-    //     if (err instanceof HttpErrorResponse) {
-    //       if (err.status === 401) {
-    //         this.sendRefreshToken(request, next);
-    //       }
-    //     }
-    //   })
-    // );
   }
 
   protected setAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
-    let scheme = '';
-    if (this.authenticationScheme) {
-      scheme = this.authenticationScheme + ' ';
-    }
+    let scheme = this.authService.getAuthenticationScheme() || '';
     return request.clone({
       setHeaders: {
         Authorization: scheme + this.authService.getAccessToken()
@@ -108,7 +83,10 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   protected refreshTokenAndRetry$(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    if (request.url == this.authService.authApiUrl) {
+    if (typeof this.authService.requestRefreshToken$ != 'function') {
+      throw Error('authService is neeeded to implement requestRefreshToken$()');
+    }
+    if (this.authService.getRefreshTokenUrl && request.url == this.authService.getRefreshTokenUrl()) {
       return throwError('ignore to refresh the refreshToken request (itself)');
     }
     // if refreshing, wait next _refresherStream
@@ -127,7 +105,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (isSuccess) {
             console.debug('Another request excute with new token');
             request = this.setAuthHeader(request);
-          } else if (this.loginScreenUrl) {
+          } else if (this.config.loginScreenUrl) {
             return empty(); // try to silent another request b/c first request will be redirect to loginScreenUrl
           }
           return next.handle(request);
@@ -150,7 +128,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (isSuccess) {
             console.debug('First request excute with new token');
             request = this.setAuthHeader(request);
-          } else if (this.loginScreenUrl) {
+          } else if (this.config.loginScreenUrl) {
             this.redirectToLoginUrl();
             return empty();
           }
@@ -161,8 +139,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   protected redirectToLoginUrl() {
-    this.window!.location.href = this.loginScreenUrl;
-    // window.location.href = this.loginScreenUrl;
+    this.window.location.href = this.config.loginScreenUrl!; // TODO: remove ! when upgrade to Typescript 2.8
   }
-
 }

@@ -8,7 +8,7 @@ import { WindowClass, getWindow } from '../window';
 
 import { ApiClientConfig } from './api-client.config';
 import { ApiClientService } from './api-client.service';
-import { userConfigToken } from './user-config.token';
+import { userApiClientConfigToken } from './user-config.token';
 
 @NgModule({
   imports: [
@@ -26,7 +26,7 @@ export class ApiClientModule {
     return {
       ngModule: ApiClientModule,
       providers: [
-        { provide: userConfigToken, useValue: config },
+        { provide: userApiClientConfigToken, useValue: config },
         { provide: WindowClass, useFactory: getWindow },
         ApiClientService
       ]

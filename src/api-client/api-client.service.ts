@@ -10,9 +10,9 @@ import { WindowClass, getWindow } from '../window';
 import { ApiClientConfig, defaultConfig } from './api-client.config';
 import { ApiError } from './api-error.model';
 
-import { userConfigToken } from './user-config.token';
+import { userApiClientConfigToken } from './user-config.token';
 
-export type HttpMethod = 'get' | 'post';
+export type HttpMethod = 'get' | 'post' | 'put' | 'delete';
 
 export interface Params {
   [param: string]: any;
@@ -46,7 +46,7 @@ export class ApiClientService {
   constructor(
     protected http: HttpClient,
     protected popupService: PopupService,
-    @Inject(userConfigToken) userConfig: ApiClientConfig,
+    @Inject(userApiClientConfigToken) userConfig: ApiClientConfig,
     // inject window that make easy to test
     protected window: WindowClass = getWindow()) {
 

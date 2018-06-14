@@ -1,6 +1,6 @@
 {
   "name": "soft-ngx",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Useful Angular libs by Softever",
   "main": "./bundles/soft-ngx.umd.js",
   "module": "./esm5/soft-ngx.js",
@@ -30,7 +30,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "angular-oauth2-oidc": "^4.0.2",
     "angular2-promise-buttons": "^2.1.1",
     "ng2-bootstrap-modal": "git://github.com/akkaradej/ng2-bootstrap-modal.git#angular-5-support",
     "tslib": "^1.9.2"

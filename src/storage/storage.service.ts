@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 
 import { StorageConfig, defaultConfig } from './storage.config';
-import { userConfigToken } from './user-config.token';
+import { userStorageConfigToken } from './user-config.token';
 
 @Injectable()
 export class StorageService implements Storage {
@@ -13,7 +13,7 @@ export class StorageService implements Storage {
   [index: number]: string;
 
   constructor(
-    @Inject(userConfigToken) userConfig: StorageConfig) {
+    @Inject(userStorageConfigToken) userConfig: StorageConfig) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
     this.storage = this.config.storageType as Storage;

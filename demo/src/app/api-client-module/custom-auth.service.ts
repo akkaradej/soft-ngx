@@ -4,21 +4,20 @@ import { AuthService, AuthServiceInterface } from 'soft-ngx';
 // import { Inject } from '@angular/core';
 // import { Auth, AuthConfig, StorageService, authUserConfigToken } from 'soft-ngx';
 // import { HttpClient } from '@angular/common/http';
-// import { OAuthService } from 'angular-oauth2-oidc';
 // import { Observable, config } from 'rxjs';
 // import { tap } from 'rxjs/operators';
 
 enum AuthData {
   is_super_admin = 'is_super_admin',
   display_name = 'display_name'
-};
+}
 
 @Injectable()
 export class CustomAuthService extends AuthService { // or implements AuthServiceInterface {
 
   // // Example: To create constructor
   // constructor(
-  //   @Inject(apiClientUserConfigToken) userConfig: ApiClientConfig,
+  //   @Inject(apiClientUserConfigToken) config: AuthConfig,
   //   oauthService: OAuthService,
   //   storage: StorageService,
   //   private http: HttpClient) {
@@ -38,7 +37,7 @@ export class CustomAuthService extends AuthService { // or implements AuthServic
     return this.storage.getItem(AuthData.display_name);
   }
 
-  // // Example: To post with HttpClient's json data instead of angular-oauth2-oidc's form-data
+  // // Example: To post with HttpClient
   // login$(username: string, password: string): Observable<Auth> {
   //   return this.http.post(this.authApiUrl, { username, password }).pipe(
   //     tap((auth: Auth) => {
