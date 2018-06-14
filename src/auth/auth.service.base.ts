@@ -1,15 +1,13 @@
 import { Injectable, Inject, Optional } from '@angular/core';
-
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { AuthServiceInterface } from './auth.service.interface';
-
 import { StorageService } from '../storage/storage.service';
 
+import { AuthServiceInterface } from './auth.service.interface';
 import { AuthServiceConfig, CustomAuthRequestKey, CustomAuthResponseKey } from './auth.config';
-import { userAuthServiceConfigToken } from './user-config.token';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { userAuthServiceConfigToken, userCustomAuthRequestKeyToken, userCustomAuthResponseKeyToken } from './user-config.token';
 import { WebHttpUrlEncodingCodec } from './encoder';
 
 // TODO: remove custom mapped type when upgrade to Typescript 2.8
@@ -47,10 +45,18 @@ export class AuthServiceBase implements AuthServiceInterface {
   constructor(
     protected http: HttpClient,
     protected storage: StorageService,
-    @Optional() @Inject(userAuthServiceConfigToken) userConfig?: AuthServiceConfig) {
+    @Optional() @Inject(userAuthServiceConfigToken) userConfig?: AuthServiceConfig,
+    @Optional() @Inject(userCustomAuthRequestKeyToken) userCustomAuthRequestKeyConfig?: CustomAuthRequestKey,
+    @Optional() @Inject(userCustomAuthResponseKeyToken) userCustomAuthResponseKeyConfig?: CustomAuthResponseKey) {
 
     if (userConfig) {
       Object.assign(this.config, userConfig);
+    }
+    if (userCustomAuthRequestKeyConfig) {
+      Object.assign(this.customAuthRequestKey, userCustomAuthRequestKeyConfig);
+    }
+    if (userCustomAuthResponseKeyConfig) {
+      Object.assign(this.customAuthResponseKey, userCustomAuthResponseKeyConfig);
     }
 
     this.config.refreshTokenUrl = this.config.refreshTokenUrl || this.config.tokenUrl;
@@ -121,7 +127,7 @@ export class AuthServiceBase implements AuthServiceInterface {
     let headers = new HttpHeaders();
 
     if (this.config.isOAuth) {
-      params = params
+      body = params
         .set('username', username)
         .set('password', password)
         .set('grant_type', 'password')
@@ -130,7 +136,7 @@ export class AuthServiceBase implements AuthServiceInterface {
       this.config.isFormData = true;
     } else {
       if (this.config.isFormData) {
-        params = params
+        body = params
           .set(this.customAuthRequestKey.username, username)
           .set(this.customAuthRequestKey.password, password);
       } else {
@@ -141,7 +147,7 @@ export class AuthServiceBase implements AuthServiceInterface {
       }
     }
 
-    return this.requestToken(this.config.tokenUrl, body, params, headers, customQuery);
+    return this.requestToken(this.config.tokenUrl, body, headers, customQuery);
   }
 
   /*
@@ -161,7 +167,7 @@ export class AuthServiceBase implements AuthServiceInterface {
     let headers = new HttpHeaders();
 
     if (this.config.isOAuth) {
-      params = params
+      body = params
         .set('grant_type', 'refresh_token')
         .set('scope', this.config.scope!) // TODO: remove ! when upgrade to Typescript 2.8
         .set('client_id', this.config.clientId!) // TODO: remove ! when upgrade to Typescript 2.8
@@ -170,22 +176,22 @@ export class AuthServiceBase implements AuthServiceInterface {
       this.config.isFormData = true;
     } else {
       if (this.config.isFormData) {
-        params = params
+        body = params
           .set(this.customAuthRequestKey.refresh_token!, refreshToken); // TODO: remove ! when upgrade to Typescript 2.8
       } else {
         body = { refreshToken };
       }
     }
 
-    return this.requestToken(this.config.refreshTokenUrl, body, params, headers, customQuery);
+    return this.requestToken(this.config.refreshTokenUrl, body, headers, customQuery);
   }
 
   // general request token in common
-  requestToken(url: string, body: any, params: HttpParams, headers: HttpHeaders, customQuery?: any): Observable<any> {
+  requestToken(url: string, body: any, headers: HttpHeaders, customQuery?: any): Observable<any> {
     if (customQuery) {
       if (this.config.isFormData) {
         for (const key of Object.getOwnPropertyNames(customQuery)) {
-          params = params.set(key, customQuery[key]);
+          body = body.set(key, customQuery[key]);
         }
       } else {
         body = Object.assign({}, body, customQuery);
@@ -196,7 +202,7 @@ export class AuthServiceBase implements AuthServiceInterface {
       headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
     }
 
-    return this.http.post(url, body, { params, headers }).pipe(
+    return this.http.post(url, body, { headers }).pipe(
       mergeMap((response: any) => {
         if (response) {
           if (!this.config.isOAuth) {
