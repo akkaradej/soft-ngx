@@ -7,7 +7,7 @@ import { AuthServiceInterface } from './auth.service.interface';
 
 import { StorageService } from '../storage/storage.service';
 
-import { AuthServiceConfig, NonOAuthRequestKey, NonOAuthResponseKey } from './auth.config';
+import { AuthServiceConfig, CustomAuthRequestKey, CustomAuthResponseKey } from './auth.config';
 import { userAuthServiceConfigToken } from './user-config.token';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { WebHttpUrlEncodingCodec } from './encoder';
@@ -31,13 +31,13 @@ export class AuthServiceBase implements AuthServiceInterface {
     clientId: ''
   }
 
-  protected nonOAuthRequestKey: Required<NonOAuthRequestKey> = {
+  protected customAuthRequestKey: Required<CustomAuthRequestKey> = {
     username: 'username',
     password: 'password',
     refresh_token: 'refresh_token'
   }
 
-  protected nonOAuthResponseKey: Required<NonOAuthResponseKey> = {
+  protected customAuthResponseKey: Required<CustomAuthResponseKey> = {
     access_token: 'access_token',
     refresh_token: 'refresh_token',
     expires_in: 'expires_in',
@@ -131,8 +131,8 @@ export class AuthServiceBase implements AuthServiceInterface {
     } else {
       if (this.config.isFormData) {
         params = params
-          .set(this.nonOAuthRequestKey.username, username)
-          .set(this.nonOAuthRequestKey.password, password);
+          .set(this.customAuthRequestKey.username, username)
+          .set(this.customAuthRequestKey.password, password);
       } else {
         body = {
           username,
@@ -171,7 +171,7 @@ export class AuthServiceBase implements AuthServiceInterface {
     } else {
       if (this.config.isFormData) {
         params = params
-          .set(this.nonOAuthRequestKey.refresh_token!, refreshToken); // TODO: remove ! when upgrade to Typescript 2.8
+          .set(this.customAuthRequestKey.refresh_token!, refreshToken); // TODO: remove ! when upgrade to Typescript 2.8
       } else {
         body = { refreshToken };
       }
@@ -200,7 +200,7 @@ export class AuthServiceBase implements AuthServiceInterface {
       mergeMap((response: any) => {
         if (response) {
           if (!this.config.isOAuth) {
-            Object.assign(response, this.nonOAuthResponseKey);
+            Object.assign(response, this.customAuthResponseKey);
           }
           if (this.config.isJWT) {
             let [claims, claimsJson] = this.decodeIdToken(response.access_token);

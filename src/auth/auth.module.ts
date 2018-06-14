@@ -6,11 +6,11 @@ import { WindowClass, getWindow } from '../window';
 
 import {
   AuthServiceConfig, AuthInterceptorConfig,
-  NonOAuthRequestKey, NonOAuthResponseKey
+  CustomAuthRequestKey, CustomAuthResponseKey
 } from './auth.config';
 import {
   userAuthServiceConfigToken, userAuthInterceptorConfigToken,
-  userNonOAuthRequestKeyToken, userNonOAuthResponseKeyToken
+  userCustomAuthRequestKeyToken, userCustomAuthResponseKeyToken
 } from './user-config.token';
 import { AuthInterceptor } from "./auth.interceptor";
 
@@ -24,8 +24,8 @@ export class AuthModule {
     config: {
       authServiceConfig?: AuthServiceConfig,
       authInterceptorConfig?: AuthInterceptorConfig,
-      nonOAuthRequestKey?: NonOAuthRequestKey,
-      nonOAuthResponseKey?: NonOAuthResponseKey,
+      customAuthRequestKey?: CustomAuthRequestKey,
+      customAuthResponseKey?: CustomAuthResponseKey,
     } = {}
   ): ModuleWithProviders {
 
@@ -34,8 +34,8 @@ export class AuthModule {
       providers: [
         { provide: userAuthServiceConfigToken, useValue: config.authServiceConfig },
         { provide: userAuthInterceptorConfigToken, useValue: config.authInterceptorConfig },
-        { provide: userNonOAuthRequestKeyToken, useValue: config.nonOAuthRequestKey },
-        { provide: userNonOAuthResponseKeyToken, useValue: config.nonOAuthResponseKey },
+        { provide: userCustomAuthRequestKeyToken, useValue: config.customAuthRequestKey },
+        { provide: userCustomAuthResponseKeyToken, useValue: config.customAuthResponseKey },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: WindowClass, useFactory: getWindow }
       ]

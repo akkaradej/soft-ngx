@@ -8,11 +8,11 @@ export { HeaderResponse } from './api-client/api-client.service';
 
 export {
   AuthServiceConfig, AuthInterceptorConfig,
-  NonOAuthRequestKey, NonOAuthResponseKey
+  CustomAuthRequestKey, CustomAuthResponseKey
 } from './auth/auth.config';
 export {
   userAuthServiceConfigToken, userAuthInterceptorConfigToken,
-  userNonOAuthRequestKeyToken, userNonOAuthResponseKeyToken
+  userCustomAuthRequestKeyToken, userCustomAuthResponseKeyToken
 } from './auth/user-config.token';
 export { AuthInterceptor } from './auth/auth.interceptor';
 export { AuthModule } from './auth/auth.module';

@@ -15,13 +15,13 @@ export interface AuthInterceptorConfig {
   loginScreenUrl?: string;
 }
 
-export interface NonOAuthRequestKey {
+export interface CustomAuthRequestKey {
   username: string;
   password: string;
   refresh_token?: string;
 }
 
-export interface NonOAuthResponseKey {
+export interface CustomAuthResponseKey {
   access_token: string;
   refresh_token?: string;
   expires_in?: string;
