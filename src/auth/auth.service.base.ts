@@ -206,7 +206,10 @@ export class AuthServiceBase implements AuthServiceInterface {
       mergeMap((response: any) => {
         if (response) {
           if (!this.config.isOAuth) {
-            Object.assign(response, this.customAuthResponseKey);
+            response.access_token = response[this.customAuthResponseKey.access_token];
+            response.expires_in = response[this.customAuthResponseKey.expires_in!]; // TODO: remove ! when upgrade to Typescript 2.8
+            response.refresh_token = response[this.customAuthResponseKey.refresh_token!]; // TODO: remove ! when upgrade to Typescript 2.8
+            response.scope = response[this.customAuthResponseKey.scope!]; // TODO: remove ! when upgrade to Typescript 2.8
           }
           if (this.config.isJWT) {
             let [claims, claimsJson] = this.decodeIdToken(response.access_token);

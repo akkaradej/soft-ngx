@@ -75,6 +75,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
   protected setAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
     let scheme = this.authService.getAuthenticationScheme() || '';
+    if (scheme) {
+      scheme += ' ';
+    }
     return request.clone({
       setHeaders: {
         Authorization: scheme + this.authService.getAccessToken()
