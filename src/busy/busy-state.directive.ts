@@ -1,8 +1,7 @@
 import { Directive, Inject, Input, ElementRef, Optional } from '@angular/core';
 import { PromiseBtnDirective } from 'angular2-promise-buttons';
-import { PromiseBtnConfig } from 'angular2-promise-buttons/dist/promise-btn-config';
 
-import { WindowClass, getWindow } from '../window';
+import { WindowClass, windowToken } from '../window';
 
 import { BusyConfig, defaultConfig } from './busy.config';
 import { userConfigToken } from './user-config.token';
@@ -16,22 +15,25 @@ export class BusyStateDirective extends PromiseBtnDirective {
   constructor(
     el: ElementRef,
     @Inject(userConfigToken) userConfig: BusyConfig,
-    // inject window that make easy to test
-    protected window: WindowClass = getWindow()) {
+    @Inject(windowToken) protected _window: WindowClass) {
 
     super(el, {});
     this.config = Object.assign({}, defaultConfig, userConfig);
+    this.cfg.btnLoadingClass = 'show-busy-spinner';
+  }
 
-    console.log(this.window);
-    if (!this.window) {
-      this.window = getWindow();
+  @Input()
+  set hideBackdrop(isHide: boolean) {
+    if (isHide) {
+      this.cfg.btnLoadingClass = 'show-busy-spinner-no-backdrop';
+    } else {
+      this.cfg.btnLoadingClass = 'show-busy-spinner';
     }
   }
 
   @Input()
   set busyState(passedValue: any) {
     this.cfg.disableBtn = false;
-    this.cfg.btnLoadingClass = 'is-show-busy-spinner';
     this.cfg.spinnerTpl = `
       <div class="busy-spinner">
         <div class="ng-busy">
@@ -64,7 +66,7 @@ export class BusyStateDirective extends PromiseBtnDirective {
 
   // Override to add delay before start
   initLoadingState(btnEl: HTMLElement) {
-    this.window.setTimeout(() => {
+    this._window.setTimeout(() => {
       if (!this.isPromiseDone) {
         this.addLoadingClass(btnEl);
       }

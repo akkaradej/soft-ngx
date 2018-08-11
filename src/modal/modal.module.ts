@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
-import { WindowClass, getWindow } from '../window';
+import { windowToken, getWindow } from '../window';
 import { ModalComponent, ModalTitleComponent } from './modal.component';
 
 @NgModule({
@@ -22,7 +22,7 @@ export class ModalModule {
     return {
       ngModule: ModalModule,
       providers: [
-        { provide: WindowClass, useFactory: getWindow }
+        { provide: windowToken, useFactory: getWindow }
       ]
     };
   }

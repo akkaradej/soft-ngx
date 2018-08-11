@@ -30,7 +30,15 @@ $modal-card-title-font-weight: $weight-bold !default;
     }
   }
 
+  .modal-content,
+  .modal-card {
+    @include tablet {
+      margin: 0 $modal-content-margin-mobile;
+    }
+  }
+
   &.modal-large {
+    .modal-content,
     .modal-card {
       @include tablet {
         width: 100%;

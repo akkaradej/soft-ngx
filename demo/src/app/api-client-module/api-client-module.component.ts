@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiClientService } from 'soft-ngx';
+import { ApiClientService, StorageService } from 'soft-ngx';
 
-import { CustomAuthService } from './custom-auth.service';
-import { Auth } from './auth.model';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-api-client-module',
@@ -14,25 +13,26 @@ export class ApiClientModuleComponent implements OnInit {
   posts: any;
   newPost: any;
   comment: any;
-  auth: Auth;
+  auth: any;
 
   constructor(
     private apiClientService: ApiClientService,
-    private authService: CustomAuthService) {
+    private authService: AuthService,
+    private storageService: StorageService) {
   }
 
   ngOnInit() {
   }
 
   getPosts() {
-    this.apiClientService.get('posts', { userId: 1 }, true)
+    this.apiClientService.get('/posts', { userId: 1 }, true)
       .subscribe(posts => {
         this.posts = posts;
       });
   }
 
   createPost(title: string, message: string) {
-    this.apiClientService.post('posts', { title, body: message, userId: 1 }, {}, true)
+    this.apiClientService.post('/posts', { title, body: message, userId: 1 }, {}, true)
       .subscribe(post => {
         this.newPost = post;
       });
@@ -40,13 +40,13 @@ export class ApiClientModuleComponent implements OnInit {
 
   login() {
     this.authService.requestTokenWithPasswordFlow$('uXXXXXX', 'pYYYYYY')
-      .subscribe((auth: Auth) => {
+      .subscribe((auth: any) => {
         this.auth = auth;
       });
   }
 
-  logout() {
-    this.authService.logout();
+  expire() {
+    this.storageService.setItem('expires_at', 0);
   }
 
   requestPrivateApi() {
@@ -54,6 +54,10 @@ export class ApiClientModuleComponent implements OnInit {
       .subscribe(comment => {
         this.comment = comment;
       });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   isLoggedIn() {

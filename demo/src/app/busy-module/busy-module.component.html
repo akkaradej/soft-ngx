@@ -6,15 +6,26 @@
       busyState
     </h3>
     <div [busyState]="busy"
-         style="position: relative;">
+         class="is-busy-parent">
       <br> Long loading content
+      <br>
+      <br>
+    </div>
+    <div [busyState]="busy"
+         [hideBackdrop]="true"
+         class="is-busy-parent">
+      <br> Long loading content (no backdrop)
       <br>
       <br>
     </div>
     <pre>
       # html
-      &lt;div <strong>[busyState]="busy"</strong> style="position: relative;"&gt;
+      &lt;div <strong>[busyState]="busy"</strong> class="is-busy-parent"&gt;
         Long loading content
+      &lt;/div&gt;
+      
+      &lt;div <strong>[busyState]="busy" [hideBackdrop]="true"</strong> class="is-busy-parent"&gt;
+        Long loading content (no backdrop)
       &lt;/div&gt;
 
       # ts

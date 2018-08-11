@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter, ContentChild, Optional } from '@angular/core';
 
-import { WindowClass, getWindow } from '../window';
+import { WindowClass, windowToken } from '../window';
 
 import { ModalContent } from './modal-content';
 
@@ -43,8 +43,7 @@ export class ModalComponent implements OnInit {
   isFirstOpen: boolean = false;
 
   constructor(
-    // inject window that make easy to test
-    protected window: WindowClass = getWindow()) {
+    @Inject(windowToken) protected _window: WindowClass) {
   }
 
   ngOnInit() {
@@ -54,7 +53,7 @@ export class ModalComponent implements OnInit {
     this.isOpen = true;
     this.isFirstOpen = true;
     this.onOpen.emit();
-    this.window.setTimeout(() => {
+    this._window.setTimeout(() => {
       if (this.modalContent && this.modalContent.onModalOpen) {
         this.modalContent.onModalOpen();
       }

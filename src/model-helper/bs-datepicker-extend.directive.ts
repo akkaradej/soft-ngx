@@ -4,7 +4,7 @@ import { NG_VALIDATORS, AbstractControl, ValidationErrors, Validator } from '@an
 import * as momentjs from 'moment';
 const moment = (momentjs as any).default || momentjs;
 
-import { WindowClass, getWindow } from '../window';
+import { WindowClass, windowToken } from '../window';
 
 // ----------- Compatible with Ngx-bootstrap 2.0.0-beta5 --------------------//
 
@@ -34,8 +34,7 @@ export class BsDatepickerExtendDirective implements OnInit {
   constructor(
     private _renderer: Renderer2,
     private _elementRef: ElementRef,
-    // inject window that make easy to test
-    protected window: WindowClass = getWindow()) {
+    @Inject(windowToken) protected _window: WindowClass) {
   }
 
   ngOnInit() {
@@ -62,7 +61,7 @@ export class BsDatepickerExtendDirective implements OnInit {
       // Convert time
       if (!this.date.isSame(moment(value))) {
         this.date = this.convertTime(moment(value));
-        this.window.setTimeout(() => {
+        this._window.setTimeout(() => {
           this.ngModelChange.emit(this.date.toDate());
         });
         return;

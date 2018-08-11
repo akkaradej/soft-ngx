@@ -1,9 +1,13 @@
 export interface StorageConfig {
   storagePrefix?: string;
-  storageType?: Storage;
+  usePersistentAsDefault?: boolean;
+  persistentStorage?: Storage,
+  temporaryStorage?: Storage
 }
 
 export const defaultConfig = {
   storagePrefix: '',
-  storageType: window.localStorage,
+  usePersistentAsDefault: true,
+  persistentStorage: window.localStorage,
+  temporaryStorage: window.sessionStorage
 };

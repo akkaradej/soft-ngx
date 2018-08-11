@@ -10,11 +10,6 @@ import { AuthServiceConfig, CustomAuthRequestKey, CustomAuthResponseKey } from '
 import { userAuthServiceConfigToken, userCustomAuthRequestKeyToken, userCustomAuthResponseKeyToken } from './user-config.token';
 import { WebHttpUrlEncodingCodec } from './encoder';
 
-// TODO: remove custom mapped type when upgrade to Typescript 2.8
-export type Required<T> = {
-  [P in keyof T]: T[P];
-};
-
 @Injectable()
 export class AuthServiceBase implements AuthServiceInterface {
 
@@ -60,6 +55,7 @@ export class AuthServiceBase implements AuthServiceInterface {
     }
 
     this.config.refreshTokenUrl = this.config.refreshTokenUrl || this.config.tokenUrl;
+    this.setStorageDependOnRememberMe();
   }
 
   /*
@@ -87,6 +83,7 @@ export class AuthServiceBase implements AuthServiceInterface {
     this.storage.removeItem('expires_at');
     this.storage.removeItem('claims_obj');
     this.storage.removeItem('granted_scopes');
+    this.storage.removeItemPersistent('remember_me');
     this.removeAdditionalAuthData();
   }
 
@@ -101,7 +98,7 @@ export class AuthServiceBase implements AuthServiceInterface {
    * get authentication scheme
    */
   getAuthenticationScheme(): string {
-    return this.config.authenticationScheme!; // TODO: remove ! when upgrade to Typescript 2.8
+    return this.config.authenticationScheme;
   }
 
   getRefreshToken(): string | null {
@@ -112,27 +109,35 @@ export class AuthServiceBase implements AuthServiceInterface {
    * for auth interceptor's autoRefreshToken option (to ignore refresh token url)
    */
   getRefreshTokenUrl(): string {
-    return this.config.refreshTokenUrl!; // TODO: remove ! when upgrade to Typescript 2.8
+    return this.config.refreshTokenUrl;
+  }
+
+  setStorageDependOnRememberMe() {
+    let rememberMe = this.storage.getItemPersistent('remember_me');
+    if (rememberMe === 'true') {
+      this.storage.usePersistent();
+    } else if (rememberMe === 'false') {
+      this.storage.useTemporary();
+    } // else use default Storage
   }
 
   /*
    * request access_token and keep auth data in storage
    */
-  requestTokenWithPasswordFlow$(username: string, password: string, customQuery?: any): Observable<any> {
+  requestTokenWithPasswordFlow$(username: string, password: string, rememberMe?: boolean, customQuery?: any): Observable<any> {
     if (!this.config.tokenUrl) {
       throw new Error('authApiUrl is needed to be set');
     }
-    let body = {} as any;
+    let body: any;
     let params = new HttpParams({ encoder: new WebHttpUrlEncodingCodec() });
-    let headers = new HttpHeaders();
 
     if (this.config.isOAuth) {
       body = params
         .set('username', username)
         .set('password', password)
         .set('grant_type', 'password')
-        .set('scope', this.config.scope!) // TODO: remove ! when upgrade to Typescript 2.8
-        .set('client_id', this.config.clientId!); // TODO: remove ! when upgrade to Typescript 2.8
+        .set('scope', this.config.scope)
+        .set('client_id', this.config.clientId);
       this.config.isFormData = true;
     } else {
       if (this.config.isFormData) {
@@ -147,7 +152,13 @@ export class AuthServiceBase implements AuthServiceInterface {
       }
     }
 
-    return this.requestToken(this.config.tokenUrl, body, headers, customQuery);
+    if (rememberMe === true) {
+      this.storage.setItemPersistent('remember_me', true);
+    } else if (rememberMe === false) {
+      this.storage.setItemPersistent('remember_me', false);
+    }
+
+    return this.requestToken(this.config.tokenUrl, body, customQuery);
   }
 
   /*
@@ -162,32 +173,31 @@ export class AuthServiceBase implements AuthServiceInterface {
       throw new Error('no refresh token');
     }
 
-    let body = {} as any;
+    let body: any;
     let params = new HttpParams({ encoder: new WebHttpUrlEncodingCodec() });
-    let headers = new HttpHeaders();
 
     if (this.config.isOAuth) {
       body = params
         .set('grant_type', 'refresh_token')
-        .set('scope', this.config.scope!) // TODO: remove ! when upgrade to Typescript 2.8
-        .set('client_id', this.config.clientId!) // TODO: remove ! when upgrade to Typescript 2.8
+        .set('scope', this.config.scope)
+        .set('client_id', this.config.clientId)
         .set('refresh_token', refreshToken);
 
       this.config.isFormData = true;
     } else {
       if (this.config.isFormData) {
         body = params
-          .set(this.customAuthRequestKey.refresh_token!, refreshToken); // TODO: remove ! when upgrade to Typescript 2.8
+          .set(this.customAuthRequestKey.refresh_token, refreshToken);
       } else {
         body = { refreshToken };
       }
     }
 
-    return this.requestToken(this.config.refreshTokenUrl, body, headers, customQuery);
+    return this.requestToken(this.config.refreshTokenUrl, body, customQuery);
   }
 
   // general request token in common
-  requestToken(url: string, body: any, headers: HttpHeaders, customQuery?: any): Observable<any> {
+  requestToken(url: string, body: any, customQuery?: any, headers = new HttpHeaders()): Observable<any> {
     if (customQuery) {
       if (this.config.isFormData) {
         for (const key of Object.getOwnPropertyNames(customQuery)) {
@@ -205,11 +215,12 @@ export class AuthServiceBase implements AuthServiceInterface {
     return this.http.post(url, body, { headers }).pipe(
       mergeMap((response: any) => {
         if (response) {
+          this.setStorageDependOnRememberMe();
           if (!this.config.isOAuth) {
             response.access_token = response[this.customAuthResponseKey.access_token];
-            response.expires_in = response[this.customAuthResponseKey.expires_in!]; // TODO: remove ! when upgrade to Typescript 2.8
-            response.refresh_token = response[this.customAuthResponseKey.refresh_token!]; // TODO: remove ! when upgrade to Typescript 2.8
-            response.scope = response[this.customAuthResponseKey.scope!]; // TODO: remove ! when upgrade to Typescript 2.8
+            response.expires_in = response[this.customAuthResponseKey.expires_in];
+            response.refresh_token = response[this.customAuthResponseKey.refresh_token];
+            response.scope = response[this.customAuthResponseKey.scope];
           }
           if (this.config.isJWT) {
             let [claims, claimsJson] = this.decodeIdToken(response.access_token);

@@ -42,3 +42,9 @@
     }
   }
 }
+
+.button {
+  .icon.icon-em:first-child:not(:last-child) {
+    margin-right: 0.5em;
+  }
+}

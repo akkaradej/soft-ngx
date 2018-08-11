@@ -6,7 +6,7 @@ import {
   HttpEvent
 } from '@angular/common/http';
 
-import { WindowClass, getWindow } from "./../window";
+import { WindowClass, windowToken } from "./../window";
 
 import { AuthServiceBase } from './auth.service.base';
 import { Observable, empty, throwError, of, Observer, Subject } from 'rxjs';
@@ -15,11 +15,6 @@ import { mergeMap, catchError, take } from 'rxjs/operators';
 import { AuthInterceptorConfig } from './auth.config';
 import { userAuthInterceptorConfigToken } from './user-config.token';
 import { AuthServiceInterface } from './auth.service.interface';
-
-// TODO: remove custom mapped type when upgrade to Typescript 2.8
-export type Required<T> = {
-  [P in keyof T]: T[P];
-};
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -34,9 +29,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     @Inject(AuthServiceBase) protected authService: AuthServiceInterface,
-    @Optional() @Inject(userAuthInterceptorConfigToken) userConfig?: AuthInterceptorConfig,
-    // inject window that make easy to test
-    protected window: WindowClass = getWindow()) {
+    @Inject(windowToken) protected _window: WindowClass,
+    @Optional() @Inject(userAuthInterceptorConfigToken) userConfig?: AuthInterceptorConfig) {
 
     if (userConfig) {
       Object.assign(this.config, userConfig);
@@ -142,6 +136,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   protected redirectToLoginUrl() {
-    this.window.location.href = this.config.loginScreenUrl!; // TODO: remove ! when upgrade to Typescript 2.8
+    this._window.location.href = this.config.loginScreenUrl;
   }
 }
