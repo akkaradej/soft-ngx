@@ -3,19 +3,18 @@
 ### v0.5.0
 * Upgrade to Angular 6.1, Typescript 2.9
 
-* Chage ApiClientService as following
-* Remove delete$'s body params
-* Remove get$'s getOption param
-* Remove readHeaderResponse param
-* Add ApiClientService headerResponse param as optional to receive header response to itself
+Change ApiClientService as following
+* Remove body params from delete$()
+* Remove getOption param from get$()
+* Change readHeaderResponse boolean param to headerResponse object param as optional to receive header response to itself
 * Change required forward slash in request url e.g. `this.apiClientService.get('/posts')`
 
-* Chage AuthService as following
+Change AuthService as following
 * Re implement AuthService
 * Rename `login$()` to `requestTokenWithPasswordFlow$()`
 * Add remember_me option
 
-* Others:
+Others:
 * Add `[hideBackdrop]` in busyState directive
 * Add Storage configs to set temporary and persistent storage `usePersistentAsDefault`, `persistentStorage`, `temporaryStorage`
 * Add Popup params `agreeText`, `disagreeText`, `isAgreeFirst`
