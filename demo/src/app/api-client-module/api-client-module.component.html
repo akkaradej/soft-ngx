@@ -12,7 +12,7 @@
       {{ posts | json }}
     </div>
     <pre>
-      <strong>this.apiClientService.get</strong>('posts', &#123; userId: 1 &#125;, &#123;&#125;, true)
+      <strong>this.apiClientService.get</strong>('/posts', &#123; userId: 1 &#125;, &#123;&#125;, true)
           .subscribe(posts => &#123;
             this.posts = posts; 
           &#125;);
@@ -42,7 +42,7 @@
       {{ newPost | json }}
     </div>
     <pre>
-      <strong>this.apiClientService.post</strong>('posts', &#123; title, body: message, userId: 1 &#125;, &#123;&#125;, true)
+      <strong>this.apiClientService.post</strong>('/posts', &#123; title, body: message, userId: 1 &#125;, &#123;&#125;, true)
           .subscribe(post => &#123;
             this.newPost = post;
           &#125;);
@@ -58,12 +58,16 @@
       Login
     </button>
     <button class="button"
-            (click)="logout()">
-      Logout
+            (click)="expire()">
+      Make Token Expire
     </button>
     <button class="button"
             (click)="requestPrivateApi()">
       Private Api (Auto refresh token)
+    </button>
+    <button class="button"
+            (click)="logout()">
+      Logout
     </button>
     <div>
       {{ comment | json }}

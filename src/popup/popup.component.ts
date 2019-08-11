@@ -6,6 +6,9 @@ export interface PopupModel {
   message: string;
   colorVar: string;
   type: 'alert' | 'confirm';
+  agreeText: string;
+  disagreeText: string;
+  isAgreeFirst: boolean;
 }
 
 @Component({
@@ -27,12 +30,20 @@ export interface PopupModel {
             <strong class="is-pre-wrap">{{ message }}</strong>
           </div>
           <div *ngIf="type == 'alert'">
-            <button class="button is-fat is-{{ colorVar }}" (click)="close()">OK</button>
+            <button class="button is-fat is-{{ colorVar }}" (click)="close()">{{ agreeText }}</button>
           </div>
           <div *ngIf="type == 'confirm'">
-            <button class="button is-fat is-{{ colorVar }}" (click)="confirm()">Yes</button>
-            &nbsp;
-            <button class="button is-fat is-light" (click)="close()">No</button>
+            <ng-container *ngIf="isAgreeFirst">
+              <button class="button is-fat is-{{ colorVar }}" (click)="confirm()">{{ agreeText }}</button>
+              &nbsp;
+              <button class="button is-fat is-light" (click)="close()">{{ disagreeText }}</button>
+            </ng-container>
+
+            <ng-container *ngIf="!isAgreeFirst">
+              <button class="button is-fat is-light" (click)="close()">{{ disagreeText }}</button>
+              &nbsp;
+              <button class="button is-fat is-{{ colorVar }}" (click)="confirm()">{{ agreeText }}</button>
+            </ng-container>
           </div>
         </section>
       </div>
@@ -44,6 +55,9 @@ export class PopupComponent extends DialogComponent<PopupModel, boolean> impleme
   message: string;
   colorVar: string;
   type: 'alert' | 'confirm';
+  agreeText: string;
+  disagreeText: string;
+  isAgreeFirst: boolean;
 
   constructor(dialogService: DialogService) {
     super(dialogService);

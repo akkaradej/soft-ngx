@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
-import { WindowClass, getWindow } from '../window';
+import { StorageModule } from '../storage/storage.module';
+import { windowToken, getWindow } from '../window';
 
 import {
   AuthServiceConfig, AuthInterceptorConfig,
@@ -14,9 +15,12 @@ import {
 } from './user-config.token';
 import { AuthInterceptor } from "./auth.interceptor";
 
+
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    HttpClientModule,
+    StorageModule
   ]
 })
 export class AuthModule {
@@ -37,7 +41,7 @@ export class AuthModule {
         { provide: userCustomAuthRequestKeyToken, useValue: config.customAuthRequestKey },
         { provide: userCustomAuthResponseKeyToken, useValue: config.customAuthResponseKey },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        { provide: WindowClass, useFactory: getWindow }
+        { provide: windowToken, useFactory: getWindow }
       ]
     };
   }

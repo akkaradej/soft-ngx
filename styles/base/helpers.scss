@@ -48,6 +48,19 @@ $box-shadow-hovered: 1px 3px 10px 2px rgba($black, 0.1), 0 0 0 1px rgba($black, 
   margin-bottom: 1.5rem;
 }
 
+.is-margin-left-auto {
+  margin-left: auto;
+}
+
+.is-margin-right-auto {
+  margin-right: auto;
+}
+
+.is-margin-both-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 // Typography
 .has-text-size-small {
   font-size: $size-small;
@@ -92,6 +105,7 @@ $box-shadow-hovered: 1px 3px 10px 2px rgba($black, 0.1), 0 0 0 1px rgba($black, 
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
 }
 
@@ -141,5 +155,30 @@ $box-shadow-hovered: 1px 3px 10px 2px rgba($black, 0.1), 0 0 0 1px rgba($black, 
     right: 0;
     bottom: 0;
   }
+}
+
+.has-arrow-up::after {
+  @include has-arrow;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.has-arrow-down::after {
+  @include has-arrow;
+  border-right: 0;
+  border-top: 0;
+}
+
+
+.has-arrow-right::after {
+  @include has-arrow;
+  border-left: 0;
+  border-top: 0;
+}
+
+.has-arrow-left::after {
+  @include has-arrow;
+  border-right: 0;
+  border-bottom: 0;
 }
 

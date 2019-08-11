@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { AuthService, AuthServiceInterface } from 'soft-ngx';
+import { Injectable, Inject } from '@angular/core';
+import { AuthServiceBase } from 'soft-ngx';
+
 // // Uncomment for Example below
 // import { Inject } from '@angular/core';
 // import { Auth, AuthConfig, StorageService, authUserConfigToken } from 'soft-ngx';
@@ -12,8 +13,9 @@ enum AuthData {
   display_name = 'display_name'
 }
 
+// Need Typescript >= 2.8.0 for extend AuthServiceBase
 @Injectable()
-export class CustomAuthService extends AuthService { // or implements AuthServiceInterface {
+export class AuthService extends AuthServiceBase { // or implements AuthServiceInterface {
 
   // // Example: To create constructor
   // constructor(

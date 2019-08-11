@@ -30,6 +30,15 @@ export class PopupModuleComponent implements OnInit {
       });
   }
 
+  confirmCustomText() {
+    this.popupService.confirm('Are your sure?', '', 'warning', 'Sure', 'Not Sure', false)
+      .subscribe((result: boolean) => {
+        if (result) {
+          window.alert('Sure!');
+        }
+      });
+  }
+
   delete(product: any) {
     this.popupService.confirmDelete(product.name)
       .subscribe((result: boolean) => {

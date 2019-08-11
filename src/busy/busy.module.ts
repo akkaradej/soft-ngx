@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Angular2PromiseButtonModule } from 'angular2-promise-buttons';
 
-import { WindowClass, getWindow } from '../window';
+import { windowToken, getWindow } from '../window';
 
 import { BusyConfig } from './busy.config';
 import { BusyStateDirective } from './busy-state.directive';
@@ -32,7 +32,7 @@ export class BusyModule {
       ngModule: BusyModule,
       providers: [
         { provide: userConfigToken, useValue: config },
-        { provide: WindowClass, useFactory: getWindow }
+        { provide: windowToken, useFactory: getWindow }
       ]
     };
   }

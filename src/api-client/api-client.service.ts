@@ -2,10 +2,10 @@ import { Injectable, Inject, InjectionToken, Optional } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
 import { Observable, Observer, throwError, of, empty, OperatorFunction } from 'rxjs';
-import { catchError, delay, map, mergeMap, retryWhen, tap } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, retryWhen } from 'rxjs/operators';
 
 import { PopupService } from '../popup/popup.service';
-import { WindowClass, getWindow } from '../window';
+import { WindowClass, windowToken } from '../window';
 
 import { ApiClientConfig, defaultConfig } from './api-client.config';
 import { ApiError } from './api-error.model';
@@ -20,7 +20,7 @@ export interface Params {
 
 export interface HeaderResponse {
   pageCount?: number,
-  pageTotal?: number,
+  totalCount?: number,
   [key: string]: any
 }
 
@@ -45,8 +45,7 @@ export class ApiClientService {
     protected http: HttpClient,
     protected popupService: PopupService,
     @Inject(userApiClientConfigToken) userConfig: ApiClientConfig,
-    // inject window that make easy to test
-    protected window: WindowClass = getWindow()) {
+    @Inject(windowToken) protected _window: WindowClass) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
     if (!this.config.apiBaseUrl) {
@@ -94,12 +93,13 @@ export class ApiClientService {
     // auto set page totalCount from header
     if (isPaging) {
       req = req.pipe(
-        tap((res: any) => {
+        mergeMap((res: any) => {
           if (headerResponse !== undefined && this.config.pageHeaderResponseKeys) {
-            headerResponse.pageCount = headerResponse[this.config.pageHeaderResponseKeys.pageCount];
-            headerResponse.totalCount = headerResponse[this.config.pageHeaderResponseKeys.totalCount];
+            headerResponse.pageCount = headerResponse[this.config.pageHeaderResponseKeys.pageCount.toLowerCase()];
+            headerResponse.totalCount = headerResponse[this.config.pageHeaderResponseKeys.totalCount.toLowerCase()];
           }
-        }),
+          return of(res);
+        })
       );
     }
 
@@ -152,11 +152,11 @@ export class ApiClientService {
         } catch (e) {
         }
       }
-      const alertTimeout = this.window.setTimeout(() => {
+      const alertTimeout = window.setTimeout(() => {
         this.popupService.alert('Cannot Operate', message, 'danger');
       });
       err.ignoreGlobalErrorAlert = () => {
-        this.window.clearTimeout(alertTimeout);
+        window.clearTimeout(alertTimeout);
       };
       return throwError(err);
     })
@@ -184,7 +184,7 @@ export class ApiClientService {
     return this.execute(method, url, options, isPublic).pipe(
       map((res: any) => {
         if (headerResponse !== undefined) {
-          const keys = Object.keys(headerResponse);
+          const keys = res.headers.keys();
           for (let key of keys) {
             let value = res.headers.get(key);
             // auto check and convert to expected type
@@ -198,7 +198,7 @@ export class ApiClientService {
                 value = +value;
               }
             }
-            headerResponse[key] = value;
+            headerResponse[key.toLowerCase()] = value;
           }
           return res.data;
         }

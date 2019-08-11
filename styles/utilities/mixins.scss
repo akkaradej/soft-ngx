@@ -10,3 +10,14 @@
     }
   }
 }
+
+@mixin has-arrow {
+  border: 3px solid currentColor;
+  border-radius: 2px;
+  content: " ";
+  transform: rotate(-45deg);
+  transform-origin: center;
+  width: .625em;
+  height: .625em;
+  margin-left: .2em;
+}

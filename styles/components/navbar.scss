@@ -67,3 +67,17 @@ $navbar-dropdown-item-color: $text !default;
     }
   }
 }
+
+@include desktop {
+  .navbar > .container,
+  .container > .navbar {
+    .navbar-brand {
+      margin-left: 0;
+      // margin-left: -.75rem;
+    }
+    .navbar-menu {
+      margin-right: 0;
+      // margin-right: -.75rem;
+    }
+  }
+}

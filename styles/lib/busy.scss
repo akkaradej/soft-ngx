@@ -1,10 +1,24 @@
+.is-busy-parent {
+  position: relative;
+  min-height: 50px;
+}
+
 .busy-spinner {
   display: none;
 }
 
-.is-show-busy-spinner {
+.show-busy-spinner {
   .busy-spinner {
     display: block;
+  }
+}
+
+.show-busy-spinner-no-backdrop {
+  .busy-spinner {
+    display: block;
+  }
+  .ng-busy-backdrop {
+    display: none;
   }
 }
 

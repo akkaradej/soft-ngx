@@ -10,14 +10,17 @@ export {
   AuthServiceConfig, AuthInterceptorConfig,
   CustomAuthRequestKey, CustomAuthResponseKey
 } from './auth/auth.config';
+
 export {
   userAuthServiceConfigToken, userAuthInterceptorConfigToken,
   userCustomAuthRequestKeyToken, userCustomAuthResponseKeyToken
 } from './auth/user-config.token';
+
 export { AuthInterceptor } from './auth/auth.interceptor';
 export { AuthModule } from './auth/auth.module';
 export { AuthServiceBase } from './auth/auth.service.base';
 export { AuthServiceInterface } from './auth/auth.service.interface';
+export { WebHttpUrlEncodingCodec } from './auth/encoder';
 
 export { StorageConfig } from './storage/storage.config';
 export { userStorageConfigToken } from './storage/user-config.token';
@@ -38,4 +41,4 @@ export { PipeExtensionModule } from './pipe-extension/pipe-extension.module';
 export { PopupModule } from './popup/popup.module';
 export { PopupService } from './popup/popup.service';
 
-export { WindowClass, getWindow } from './window';
+export { WindowClass, windowToken } from './window';

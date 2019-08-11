@@ -32,16 +32,35 @@
             (click)="confirm()">
       Confirm
     </button>
+    <button class="button"
+            (click)="confirmCustomText()">
+      Confirm Custom Text
+      <small>&nbsp;(show agree button at 2nd)</small>
+    </button>
+
     <pre>
         # html
         &lt;button class="button" 
           (click)="confirm()"&gt;
           Confirm
         &lt;/button&gt;
+        &lt;button class="button" 
+          (click)="confirmCustomText()"&gt;
+          Confirm Custom Text
+        &lt;/button&gt;
 
         # ts
         confirm() &#123;
           <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
+            .subscribe((result: boolean) => &#123;
+              if (result) &#123;
+                window.alert('Sure!');
+              &#125;
+            &#125;);
+        &#125;
+
+        confirmCustomText() &#123;
+          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning', 'Sure', 'Not Sure', false)
             .subscribe((result: boolean) => &#123;
               if (result) &#123;
                 window.alert('Sure!');
