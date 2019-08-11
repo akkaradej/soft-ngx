@@ -44,7 +44,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (request.withCredentials) {
+    if (request.headers.has('Authorization')) {
       if (this.authService.isLoggedIn) {
         request = this.setAuthHeader(request);
       } else {

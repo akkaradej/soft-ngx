@@ -26,9 +26,7 @@ export interface HeaderResponse {
 
 export interface HttpClientRequestOptions {
   body?: any;
-  headers?: HttpHeaders | {
-    [header: string]: string | string[];
-  };
+  headers?: HttpHeaders;
   observe?: 'body' | 'response';
   params?: {
     [param: string]: string;
@@ -211,7 +209,8 @@ export class ApiClientService {
 
   private execute(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
     if (!isPublic) {
-      options.withCredentials = true;
+      options.headers = options.headers || new HttpHeaders();
+      options.headers = options.headers.set('Authorization', 'ACCESS_TOKEN_IS_NEEDED');
     }
 
     return this.http.request(method, url, options).pipe(

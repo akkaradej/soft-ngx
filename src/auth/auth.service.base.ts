@@ -141,8 +141,8 @@ export class AuthServiceBase implements AuthServiceInterface {
           .set(this.customAuthRequestKey.password, password);
       } else {
         body = {
-          username,
-          password
+          [this.customAuthRequestKey.username]: username,
+          [this.customAuthRequestKey.password]: password
         };
       }
     }
@@ -179,7 +179,9 @@ export class AuthServiceBase implements AuthServiceInterface {
         body = params
           .set(this.customAuthRequestKey.refresh_token!, refreshToken); // TODO: remove ! when upgrade to Typescript 2.8
       } else {
-        body = { refreshToken };
+        body = {
+          [this.customAuthRequestKey.refresh_token!]: refreshToken // TODO: remove ! when upgrade to Typescript 2.8
+        };
       }
     }
 
