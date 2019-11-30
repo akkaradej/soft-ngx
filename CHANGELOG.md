@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.6.x-beta
+* Angular library structure
+* Remove UI, focus on logic
+
 ### v0.5.0
 * Upgrade to Angular 6.1, Typescript 2.9
 

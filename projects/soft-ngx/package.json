@@ -1,0 +1,16 @@
+{
+  "name": "soft-ngx",
+  "version": "0.6.15-beta",
+  "peerDependencies": {
+    "@angular/common": ">=6.0.0",
+    "@angular/core": ">=6.0.0",
+    "@angular/forms": ">=6.0.0",
+    "moment": ">=2.22.2",
+    "ngx-bootstrap": ">=3.0.1",
+    "typescript": ">=2.9.0"
+  },
+  "dependencies": {
+    "angular2-promise-buttons": "^3.0.0",
+    "ng2-bootstrap-modal": "https://github.com/akkaradej/ng2-bootstrap-modal.git"
+  }
+}
