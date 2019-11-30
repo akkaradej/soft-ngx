@@ -150,6 +150,7 @@ export class ApiClientService {
             message = error.message;
           }
         } catch (e) {
+          message = err.error;
         }
       }
       const alertTimeout = window.setTimeout(() => {

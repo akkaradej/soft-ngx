@@ -5,6 +5,8 @@ export { ApiClientModule } from './api-client/api-client.module';
 export { ApiError } from './api-client/api-error.model';
 export { ApiClientService } from './api-client/api-client.service';
 export { HeaderResponse } from './api-client/api-client.service';
+export { DateRequestInterceptor } from './api-client/date-request.interceptor';
+export { NoCacheInterceptor } from './api-client/no-cache.interceptor';
 
 export {
   AuthServiceConfig, AuthInterceptorConfig,
@@ -39,6 +41,7 @@ export { ModelHelperModule } from './model-helper/model-helper.module';
 export { PipeExtensionModule } from './pipe-extension/pipe-extension.module';
 
 export { PopupModule } from './popup/popup.module';
+export { PopupComponent } from './popup/popup.component';
 export { PopupService } from './popup/popup.service';
 
 export { WindowClass, windowToken } from './window';

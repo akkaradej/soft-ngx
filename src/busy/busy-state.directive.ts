@@ -53,7 +53,7 @@ export class BusyStateDirective extends PromiseBtnDirective {
                   <div class="bar11"></div>
                   <div class="bar12"></div>
               </div>
-              <div class="ng-busy-default-text">Please wait...</div>
+              <div class="ng-busy-default-text">${this.config.busyText}</div>
             </div>
           </div>
         </div>

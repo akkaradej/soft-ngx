@@ -2,10 +2,6 @@
   @include desktop {
     max-width: $desktop - (2 * $gap) - $vertical-scrollbar-width;
     width: $desktop - (2 * $gap) - $vertical-scrollbar-width;
-    &.is-fluid {
-      margin-left: $gap + $vertical-scrollbar-width / 2;
-      margin-right: $gap + $vertical-scrollbar-width / 2;
-    }
   }
   @include until-widescreen {
     &.is-widescreen {

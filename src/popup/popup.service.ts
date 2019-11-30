@@ -48,5 +48,7 @@ export class PopupService {
     });
   }
 
-
+  custom(component: any, options: any) {
+    return this.dialogService.addDialog(component, options);
+  }
 }

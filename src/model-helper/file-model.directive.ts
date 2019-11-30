@@ -1,5 +1,7 @@
-import { OnInit, OnDestroy, OnChanges, Directive, ElementRef, SimpleChanges, 
-  Input, Output, EventEmitter } from '@angular/core';
+import {
+  OnInit, OnDestroy, OnChanges, Directive, ElementRef, SimpleChanges,
+  Input, Output, EventEmitter
+} from '@angular/core';
 
 import { NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 
@@ -9,13 +11,13 @@ interface FileInputEventTarget extends EventTarget {
 }
 
 @Directive({
-  selector:  'input[type="file"][fileModel][ngModel]',
-  exportAs:  'fileModelDirective',
+  selector: 'input[type="file"][fileModel][ngModel]',
+  exportAs: 'fileModelDirective',
   providers: [
     {
-      provide:     NG_VALIDATORS,
+      provide: NG_VALIDATORS,
       useExisting: FileModelDirective,
-      multi:       true
+      multi: true
     }
   ],
   host: {
@@ -29,6 +31,7 @@ export class FileModelDirective implements Validator {
 
   @Input() fileModel: any;
   @Output() fileModelChange = new EventEmitter();
+  @Output() load = new EventEmitter<string | { dataUrl: string, index: number }[]>();
 
   /*
    * validate max size in MB
@@ -74,14 +77,19 @@ export class FileModelDirective implements Validator {
     return errors;
   }
 
-  onChange(eventTarget: EventTarget): void {
-    const value: File|FileList|undefined = this._getInputValue(eventTarget as FileInputEventTarget);
-    console.log(value);
+  onChange(eventTarget: FileInputEventTarget): void {
+    const value: File | FileList | undefined = this._getInputValue(eventTarget as FileInputEventTarget);
+
+    if (this.load.observers.length > 0) {
+      this._load(eventTarget.files);
+    }
+
     this.fileModelChange.emit(value);
+
     this._setValidity(value);
   }
 
-  private _setValidity(value: File|FileList|undefined): void {
+  private _setValidity(value: File | FileList | undefined): void {
     const errors: ValidationErrors = Object.assign({}, this._control.errors);
 
     if (this._hasError(value)) {
@@ -95,22 +103,22 @@ export class FileModelDirective implements Validator {
     this._control.setErrors(Object.keys(errors).length ? errors : null);
   }
 
-  private _hasError(value: File|FileList|undefined): boolean {
+  private _hasError(value: File | FileList | undefined): boolean {
     return (this.required && !this._hasValue(value)) || this.overMaxSize(value);
   }
 
-  private _hasValue(value: File|FileList|undefined): boolean {
+  private _hasValue(value: File | FileList | undefined): boolean {
     if (this._element.nativeElement.hasAttribute('multiple')) {
       return value instanceof FileList && !!value.length;
     }
     return value instanceof File;
   };
 
-  private overMaxSize(value: File|FileList|undefined|any): boolean {
+  private overMaxSize(value: File | FileList | undefined | any): boolean {
     if (this.maxSize && value) {
       const maxSizeByte = this.maxSize * 1024 * 1024;
       if (this._element.nativeElement.hasAttribute('multiple')) {
-        for (let i=0; i<value['length']; i++) {
+        for (let i = 0; i < value['length']; i++) {
           if (value[i].size > maxSizeByte) {
             return true;
           }
@@ -124,11 +132,31 @@ export class FileModelDirective implements Validator {
     return false;
   }
 
-  private _getInputValue(eventTarget: FileInputEventTarget): File|FileList|undefined {
+  private _getInputValue(eventTarget: FileInputEventTarget): File | FileList | undefined {
     if (this._element.nativeElement.hasAttribute('multiple')) {
       return eventTarget.files;
     }
     return eventTarget.files[0];
+  }
+
+  private _load(files: FileList) {
+    if (this._element.nativeElement.hasAttribute('multiple')) {
+      for (let i = 0; i < files.length; i++) {
+        ((index) => {
+          let reader = new FileReader();
+          reader.onload = (event: any) => {
+            this.load.emit([event.target.result, index]);
+          };
+          reader.readAsDataURL(files[index]);
+        })(i);
+      }
+    } else {
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.load.emit(event.target.result);
+      };
+      reader.readAsDataURL(files[0]);
+    }
   }
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "soft-ngx",
-  "version": "0.5.0",
+  "version": "0.5.7-beta",
   "description": "Useful Angular libs by Softever",
   "main": "./bundles/soft-ngx.umd.js",
   "module": "./fesm5/angular-library-starter.js",

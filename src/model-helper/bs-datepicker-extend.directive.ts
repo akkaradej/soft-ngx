@@ -52,7 +52,7 @@ export class BsDatepickerExtendDirective implements OnInit {
       return;
     }
 
-    if (value) {
+    if (value && moment(value).isValid()) {
       // Set date variable
       if (!this.date) {
         this.date = this.convertTime(moment(value));
