@@ -26,7 +26,7 @@ export interface PopupModel {
           </button>
         </header>
         <section class="modal-card-body has-text-centered">
-          <div class="is-margin-bottom" *ngIf="message">
+          <div class="message block-2" *ngIf="message">
             <strong class="is-pre-wrap">{{ message }}</strong>
           </div>
           <div *ngIf="type == 'alert'">

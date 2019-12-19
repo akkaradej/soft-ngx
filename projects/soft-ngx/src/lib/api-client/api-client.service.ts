@@ -73,19 +73,19 @@ export class ApiClientService {
 
     let req = this.requestHelper('Get', url, { body: undefined, params }, isPublic, headerResponse).pipe(
       // retry againg if server error
-      retryWhen((errors) => {
-        let count = 0;
-        return errors.pipe(
-          mergeMap(error => {
-            count++;
-            if (count < 2 && error.status >= 500) {
-              return of(error);
-            }
-            return throwError(error);
-          }),
-          delay(500)
-        );
-      }),
+      // retryWhen((errors) => {
+      //   let count = 0;
+      //   return errors.pipe(
+      //     mergeMap(error => {
+      //       count++;
+      //       if (count < 2 && error.status >= 500) {
+      //         return of(error);
+      //       }
+      //       return throwError(error);
+      //     }),
+      //     delay(500)
+      //   );
+      // }),
       this.globalErrorHandler()
     );
 
