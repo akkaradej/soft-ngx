@@ -13,7 +13,7 @@ import { userStorageConfigToken } from './user-config.token';
 export class StorageModule {
   static forRoot(
     config?: StorageConfig,
-  ): ModuleWithProviders {
+  ): ModuleWithProviders<StorageModule> {
 
     return {
       ngModule: StorageModule,

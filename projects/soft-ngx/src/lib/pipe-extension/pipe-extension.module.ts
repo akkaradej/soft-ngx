@@ -15,7 +15,7 @@ import { SafePipe } from './safe.pipe';
   ]
 })
 export class PipeExtensionModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<PipeExtensionModule> {
     return {
       ngModule: PipeExtensionModule,
       providers: []

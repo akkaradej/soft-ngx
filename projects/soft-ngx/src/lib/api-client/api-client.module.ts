@@ -19,7 +19,7 @@ import { userApiClientConfigToken } from './user-config.token';
 export class ApiClientModule {
   static forRoot(
     config?: ApiClientConfig
-  ): ModuleWithProviders {
+  ): ModuleWithProviders<ApiClientModule> {
     return {
       ngModule: ApiClientModule,
       providers: [

@@ -29,7 +29,7 @@ import { userConfigToken } from './user-config.token';
 export class BusyModule {
   static forRoot(
     config?: BusyConfig
-  ): ModuleWithProviders {
+  ): ModuleWithProviders<BusyModule> {
     return {
       ngModule: BusyModule,
       providers: [

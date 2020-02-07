@@ -25,7 +25,7 @@ import { userPopupConfigToken } from './user-config.token';
 export class PopupModule {
   static forRoot(
     config?: PopupConfig
-  ): ModuleWithProviders {
+  ): ModuleWithProviders<PopupModule> {
     return {
       ngModule: PopupModule,
       providers: [

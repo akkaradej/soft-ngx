@@ -33,7 +33,7 @@ export class AuthModule {
       customAuthRequestKey?: CustomAuthRequestKey,
       customAuthResponseKey?: CustomAuthResponseKey,
     } = {}
-  ): ModuleWithProviders {
+  ): ModuleWithProviders<AuthModule> {
 
     return {
       ngModule: AuthModule,

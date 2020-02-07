@@ -27,7 +27,7 @@ import { FileModelDirective } from './file-model.directive';
   ]
 })
 export class ModelHelperModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<ModelHelperModule> {
     return {
       ngModule: ModelHelperModule,
       providers: [

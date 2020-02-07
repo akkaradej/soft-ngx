@@ -18,7 +18,7 @@ import { ModalComponent, ModalTitleComponent } from './modal.component';
   ]
 })
 export class ModalModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<ModalModule> {
     return {
       ngModule: ModalModule,
       providers: [
