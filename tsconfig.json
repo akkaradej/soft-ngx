@@ -5,10 +5,10 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es5",
     "typeRoots": [
@@ -17,14 +17,10 @@
     "lib": [
       "es2018",
       "dom"
-    ],
-    "paths": {
-      "soft-ngx": [
-        "dist/soft-ngx"
-      ],
-      "soft-ngx/*": [
-        "dist/soft-ngx/*"
-      ]
-    }
+    ]
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, ModuleWithProviders, Provider } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { PopupModule } from '../popup/popup.module';
 import { windowToken, getWindow } from '../window';

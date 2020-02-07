@@ -34,14 +34,21 @@ export { WebHttpUrlEncodingCodec } from './lib/auth/encoder';
 
 export { BusyConfig } from './lib/busy/busy.config';
 export { BusyModule } from './lib/busy/busy.module';
+export { BusyStateDirective } from './lib/busy/busy-state.directive';
+export { DisabledStateDirective } from './lib/busy/disabled-state.directive';
+export { LoadingStateDirective } from './lib/busy/loading-state.directive';
 
-export { ModalComponent } from './lib/modal/modal.component';
+export { ModalComponent, ModalTitleComponent } from './lib/modal/modal.component';
 export { ModalContent } from './lib/modal/modal-content';
 export { ModalModule } from './lib/modal/modal.module';
 
 export { ModelHelperModule } from './lib/model-helper/model-helper.module';
+export { BsDatepickerExtendDirective } from './lib/model-helper/bs-datepicker-extend.directive';
+export { CompareByDirective, CompareBySelectOption } from './lib/model-helper/compare-by.directive';
+export { FileModelDirective } from './lib/model-helper/file-model.directive';
 
 export { PipeExtensionModule } from './lib/pipe-extension/pipe-extension.module';
+export { SafePipe } from './lib/pipe-extension/safe.pipe';
 
 export { PopupConfig } from './lib/popup/popup.config';
 export { userPopupConfigToken } from './lib/popup/user-config.token';
