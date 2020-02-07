@@ -1243,10 +1243,10 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
-angular2-promise-buttons@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/angular2-promise-buttons/-/angular2-promise-buttons-3.0.1.tgz#4469c557536032e306037891badc8b687d65cc3a"
-  integrity sha512-bfUznEiojGTUaAsM2SkKjAjtNSXMtzpN4949KLe/sDz+bNfqyB3+bwDCAahfP5NEpnCev/fMI5mzwALrglvc6w==
+angular2-promise-buttons@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/angular2-promise-buttons/-/angular2-promise-buttons-4.0.1.tgz#8784edbf896e934574273e21de1457dca9e08e4e"
+  integrity sha512-SHt9K1BmM9dpfcm6fbnlmjduWzm6RpC3Uc7vFj1Z0ml8OMOc+nnyFkoAXOMf1tnYCFhTgNyz2mMCtms2wG9oXA==
 
 ansi-align@^2.0.0:
   version "2.0.0"
@@ -5596,9 +5596,9 @@ ng-packagr@^4.2.0:
     uglify-js "^3.0.7"
     update-notifier "^2.3.0"
 
-"ng2-bootstrap-modal@https://github.com/akkaradej/ng2-bootstrap-modal.git":
+"ng2-bootstrap-modal@https://github.com/akkaradej/ng2-bootstrap-modal.git#angular-9-support":
   version "1.0.1"
-  resolved "https://github.com/akkaradej/ng2-bootstrap-modal.git#3f16fe965cd83c92a163d3484268294251425556"
+  resolved "https://github.com/akkaradej/ng2-bootstrap-modal.git#28020afca7437538d8e16c0c449fc8218a7b6112"
 
 ngx-bootstrap@>=3.0.1:
   version "5.2.0"
@@ -8167,10 +8167,10 @@ ts-node@~7.0.0:
     source-map-support "^0.5.6"
     yn "^2.0.0"
 
-tsickle@^0.37.1:
-  version "0.37.1"
-  resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.37.1.tgz#2f8a87c1b15766e866457bd06fb6c0e0d84eed09"
-  integrity sha512-0GwgOJEnsmRsrONXCvcbAWY0CvdqF3UugPVoupUpA8Ul0qCPTuqqq0ou/hLqtKZOyyulzCP6MYRjb9/J1g9bJg==
+tsickle@^0.38.0:
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.38.0.tgz#89f5952c9bb3ba0b36dc384975e23cf90e584822"
+  integrity sha512-k7kI6afBuLd2jIrj9JR8lKhEkp99sFVRKQbHeaHQkdvDaH5AvzwqA/qX+aNj28OfuAsWryOKAZoXm24l7JelEw==
 
 tslib@1.10.0, tslib@^1.10.0, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.10.0"

@@ -16,8 +16,8 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "angular2-promise-buttons": "^3.0.0",
-    "ng2-bootstrap-modal": "https://github.com/akkaradej/ng2-bootstrap-modal.git",
+    "angular2-promise-buttons": "^4.0.1",
+    "ng2-bootstrap-modal": "https://github.com/akkaradej/ng2-bootstrap-modal.git#angular-9-support",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -44,7 +44,7 @@
     "ngx-bootstrap": ">=3.0.1",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tsickle": "^0.37.1",
+    "tsickle": "^0.38.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
   }
