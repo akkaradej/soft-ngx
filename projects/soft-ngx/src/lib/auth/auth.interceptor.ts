@@ -21,7 +21,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   protected config: Required<AuthInterceptorConfig> = {
     autoRefreshToken: false,
-    loginScreenUrl: '' // redirect to this login url if cannot get new token
+    loginScreenUrl: '', // redirect to this login url if cannot get new token
+    forceSendToken: false,
   };
 
   private _isRefreshing = false;
@@ -38,7 +39,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (request.headers.has('Authorization')) {
+    if (this.config.forceSendToken) {
+      request = this.setAuthHeader(request);
+    } else if (request.headers.has('Authorization')) {
       if (this.authService.isLoggedIn) {
         request = this.setAuthHeader(request);
       } else {

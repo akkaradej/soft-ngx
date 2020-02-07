@@ -13,6 +13,7 @@ export interface AuthServiceConfig {
 export interface AuthInterceptorConfig {
   autoRefreshToken?: boolean;
   loginScreenUrl?: string;
+  forceSendToken?: boolean;
 }
 
 export interface CustomAuthRequestKey {

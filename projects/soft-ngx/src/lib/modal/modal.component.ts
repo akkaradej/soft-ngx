@@ -33,7 +33,7 @@ export class ModalComponent implements OnInit {
   @Output() closed = new EventEmitter();
   @Output() removed = new EventEmitter();
 
-  @ContentChild('modalContent') modalContent: ModalContent;
+  @ContentChild('modalContent', { static: false }) modalContent: ModalContent;
 
   // Tip: Use with ngIf for re-create modalContent every time opening
   isOpen = false;

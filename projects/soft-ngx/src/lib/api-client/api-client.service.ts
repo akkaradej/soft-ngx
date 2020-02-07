@@ -239,7 +239,7 @@ export class ApiClientService {
       try {
         return JSON.parse(body, this.config.dateReviver || this.dateReviver);
       } catch (error) {
-        console.error('json is invalid');
+        return body;
       }
     }
     return '';
