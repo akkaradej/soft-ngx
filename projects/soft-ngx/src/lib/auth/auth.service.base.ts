@@ -159,9 +159,9 @@ export class AuthServiceBase implements AuthServiceInterface {
       }
     }
 
-    if (rememberMe === true) {
+    if (rememberMe) {
       this.storage.setItemPersistent('remember_me', true);
-    } else if (rememberMe === false) {
+    } else {
       this.storage.setItemPersistent('remember_me', false);
     }
 
