@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DialogComponent, DialogService } from 'ng2-bootstrap-modal';
+import { Subject } from 'rxjs';
 
 export interface PopupModel {
   title: string;
@@ -14,35 +14,35 @@ export interface PopupModel {
 @Component({
   selector: 'soft-popup',
   template: `
-    <div class="modal is-small is-{{ colorVar }} is-active">
-      <div class="modal-background" (click)="close()"></div>
+    <div class="modal is-small is-{{ data.colorVar }} is-active">
+      <div class="modal-background" (click)="onDismiss()"></div>
       <div class="modal-card modal-card-no-footer" style="width: 350px;">
         <header class="modal-card-head">
           <p class="modal-card-title">
-            {{ title }}
+            {{ data.title }}
           </p>
           <button type="button" class="delete" aria-label="close"
-          (click)="close()">
+          (click)="onDismiss()">
           </button>
         </header>
         <section class="modal-card-body has-text-centered">
-          <div class="message block-2" *ngIf="message">
-            <strong class="is-pre-wrap">{{ message }}</strong>
+          <div class="message block-2" *ngIf="data.message">
+            <strong class="is-pre-wrap">{{ data.message }}</strong>
           </div>
-          <div *ngIf="type == 'alert'">
-            <button class="button is-fat is-{{ colorVar }}" (click)="close()">{{ agreeText }}</button>
+          <div *ngIf="data.type == 'alert'">
+            <button class="button is-fat is-{{ data.colorVar }}" (click)="onDismiss()">{{ data.agreeText }}</button>
           </div>
-          <div *ngIf="type == 'confirm'">
-            <ng-container *ngIf="isAgreeFirst">
-              <button class="button is-fat is-{{ colorVar }}" (click)="confirm()">{{ agreeText }}</button>
+          <div *ngIf="data.type == 'confirm'">
+            <ng-container *ngIf="data.isAgreeFirst">
+              <button class="button is-fat is-{{ data.colorVar }}" (click)="onConfirm()">{{ data.agreeText }}</button>
               &nbsp;
-              <button class="button is-fat is-light" (click)="close()">{{ disagreeText }}</button>
+              <button class="button is-fat is-light" (click)="onDismiss()">{{ data.disagreeText }}</button>
             </ng-container>
 
-            <ng-container *ngIf="!isAgreeFirst">
-              <button class="button is-fat is-light" (click)="close()">{{ disagreeText }}</button>
+            <ng-container *ngIf="!data.isAgreeFirst">
+              <button class="button is-fat is-light" (click)="onDismiss()">{{ data.disagreeText }}</button>
               &nbsp;
-              <button class="button is-fat is-{{ colorVar }}" (click)="confirm()">{{ agreeText }}</button>
+              <button class="button is-fat is-{{ data.colorVar }}" (click)="onConfirm()">{{ data.agreeText }}</button>
             </ng-container>
           </div>
         </section>
@@ -50,22 +50,23 @@ export interface PopupModel {
     </div>
   `
 })
-export class PopupComponent extends DialogComponent<PopupModel, boolean> implements PopupModel {
-  title: string;
-  message: string;
-  colorVar: string;
-  type: 'alert' | 'confirm';
-  agreeText: string;
-  disagreeText: string;
-  isAgreeFirst: boolean;
+export class PopupComponent {
 
-  constructor(dialogService: DialogService) {
-    super(dialogService);
+  data: PopupModel;
+
+  private result = new Subject();
+  public result$ = this.result.asObservable();
+
+  constructor() {
   }
-  confirm() {
-    // we set dialog result as true on click on confirm button,
-    // then we can get dialog result from caller code
-    this.result = true;
-    this.close();
+
+  onConfirm() {
+    this.result.next(true);
+    this.result.complete();
+  }
+
+  onDismiss() {
+    this.result.next(false);
+    this.result.complete();
   }
 }

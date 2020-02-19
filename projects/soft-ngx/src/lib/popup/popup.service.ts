@@ -2,10 +2,10 @@ import { Injectable, Inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { DialogService } from 'ng2-bootstrap-modal';
-import { PopupComponent } from './popup.component';
+import { PopupComponent, PopupModel } from './popup.component';
 import { PopupConfig, defaultConfig } from './popup.config';
 import { userPopupConfigToken } from './user-config.token';
+import { DialogService } from './dialog.service';
 
 @Injectable()
 export class PopupService {
@@ -24,7 +24,7 @@ export class PopupService {
     colorVar = (colorVar || this.config.alertColorVar) as string;
     agreeText = (agreeText || this.config.alertAgreeText) as string;
 
-    return this.dialogService.addDialog(PopupComponent, {
+    return this.dialogService.addDialog<PopupModel>(PopupComponent, {
       type: 'alert',
       title,
       message,
@@ -35,8 +35,9 @@ export class PopupService {
     });
   }
 
-  confirm(title: string, message = '', colorVar?: string,
-          agreeText?: string, disagreeText?: string, isAgreeFirst?: boolean,
+  confirm(
+    title: string, message = '', colorVar?: string,
+    agreeText?: string, disagreeText?: string, isAgreeFirst?: boolean,
   ): Observable<boolean> {
 
     colorVar = (colorVar || this.config.alertColorVar) as string;
@@ -44,7 +45,7 @@ export class PopupService {
     disagreeText = (disagreeText || this.config.disagreeText) as string;
     isAgreeFirst = (isAgreeFirst || this.config.isAgreeFirst) as boolean;
 
-    return this.dialogService.addDialog(PopupComponent, {
+    return this.dialogService.addDialog<PopupModel>(PopupComponent, {
       type: 'confirm',
       title,
       message,
@@ -67,7 +68,7 @@ export class PopupService {
     disagreeText = (disagreeText || this.config.disagreeText) as string;
     isAgreeFirst = (isAgreeFirst || this.config.isAgreeFirst) as boolean;
 
-    return this.dialogService.addDialog(PopupComponent, {
+    return this.dialogService.addDialog<PopupModel>(PopupComponent, {
       type: 'confirm',
       title,
       message,
@@ -78,7 +79,7 @@ export class PopupService {
     });
   }
 
-  custom(component: any, options: any) {
-    return this.dialogService.addDialog(component, options);
+  custom(component: any, data: any) {
+    return this.dialogService.addDialog(component, data);
   }
 }

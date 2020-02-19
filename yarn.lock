@@ -5937,22 +5937,6 @@ ng-packagr@^9.0.0:
     terser "^4.3.8"
     update-notifier "^4.0.0"
 
-"ng2-bootstrap-modal@https://github.com/akkaradej/ng2-bootstrap-modal.git#angular-9-support":
-  version "0.0.0"
-  resolved "https://github.com/akkaradej/ng2-bootstrap-modal.git#f15b97dc04a90236a84f81a04a43e3bab66004b2"
-  dependencies:
-    "@angular/animations" "~9.0.0"
-    "@angular/common" "~9.0.0"
-    "@angular/compiler" "~9.0.0"
-    "@angular/core" "~9.0.0"
-    "@angular/forms" "~9.0.0"
-    "@angular/platform-browser" "~9.0.0"
-    "@angular/platform-browser-dynamic" "~9.0.0"
-    "@angular/router" "~9.0.0"
-    rxjs "~6.5.4"
-    tslib "^1.10.0"
-    zone.js "~0.10.2"
-
 ngx-bootstrap@>=3.0.1:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-5.2.0.tgz#3b8fc064a2830af014292070066ac6e64749ba14"

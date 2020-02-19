@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 
 import { PopupService } from './popup.service';
 import { PopupComponent } from './popup.component';
 import { PopupConfig } from './popup.config';
 import { userPopupConfigToken } from './user-config.token';
+import { DialogService } from './dialog.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    BootstrapModalModule
+    DialogService,
   ],
   declarations: [
     PopupComponent
