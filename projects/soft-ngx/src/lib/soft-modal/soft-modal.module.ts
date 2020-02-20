@@ -16,11 +16,4 @@ import { SoftModalComponent, ModalTitleComponent } from './soft-modal.component'
     ModalTitleComponent,
   ],
 })
-export class SoftModalModule {
-  static forRoot(): ModuleWithProviders<SoftModalModule> {
-    return {
-      ngModule: SoftModalModule,
-      providers: [],
-    };
-  }
-}
+export class SoftModalModule { }

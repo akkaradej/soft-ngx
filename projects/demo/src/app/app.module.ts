@@ -9,8 +9,7 @@ import {
   SoftPopupConfig, SoftStorageConfig, SoftAuthRequestKey, SoftAuthResponseKey,
 
   // Modules
-  SoftApiClientModule, SoftAuthModule, SoftModalModule, SoftModelModule,
-  SoftPopupModule, SoftStorageModule, SoftUIStateModule, SoftPipeModule,
+  SoftNgxModule,
 
   // Interceptors
   DateRequestInterceptor, NoCacheInterceptor,
@@ -60,16 +59,16 @@ export function initAuthInterceptorConfigToken(): SoftAuthInterceptorConfig {
 export function initPopupConfig(): SoftPopupConfig {
   return {
     // general
-    agreeText: 'ใช่',
-    disagreeText: 'ไม่ใช่',
+    agreeText: 'Yes',
+    disagreeText: 'No',
     // alert
-    alertAgreeText: 'ตกลง',
+    alertAgreeText: 'OK',
     // delete
     deleteTitleFunc: (itemName: string) => {
-      return `ยืนยันการลบ`;
+      return `Confirm Deletion`;
     },
     deleteMessageFunc: (itemName: string) => {
-      return `คุณต้องการลบ "${itemName}" ใช่หรือไม่`;
+      return `Are you sure you want to delete "${itemName}"?`;
     },
   };
 }
@@ -90,7 +89,6 @@ const customAuthResponseKey: SoftAuthResponseKey = {
   refresh_token: 'refresh_token'
 };
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -107,19 +105,27 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     BrowserModule,
     FormsModule,
 
-    // soft-ngx
-    SoftUIStateModule,
-    SoftModalModule,
-    SoftModelModule,
-    SoftPipeModule,
+    // Single import at AppModule or CoreModule
+    SoftNgxModule.forRoot(AuthService),
 
-    SoftApiClientModule.forRoot(),
-    SoftAuthModule.forRoot(AuthService),
-    SoftModalModule.forRoot(),
-    SoftModelModule.forRoot(),
-    SoftPopupModule.forRoot(),
-    SoftStorageModule.forRoot(),
-    SoftUIStateModule.forRoot(),
+    //// Single import at SharedModule // => for Lazy Load Module Only
+    // SoftNgxModule
+
+    //// Selective import at AppModule or CoreModule
+    // SoftApiClientModule.forRoot(),
+    // SoftAuthModule.forRoot(AuthService),
+    // SoftPopupModule.forRoot(),
+    // SoftStorageModule.forRoot(),
+    // SoftUIStateModule.forRoot(),
+    // SoftModalModule, // => for Non-Lazy Load Module Only
+    // SoftModelModule, // => for Non-Lazy Load Module Only
+    // SoftPipeModule, // => for Non-Lazy Load Module Only
+
+    //// Selective import at SharedModule // => for Lazy Load Module Only
+    // SoftModalModule,
+    // SoftModelModule,
+    // SoftPipeModule,
+    // SoftUIStateModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },

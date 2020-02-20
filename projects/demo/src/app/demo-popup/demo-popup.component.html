@@ -1,17 +1,18 @@
 <section class="section">
-  <h2 class="title is-2">SoftPopup</h2>
-  <div class="box">
-    <h3 class="subtitle">
-      Alert
-    </h3>
-    <button
-      class="button"
-      (click)="alert()"
-    >
-      Alert
-    </button>
-    <pre>
-    {{'
+  <div class="container">
+    <h2 class="title is-2">SoftPopup</h2>
+    <div class="box">
+      <h3 class="subtitle">
+        Alert
+      </h3>
+      <button
+        class="button"
+        (click)="alert()"
+      >
+        Alert
+      </button>
+      <pre>
+      {{'
         # html
         &lt;button class="button" 
           (click)="alert()"&gt;
@@ -23,28 +24,28 @@
           '}}<strong>{{'this.popupService.alert'}}</strong>{{'(\'Hi! Everybody\', \'I\\\'m Alert Popup\', \'primary\');
         }
       '}}
-    </pre>
-  </div>
+      </pre>
+    </div>
 
-  <div class="box">
-    <h3 class="subtitle">
-      Confirm
-    </h3>
-    <button
-      class="button"
-      (click)="confirm()"
-    >
-      Confirm
-    </button>
-    <button
-      class="button"
-      (click)="confirmCustomText()"
-    >
-      Confirm Custom Text
-      <small>&nbsp;(show agree button at 2nd)</small>
-    </button>
+    <div class="box">
+      <h3 class="subtitle">
+        Confirm
+      </h3>
+      <button
+        class="button"
+        (click)="confirm()"
+      >
+        Confirm
+      </button>
+      <button
+        class="button"
+        (click)="confirmCustomText()"
+      >
+        Custom Text
+        <small>&nbsp;(and Agree at 2nd)</small>
+      </button>
 
-    <pre>
+      <pre>
         # html
         &lt;button class="button" 
           (click)="confirm()"&gt;
@@ -52,7 +53,7 @@
         &lt;/button&gt;
         &lt;button class="button" 
           (click)="confirmCustomText()"&gt;
-          Confirm Custom Text
+          Custom Text
         &lt;/button&gt;
 
         # ts
@@ -74,22 +75,22 @@
             &#125;);
         &#125;
     </pre>
-  </div>
+    </div>
 
-  <div class="box">
-    <h3 class="subtitle">
-      Confirm Delete
-    </h3>
-    <ul class="is-margin-top">
-      <li *ngFor="let product of products">
-        {{ product.name }} -
-        <button
-          class="button"
-          (click)="delete(product)"
-        >Confirm Delete</button>
-      </li>
-    </ul>
-    <pre>
+    <div class="box">
+      <h3 class="subtitle">
+        Confirm Delete
+      </h3>
+      <ul class="is-margin-top">
+        <li *ngFor="let product of products">
+          {{ product.name }} -
+          <button
+            class="button"
+            (click)="delete(product)"
+          >Confirm Delete</button>
+        </li>
+      </ul>
+      <pre>
       # html
       &lt;ul class="is-margin-top"&gt;
         &lt;li *ngFor="let product of products"&gt;
@@ -114,5 +115,6 @@
       &#125;
         
     </pre>
+    </div>
   </div>
 </section>

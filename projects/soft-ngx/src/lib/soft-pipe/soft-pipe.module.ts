@@ -14,11 +14,4 @@ import { SafePipe } from './safe.pipe';
     SafePipe,
   ],
 })
-export class SoftPipeModule {
-  static forRoot(): ModuleWithProviders<SoftPipeModule> {
-    return {
-      ngModule: SoftPipeModule,
-      providers: [],
-    };
-  }
-}
+export class SoftPipeModule { }

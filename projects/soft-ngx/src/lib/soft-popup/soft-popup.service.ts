@@ -21,8 +21,8 @@ export class SoftPopupService {
 
   alert(title: string, message = '', colorVar?: string, agreeText?: string) {
 
-    colorVar = (colorVar || this.config.alertColorVar) as string;
-    agreeText = (agreeText || this.config.alertAgreeText) as string;
+    colorVar = colorVar || this.config.alertColorVar;
+    agreeText = agreeText || this.config.alertAgreeText;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
       type: 'alert',
@@ -40,10 +40,10 @@ export class SoftPopupService {
     agreeText?: string, disagreeText?: string, isAgreeFirst?: boolean,
   ): Observable<boolean> {
 
-    colorVar = (colorVar || this.config.alertColorVar) as string;
-    agreeText = (agreeText || this.config.alertAgreeText) as string;
-    disagreeText = (disagreeText || this.config.disagreeText) as string;
-    isAgreeFirst = (isAgreeFirst || this.config.isAgreeFirst) as boolean;
+    colorVar = colorVar || this.config.confirmColorVar;
+    agreeText = agreeText || this.config.agreeText;
+    disagreeText = disagreeText || this.config.disagreeText;
+    isAgreeFirst = isAgreeFirst !== undefined ? isAgreeFirst : this.config.isAgreeFirst;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
       type: 'confirm',
@@ -61,12 +61,12 @@ export class SoftPopupService {
     agreeText?: string, disagreeText?: string, isAgreeFirst?: boolean,
   ): Observable<boolean> {
 
-    title = (title || (this.config.deleteTitleFunc && this.config.deleteTitleFunc(itemName))) as string;
-    message = (message || (this.config.deleteMessageFunc && this.config.deleteMessageFunc(itemName))) as string;
-    colorVar = (colorVar || this.config.alertColorVar) as string;
-    agreeText = (agreeText || this.config.alertAgreeText) as string;
-    disagreeText = (disagreeText || this.config.disagreeText) as string;
-    isAgreeFirst = (isAgreeFirst || this.config.isAgreeFirst) as boolean;
+    title = title || (this.config.deleteTitleFunc && this.config.deleteTitleFunc(itemName));
+    message = message || (this.config.deleteMessageFunc && this.config.deleteMessageFunc(itemName));
+    colorVar = colorVar || this.config.deleteColorVar;
+    agreeText = agreeText || this.config.agreeText;
+    disagreeText = disagreeText || this.config.disagreeText;
+    isAgreeFirst = isAgreeFirst !== undefined ? isAgreeFirst : this.config.isAgreeFirst;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
       type: 'confirm',

@@ -20,11 +20,4 @@ import { SoftFileModelDirective } from './soft-file-model.directive';
     SoftFileModelDirective,
   ],
 })
-export class SoftModelModule {
-  static forRoot(): ModuleWithProviders<SoftModelModule> {
-    return {
-      ngModule: SoftModelModule,
-      providers: [],
-    };
-  }
-}
+export class SoftModelModule { }

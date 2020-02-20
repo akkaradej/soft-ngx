@@ -54,3 +54,5 @@ export { userSoftPopupConfigToken } from './lib/soft-popup/user-config.token';
 export { SoftPopupModule } from './lib/soft-popup/soft-popup.module';
 export { SoftPopupComponent } from './lib/soft-popup/soft-popup.component';
 export { SoftPopupService } from './lib/soft-popup/soft-popup.service';
+
+export { SoftNgxModule } from './lib/soft-ngx.module';

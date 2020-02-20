@@ -1,19 +1,20 @@
 <section class="section">
-  <h2 class="title is-2">SoftModal</h2>
-  <div class="box">
-    <button
-      class="button"
-      (click)="modal.open()"
-    >Open</button>
-    <soft-modal #modal>
-      <modal-title>
-        My Title
-      </modal-title>
-      <div #modalContent>
-        My Body
-      </div>
-    </soft-modal>
-    <pre>
+  <div class="container">
+    <h2 class="title is-2">SoftModal</h2>
+    <div class="box">
+      <button
+        class="button"
+        (click)="modal.open()"
+      >Open</button>
+      <soft-modal #modal>
+        <modal-title>
+          My Title
+        </modal-title>
+        <div #modalContent>
+          My Body
+        </div>
+      </soft-modal>
+      <pre>
       &lt;button class="button" (click)="modal.open()"&gt;Open&lt;/button&gt;
 
       &lt;soft-modal #modal&gt;
@@ -25,5 +26,6 @@
         &lt;/div&gt;
       &lt;/soft-modal&gt;
     </pre>
+    </div>
   </div>
 </section>
