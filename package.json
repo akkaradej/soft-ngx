@@ -1,9 +1,9 @@
 {
-  "name": "soft-ngx-app",
+  "name": "soft-ngx",
   "version": "0.0.0",
   "scripts": {
-    "start": "npx ng serve",
-    "build_lib": "npx ng build soft-ngx",
+    "start": "npx ng serve demo",
+    "build_lib": "npx ng build soft-ngx --prod",
     "pack_lib": "cd dist/soft-ngx && npm pack",
     "package": "npm run build_lib && npm run pack_lib"
   },
@@ -23,8 +23,8 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.1",
-    "@angular-devkit/build-ng-packagr": "~0.900.1",
+    "@angular-devkit/build-angular": "~0.900.2",
+    "@angular-devkit/build-ng-packagr": "~0.900.2",
     "@angular/cli": "~9.0.1",
     "@angular/compiler-cli": "~9.0.0",
     "@angular/language-service": "~9.0.0",
@@ -39,10 +39,9 @@
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
-    "moment": ">=2.22.2",
     "ng-packagr": "^9.0.0",
-    "ngx-bootstrap": ">=3.0.1",
     "protractor": "~5.4.3",
+    "trunks-ui": "https://github.com/akkaradej/trunks-ui.git",
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
     "typescript": "~3.7.5"

@@ -1,0 +1,74 @@
+<section class="section">
+  <h2 class="title is-2">SoftModel</h2>
+
+  <div class="box">
+    <h3 class="subtitle">
+      softCompareBy
+    </h3>
+    <div class="select">
+      <select
+        name="items"
+        [(ngModel)]="selectedItem"
+        [softCompareBy]="'id'"
+      >
+        <option
+          [disabled]="true"
+          [hidden]="true"
+          [ngValue]="undefined"
+        >-- select --</option>
+        <option
+          *ngFor="let item of items"
+          [ngValue]="item"
+        >
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+    <pre>
+      # html
+      &lt;div class="select"&gt;
+        &lt;select
+          name="items"
+          [(ngModel)]="selectedItem"
+          <strong>[softCompareBy]="'id'"</strong>&gt;
+          &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
+          &lt;option 
+            *ngFor="let item of items"
+            [ngValue]="item"&gt;
+            {{ item.name }<!---->}
+          &lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      # ts
+      items = [&#123; id: 1, name: 'item 1' &#125;, &#123; id: 2, name: 'item 2' &#125;, &#123; id: 3, name: 'item 3' &#125;];
+      selectedItem = &#123; id: 2, whatever: 'just matched with id' &#125;;
+    </pre>
+  </div>
+
+
+  <div class="box">
+    <h3 class="subtitle">
+      softFileModel
+    </h3>
+    {{ file?.name }}
+    <input
+      class="input"
+      type="file"
+      name="file"
+      ngModel
+      [maxSize]="10"
+      [(softFileModel)]="file"
+    > * Max file size: 10 MB
+    <pre>
+    {{ file?.name }<!---->}
+      &lt;input class="input"
+        type="file"  
+        name="file"
+        ngModel
+        [maxSize]="10"
+        <strong>[(softFileModel)]="file"</strong>&gt;
+      * Max file size: 10 MB
+    </pre>
+  </div>
+</section>
