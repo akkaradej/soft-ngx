@@ -6,7 +6,8 @@ export interface SoftApiClientConfig {
     pageCount: string;
     totalCount: string;
   };
-  dateReviver?: (key: string, value: string) => string | Date;
+  dateRequestFormatter?: (date: Date) => string;
+  dateResponseReviver?: (key: string, value: string) => string | Date;
   errorHandler?: (err) => SoftApiErrorHandler;
 }
 

@@ -237,7 +237,7 @@ export class SoftApiClientService {
   private formatResponse(body: any) {
     if (body !== '') {
       try {
-        return JSON.parse(body, this.config.dateReviver || this.dateReviver);
+        return JSON.parse(body, this.config.dateResponseReviver || this.dateResponseReviver);
       } catch (error) {
         return body;
       }
@@ -245,7 +245,7 @@ export class SoftApiClientService {
     return '';
   }
 
-  private dateReviver(key: string, value: string) {
+  private dateResponseReviver(key: string, value: string) {
     let a;
     if (typeof value === 'string' && value.length === 20) {
       a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
