@@ -14,19 +14,19 @@ export class SafePipe implements PipeTransform {
     }
     switch (type) {
       case 'html':
-        // only use this when the bound HTML is unsafe (e.g. [innerHTML] contains <script> tags) and the code should be executed
+        // trust html content e.g. [innerHTML]
         return this.sanitizer.bypassSecurityTrustHtml(value);
       case 'style':
-        // safe style value (e.g. [style.background-image])
+        // trust css content e.g. [style.background-image]
         return this.sanitizer.bypassSecurityTrustStyle(value);
       case 'script':
-        // safe JavaScript
+        // trust javascript content e.g. content with <script>...</script>
         return this.sanitizer.bypassSecurityTrustScript(value);
       case 'url':
-        // safe style URL, i.e. a value that can be used in hyperlinks or <img src>
+        // trust a value that can be used in hyperlinks e.g. <img src>
         return this.sanitizer.bypassSecurityTrustUrl(value);
       case 'resourceUrl':
-        // safe resource URL, i.e.a location that may be used to load executable code from, like <script src>, or <iframe src>
+        // trust a location that may be used to load executable code from, e.g. <script src> <iframe src>
         return this.sanitizer.bypassSecurityTrustResourceUrl(value);
       default:
         throw new Error(`Unable to bypass security for invalid type: ${type}`);

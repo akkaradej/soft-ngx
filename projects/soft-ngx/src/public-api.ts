@@ -49,6 +49,7 @@ export { SoftFileModelDirective } from './lib/soft-model/soft-file-model.directi
 export { SoftPipeModule } from './lib/soft-pipe/soft-pipe.module';
 export { SafePipe } from './lib/soft-pipe/safe.pipe';
 
+export { SoftDialog } from './lib/soft-popup/soft-dialog.interface';
 export { SoftPopupConfig } from './lib/soft-popup/soft-popup.config';
 export { userSoftPopupConfigToken } from './lib/soft-popup/user-config.token';
 export { SoftPopupModule } from './lib/soft-popup/soft-popup.module';

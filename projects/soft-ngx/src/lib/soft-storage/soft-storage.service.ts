@@ -3,7 +3,9 @@ import { Injectable, Inject } from '@angular/core';
 import { SoftStorageConfig, defaultConfig } from './soft-storage.config';
 import { userSoftStorageConfigToken } from './user-config.token';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SoftStorageService implements Storage {
 
   protected config = {} as Required<SoftStorageConfig>;

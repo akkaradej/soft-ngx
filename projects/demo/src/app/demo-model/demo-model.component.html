@@ -4,8 +4,54 @@
 
     <div class="box">
       <h3 class="subtitle">
+        softForm
+      </h3>
+      <ul class="block">
+        <li>- emit NgForm</li>
+        <li>- add .sumitted class</li>
+        <li>- smooth scroll to first .ng-invalid element</li>
+      </ul>
+      <form (softForm)="save($event)">
+        <div class="field">
+          <div class="control">
+            <input
+              name="first"
+              class="input"
+              ngModel
+              required
+            >
+          </div>
+        </div>
+        <button class="button">Submit</button>
+      </form>
+      <pre>
+      # html
+      &lt;form <strong>(softForm)="save($event)"</strong>&gt;
+        &lt;div class="field"&gt;
+          &lt;div class="control"&gt;
+            &lt;input name="first" class="input" ngModel required&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+
+      # ts
+      save(form) &#123;
+        if (form.invalid) &#123;
+          return;
+        &#125;
+        // do after form valid
+      &#125;
+      </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
         softCompareBy
       </h3>
+      <ul class="block">
+        <li>- select compare with object's property</li>
+        <li>- use simple directive instead of writing compare function</li>
+      </ul>
       <div class="select">
         <select
           name="items"
@@ -52,6 +98,11 @@
       <h3 class="subtitle">
         softFileModel
       </h3>
+      <ul class="block">
+        <li>- ngModel for file input</li>
+        <li>- [maxSize] validate max file size in MB</li>
+        <li>- (loaded) get dataUri</li>
+      </ul>
       {{ file?.name }}
       <input
         class="input"

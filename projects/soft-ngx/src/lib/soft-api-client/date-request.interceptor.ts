@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { defaultConfig, SoftApiClientConfig } from './soft-api-client.config';
 import { userSoftApiClientConfigToken } from './user-config.token';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DateRequestInterceptor implements HttpInterceptor {
 
   config = {} as SoftApiClientConfig;

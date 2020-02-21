@@ -29,6 +29,7 @@ import { DemoPipeComponent } from './demo-pipe/demo-pipe.component';
 import { DemoPopupComponent } from './demo-popup/demo-popup.component';
 import { DemoUIStateComponent } from './demo-ui-state/demo-ui-state.component';
 import { FormsModule } from '@angular/forms';
+import { CustomDialogComponent } from './demo-popup/custom-dialog-component';
 
 export function initApiClientConfig(): SoftApiClientConfig {
   return {
@@ -100,6 +101,7 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     DemoPipeComponent,
     DemoPopupComponent,
     DemoUIStateComponent,
+    CustomDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -141,6 +143,9 @@ const customAuthResponseKey: SoftAuthResponseKey = {
   ],
   bootstrap: [
     AppComponent
+  ],
+  entryComponents: [
+    CustomDialogComponent,
   ]
 })
 export class AppModule { }

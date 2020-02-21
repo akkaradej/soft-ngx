@@ -6,7 +6,9 @@ import {
   SoftAuthInterceptorConfig, userSoftAuthInterceptorConfigToken
 } from 'soft-ngx';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthInterceptor extends SoftAuthInterceptor {
 
   constructor(

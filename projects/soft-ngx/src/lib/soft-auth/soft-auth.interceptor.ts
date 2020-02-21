@@ -14,7 +14,9 @@ import { SoftAuthServiceInterface } from './soft-auth.service.interface';
 import { SoftAuthService } from './soft-auth.service';
 import { userSoftAuthInterceptorConfigToken } from './user-config.token';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SoftAuthInterceptor implements HttpInterceptor {
 
   protected config: Required<SoftAuthInterceptorConfig> = {

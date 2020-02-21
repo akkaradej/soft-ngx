@@ -35,7 +35,9 @@ export interface HttpClientRequestOptions {
   withCredentials?: boolean;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SoftApiClientService {
 
   config = {} as SoftApiClientConfig;

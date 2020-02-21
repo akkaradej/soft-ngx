@@ -5,7 +5,9 @@ export enum AuthData {
   email = 'email',
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SoftAuthService extends SoftAuthServiceBase {
 
   getAdditionalAuthData() {

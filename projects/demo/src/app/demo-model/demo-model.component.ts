@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-demo-model',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./demo-model.component.scss']
 })
 export class DemoModelComponent implements OnInit {
+
   selectedDate = new Date();
 
   items = [{ id: 1, name: 'item 1' }, { id: 2, name: 'item 2' }, { id: 3, name: 'item 3' }];
@@ -18,4 +19,10 @@ export class DemoModelComponent implements OnInit {
   ngOnInit() {
   }
 
+  save(form) {
+    if (form.invalid) {
+      return;
+    }
+    // do after form valid
+  }
 }

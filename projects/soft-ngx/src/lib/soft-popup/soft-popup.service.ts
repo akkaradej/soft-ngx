@@ -7,7 +7,9 @@ import { SoftPopupConfig, defaultConfig } from './soft-popup.config';
 import { userSoftPopupConfigToken } from './user-config.token';
 import { SoftDialogService } from './soft-dialog.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SoftPopupService {
 
   config = {} as SoftPopupConfig;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { SoftPopupService } from 'soft-ngx';
+import { CustomDialogComponent } from './custom-dialog-component';
 
 @Component({
   selector: 'app-demo-popup',
@@ -44,6 +45,15 @@ export class DemoPopupComponent implements OnInit {
       .subscribe((result: boolean) => {
         if (result) {
           this.products.splice(this.products.indexOf(product), 1);
+        }
+      });
+  }
+
+  custom() {
+    this.popupService.custom(CustomDialogComponent, { say: 'hello' })
+      .subscribe((result: boolean) => {
+        if (result) {
+          window.alert('Sure!');
         }
       });
   }

@@ -1,7 +1,5 @@
 import { Injectable, ComponentRef, ComponentFactoryResolver, ApplicationRef, Injector, EmbeddedViewRef } from '@angular/core';
 import { SoftDialog } from './soft-dialog.interface';
-import { tap } from 'rxjs/operators';
-import { Observable, Observer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

@@ -6,6 +6,10 @@
       <h3 class="subtitle">
         busyState
       </h3>
+      <ul class="block">
+        <li>- loading state apply to container or page</li>
+        <li>- give a subscription or boolean to determine loading state</li>
+      </ul>
       <div
         [softBusy]="busy"
         class="is-busy-parent"
@@ -42,6 +46,10 @@
       <h3 class="subtitle">
         loadingState & disabledState
       </h3>
+      <ul class="block">
+        <li>- loading/disabled state apply to element e.g. button</li>
+        <li>- give a subscription or boolean to determine loading/disabled state</li>
+      </ul>
       <button
         class="button"
         [softLoading]="loadingSub"

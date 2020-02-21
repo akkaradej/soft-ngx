@@ -6,8 +6,10 @@ import { SoftModalModule } from './soft-modal/soft-modal.module';
 import { SoftModelModule } from './soft-model/soft-model.module';
 import { SoftPipeModule } from './soft-pipe/soft-pipe.module';
 import { SoftPopupModule } from './soft-popup/soft-popup.module';
+import { SoftScrollModule } from './soft-scroll/soft-scroll.module';
 import { SoftStorageModule } from './soft-storage/soft-storage.module';
 import { SoftUIStateModule } from './soft-ui-state/soft-ui-state.module';
+
 import { SoftAuthService } from './soft-auth/soft-auth.service';
 import { SoftApiClientConfig } from './soft-api-client/soft-api-client.config';
 import {
@@ -25,6 +27,7 @@ import { SoftUIStateConfig } from './soft-ui-state/soft-ui-state.config';
     SoftApiClientModule,
     SoftAuthModule,
     SoftPopupModule,
+    SoftScrollModule,
     SoftStorageModule,
     SoftUIStateModule,
   ],
@@ -56,6 +59,7 @@ export class SoftNgxModule {
         ...SoftApiClientModule.forRoot(apiClientConfig).providers,
         ...SoftAuthModule.forRoot(SoftAuthServiceClass, authConfig).providers,
         ...SoftPopupModule.forRoot(popupConfig).providers,
+        ...SoftScrollModule.forRoot().providers,
         ...SoftStorageModule.forRoot(storageConfig).providers,
         ...SoftUIStateModule.forRoot(uiStateConfig).providers,
       ],

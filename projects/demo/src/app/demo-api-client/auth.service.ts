@@ -13,7 +13,9 @@ enum AuthData {
   display_name = 'display_name'
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService extends SoftAuthServiceBase { // or implements SoftAuthServiceInterface {
 
   // // Example: To create constructor

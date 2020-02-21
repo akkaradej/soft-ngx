@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SoftDialog } from './soft-dialog.interface';
 
 export interface SoftPopupModel {
   title: string;
@@ -50,11 +51,11 @@ export interface SoftPopupModel {
     </div>
   `,
 })
-export class SoftPopupComponent {
+export class SoftPopupComponent implements SoftDialog {
 
   data: SoftPopupModel;
 
-  private result = new Subject();
+  protected result = new Subject<boolean>();
   public result$ = this.result.asObservable();
 
   constructor() {

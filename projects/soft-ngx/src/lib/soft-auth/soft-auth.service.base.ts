@@ -9,7 +9,9 @@ import { SoftAuthServiceConfig, SoftAuthRequestKey, SoftAuthResponseKey } from '
 import { userSoftAuthServiceConfigToken, userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken } from './user-config.token';
 import { WebHttpUrlEncodingCodec } from './encoder';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SoftAuthServiceBase implements SoftAuthServiceInterface {
 
   protected config: Required<SoftAuthServiceConfig> = {
