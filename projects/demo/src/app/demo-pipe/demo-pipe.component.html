@@ -1,0 +1,25 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2">SoftPipe</h2>
+
+    <iframe [src]="'https://softever.co.th' | safe: 'resourceUrl'"></iframe>
+
+    <div class="box">
+      <h3 class="subtitle">
+        safe pipe
+      </h3>
+      <ul class="block">
+        <li>- 'html' trust html content e.g. [innerHTML]</li>
+        <li>- 'style' trust css content e.g. [style.background-image]</li>
+        <li>- 'script' trust javascript content e.g. content with &lt;script&gt;...&lt;/script&gt;</li>
+        <li>- 'url' trust a value that can be used in hyperlinks e.g. &lt;img src&gt;</li>
+        <li>- 'resourceUrl' trust a location that may be used to load executable code from, e.g. &lt;script src&gt;
+          &lt;iframe src&gt;
+        </li>
+      </ul>
+      <pre>
+      &lt;iframe [src]="'https://softever.co.th'<strong> | safe: 'resourceUrl'</strong>"&gt;&lt;/iframe&gt;
+    </pre>
+    </div>
+  </div>
+</section>

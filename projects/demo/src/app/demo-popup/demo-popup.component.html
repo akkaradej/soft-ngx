@@ -1,0 +1,164 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2">SoftPopup</h2>
+    <ul class="block">
+      <li>- Popup service, to create dialog on the fly</li>
+    </ul>
+    <div class="box">
+      <h3 class="subtitle">
+        Alert
+      </h3>
+      <ul class="block">
+        <li>- optional to subscribe to be notified when dismiss</li>
+      </ul>
+      <button
+        class="button"
+        (click)="alert()"
+      >
+        Alert
+      </button>
+      <pre>
+      {{'
+        # html
+        &lt;button class="button" 
+          (click)="alert()"&gt;
+          Alert
+        &lt;/button&gt;
+
+        # ts
+        alert() {
+          '}}<strong>{{'this.popupService.alert'}}</strong>{{'(\'Hi! Everybody\', \'I\\\'m Alert Popup\', \'primary\');
+        }
+      '}}
+      </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        Confirm
+      </h3>
+      <ul class="block">
+        <li>- subscribe result, true if confirm, false if dismiss</li>
+      </ul>
+      <button
+        class="button"
+        (click)="confirm()"
+      >
+        Confirm
+      </button>
+      <button
+        class="button"
+        (click)="confirmCustomText()"
+      >
+        Custom Text
+        <small>&nbsp;(and Agree at 2nd)</small>
+      </button>
+
+      <pre>
+        # html
+        &lt;button class="button" 
+          (click)="confirm()"&gt;
+          Confirm
+        &lt;/button&gt;
+        &lt;button class="button" 
+          (click)="confirmCustomText()"&gt;
+          Custom Text
+        &lt;/button&gt;
+
+        # ts
+        confirm() &#123;
+          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
+            .subscribe((result: boolean) => &#123;
+              if (result) &#123;
+                window.alert('Sure!');
+              &#125;
+            &#125;);
+        &#125;
+
+        confirmCustomText() &#123;
+          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning', 'Sure', 'Not Sure', false)
+            .subscribe((result: boolean) => &#123;
+              if (result) &#123;
+                window.alert('Sure!');
+              &#125;
+            &#125;);
+        &#125;
+    </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        Confirm Delete
+      </h3>
+      <ul class="block">
+        <li>- like confirm with preset of deletion message, just give the name of deleted item</li>
+      </ul>
+      <ul class="is-margin-top">
+        <li *ngFor="let product of products">
+          {{ product.name }} -
+          <button
+            class="button"
+            (click)="delete(product)"
+          >Confirm Delete</button>
+        </li>
+      </ul>
+      <pre>
+      # html
+      &lt;ul class="is-margin-top"&gt;
+        &lt;li *ngFor="let product of products"&gt;
+          {{ product.name }<!---->} -
+          &lt;button class="button" 
+            (click)="delete(product)"&gt;
+            Confirm Delete
+          &lt;/button&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+
+      # ts
+      products = [&#123; name: 'Product A' &#125;, &#123; name: 'Product B' &#125;];
+
+      delete(product: any) &#123;
+        <strong>this.popupService.confirmDelete</strong>(product.name)
+          .subscribe((result: boolean) => &#123;
+            if (result) &#123;
+              this.products.splice(this.products.indexOf(product), 1);
+            &#125;
+          &#125;);
+      &#125;
+        
+    </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        Custom
+      </h3>
+      <ul class="block">
+        <li>- give a custom component to show as dialog</li>
+      </ul>
+      <button
+        class="button"
+        (click)="custom()"
+      >
+        Custom
+      </button>
+      <pre>
+        # html
+        &lt;button class="button" 
+          (click)="custom()"&gt;
+          Custom
+        &lt;/button&gt;
+
+        # ts
+        confirm() &#123;
+          <strong>this.popupService.custom</strong>(CustomDialogComponent, &#123; say: 'hello' &#125;
+            .subscribe((result: boolean) => &#123;
+              if (result) &#123;
+                window.alert('Sure!');
+              &#125;
+            &#125;);
+        &#125;
+      </pre>
+    </div>
+  </div>
+</section>

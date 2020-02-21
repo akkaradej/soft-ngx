@@ -1,7 +1,20 @@
 {
   "extends": "./tslint.json",
   "rules": {
+    "max-line-length": false,
+    "no-empty-interface": false,
     "no-non-null-assertion": false,
-    "no-string-literal": false
+    "no-string-literal": false,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    "variable-name": [
+      true,
+      "allow-leading-underscore"
+    ]
   }
 }

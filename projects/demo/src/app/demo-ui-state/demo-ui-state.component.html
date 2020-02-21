@@ -1,0 +1,86 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2">SoftUIState</h2>
+
+    <div class="box">
+      <h3 class="subtitle">
+        busyState
+      </h3>
+      <ul class="block">
+        <li>- loading state apply to container or page</li>
+        <li>- give a subscription or boolean to determine loading state</li>
+      </ul>
+      <div
+        [softBusy]="busy"
+        class="is-busy-parent"
+      >
+        <br> Long loading content
+        <br>
+        <br>
+      </div>
+      <div
+        [softBusy]="busy"
+        [hideBackdrop]="true"
+        class="is-busy-parent"
+      >
+        <br> Long loading content (no backdrop)
+        <br>
+        <br>
+      </div>
+      <pre>
+      # html
+      &lt;div <strong>[softBusy]="busy"</strong> class="is-busy-parent"&gt;
+        Long loading content
+      &lt;/div&gt;
+      
+      &lt;div <strong>[softBusy]="busy" [hideBackdrop]="true"</strong> class="is-busy-parent"&gt;
+        Long loading content (no backdrop)
+      &lt;/div&gt;
+
+      # ts
+      this.busy = of().pipe(delay(Number.MAX_SAFE_INTEGER)).subscribe();
+    </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        loadingState & disabledState
+      </h3>
+      <ul class="block">
+        <li>- loading/disabled state apply to element e.g. button</li>
+        <li>- give a subscription or boolean to determine loading/disabled state</li>
+      </ul>
+      <button
+        class="button"
+        [softLoading]="loadingSub"
+        (click)="testLoading()"
+      >
+        Click here
+      </button>
+      <button
+        class="button"
+        [softDisabled]="loadingSub"
+      >
+        Another Button
+      </button>
+      <pre>
+      # html
+      &lt;button class="button"
+        <strong>[softLoading]="loadingSub"</strong>
+        (click)="testLoading()"&gt;
+        Click here
+      &lt;/button&gt;
+
+      &lt;button class="button"
+        <strong>[softDisabled]="loadingSub"</strong>&gt;
+        Another Button
+      &lt;/button&gt;
+
+      # ts
+      testLoading() &#123;
+        this.loadingSub = of().pipe(delay(3000)).subscribe();
+      &#125;
+    </pre>
+    </div>
+  </div>
+</section>

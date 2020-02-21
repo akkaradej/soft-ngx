@@ -1,0 +1,34 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2">SoftModal</h2>
+    <ul class="block">
+      <li>- Modal card wrapper component</li>
+    </ul>
+    <div class="box">
+      <button
+        class="button"
+        (click)="modal.open()"
+      >Open</button>
+      <soft-modal #modal>
+        <modal-title>
+          My Title
+        </modal-title>
+        <div #modalContent>
+          My Body
+        </div>
+      </soft-modal>
+      <pre>
+      &lt;button class="button" (click)="modal.open()"&gt;Open&lt;/button&gt;
+
+      &lt;soft-modal #modal&gt;
+        &lt;modal-title&gt;
+          My Title
+        &lt;/modal-title&gt;
+        &lt;div #modalContent&gt;
+          My Body
+        &lt;/div&gt;
+      &lt;/soft-modal&gt;
+    </pre>
+    </div>
+  </div>
+</section>

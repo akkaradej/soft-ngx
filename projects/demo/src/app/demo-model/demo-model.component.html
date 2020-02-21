@@ -1,0 +1,127 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2">SoftModel</h2>
+
+    <div class="box">
+      <h3 class="subtitle">
+        softForm
+      </h3>
+      <ul class="block">
+        <li>- emit NgForm</li>
+        <li>- add .sumitted class</li>
+        <li>- smooth scroll to first .ng-invalid element</li>
+      </ul>
+      <form (softForm)="save($event)">
+        <div class="field">
+          <div class="control">
+            <input
+              name="first"
+              class="input"
+              ngModel
+              required
+            >
+          </div>
+        </div>
+        <button class="button">Submit</button>
+      </form>
+      <pre>
+      # html
+      &lt;form <strong>(softForm)="save($event)"</strong>&gt;
+        &lt;div class="field"&gt;
+          &lt;div class="control"&gt;
+            &lt;input name="first" class="input" ngModel required&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+
+      # ts
+      save(form) &#123;
+        if (form.invalid) &#123;
+          return;
+        &#125;
+        // do after form valid
+      &#125;
+      </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        softCompareBy
+      </h3>
+      <ul class="block">
+        <li>- select compare with object's property</li>
+        <li>- use simple directive instead of writing compare function</li>
+      </ul>
+      <div class="select">
+        <select
+          name="items"
+          [(ngModel)]="selectedItem"
+          [softCompareBy]="'id'"
+        >
+          <option
+            [disabled]="true"
+            [hidden]="true"
+            [ngValue]="undefined"
+          >-- select --</option>
+          <option
+            *ngFor="let item of items"
+            [ngValue]="item"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+      <pre>
+      # html
+      &lt;div class="select"&gt;
+        &lt;select
+          name="items"
+          [(ngModel)]="selectedItem"
+          <strong>[softCompareBy]="'id'"</strong>&gt;
+          &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
+          &lt;option 
+            *ngFor="let item of items"
+            [ngValue]="item"&gt;
+            {{ item.name }<!---->}
+          &lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      # ts
+      items = [&#123; id: 1, name: 'item 1' &#125;, &#123; id: 2, name: 'item 2' &#125;, &#123; id: 3, name: 'item 3' &#125;];
+      selectedItem = &#123; id: 2, whatever: 'just matched with id' &#125;;
+    </pre>
+    </div>
+
+
+    <div class="box">
+      <h3 class="subtitle">
+        softFileModel
+      </h3>
+      <ul class="block">
+        <li>- ngModel for file input</li>
+        <li>- [maxSize] validate max file size in MB</li>
+        <li>- (loaded) get dataUri</li>
+      </ul>
+      {{ file?.name }}
+      <input
+        class="input"
+        type="file"
+        name="file"
+        ngModel
+        [maxSize]="10"
+        [(softFileModel)]="file"
+      > * Max file size: 10 MB
+      <pre>
+      {{ file?.name }<!---->}
+      &lt;input class="input"
+        type="file"  
+        name="file"
+        ngModel
+        [maxSize]="10"
+        <strong>[(softFileModel)]="file"</strong>&gt;
+      * Max file size: 10 MB
+    </pre>
+  </div>
+  </div>
+</section>
