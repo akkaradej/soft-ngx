@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "npx ng serve demo",
+    "build_demo": "npx ng build demo --prod",
     "build_lib": "npx ng build soft-ngx --prod",
     "pack_lib": "cd dist/soft-ngx && npm pack",
     "package": "npm run build_lib && npm run pack_lib"
