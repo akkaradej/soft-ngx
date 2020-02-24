@@ -1,6 +1,6 @@
 {
   "name": "soft-ngx",
-  "version": "0.9.5-beta",
+  "version": "0.9.6-beta",
   "peerDependencies": {
     "@angular/common": ">=7.0.0",
     "@angular/core": ">=7.0.0",

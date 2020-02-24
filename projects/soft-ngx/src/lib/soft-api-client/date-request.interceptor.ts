@@ -42,7 +42,7 @@ export class DateRequestInterceptor implements HttpInterceptor {
     if (request.method === 'POST' || request.method === 'PUT') {
       if (request.body && !(request.body instanceof FormData)) {
         const contentType = request.detectContentTypeHeader();
-        if (!contentType || (contentType && contentType.startsWith('application/x-www-form-urlencoded'))) {
+        if (!contentType || (contentType && !contentType.startsWith('application/x-www-form-urlencoded'))) {
           const formatted = this.iterateFormatDate(request.body);
           request = request.clone({
             body: formatted,
