@@ -5,10 +5,10 @@ import { SoftModalContent } from './soft-modal-content';
 @Component({
   selector: 'soft-modal',
   template: `
-    <div class="modal {{ modalClass }}"
+    <div class="modal has-no-footer {{ modalClass }}"
       [class.is-active]="isOpen">
       <div class="modal-background" (click)="close()"></div>
-      <div class="modal-card modal-card-no-footer">
+      <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">
             <ng-content select="modal-title"></ng-content>

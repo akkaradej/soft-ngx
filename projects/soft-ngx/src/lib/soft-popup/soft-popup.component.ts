@@ -15,9 +15,9 @@ export interface SoftPopupModel {
 @Component({
   selector: 'soft-popup',
   template: `
-    <div class="modal is-small is-{{ data.colorVar }} is-active">
+    <div class="modal has-no-footer is-small is-{{ data.colorVar }} is-active">
       <div class="modal-background" (click)="onDismiss()"></div>
-      <div class="modal-card modal-card-no-footer" style="width: 350px;">
+      <div class="modal-card" style="width: 350px;">
         <header class="modal-card-head">
           <p class="modal-card-title">
             {{ data.title }}

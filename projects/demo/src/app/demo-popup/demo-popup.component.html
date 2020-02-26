@@ -93,7 +93,7 @@
       <ul class="block">
         <li>- like confirm with preset of deletion message, just give the name of deleted item</li>
       </ul>
-      <ul class="is-margin-top">
+      <ul>
         <li *ngFor="let product of products">
           {{ product.name }} -
           <button
@@ -104,7 +104,7 @@
       </ul>
       <pre>
       # html
-      &lt;ul class="is-margin-top"&gt;
+      &lt;ul&gt;
         &lt;li *ngFor="let product of products"&gt;
           {{ product.name }<!---->} -
           &lt;button class="button" 
