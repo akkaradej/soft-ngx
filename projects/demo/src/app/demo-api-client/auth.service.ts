@@ -13,6 +13,10 @@ enum AuthData {
   display_name = 'display_name'
 }
 
+interface Can {
+  viewTest: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,8 +32,14 @@ export class AuthService extends SoftAuthServiceBase { // or implements SoftAuth
   //   super(oauthService, storage, config);
   // }
 
+  can = {} as Can;
+
   getAdditionalAuthData() {
     return Object.keys(AuthData);
+  }
+
+  setAuthorize() {
+    this.can.viewTest = true;
   }
 
   get isSuperAdmin(): boolean {

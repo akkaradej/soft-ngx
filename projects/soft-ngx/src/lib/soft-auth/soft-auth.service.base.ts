@@ -14,6 +14,8 @@ import { WebHttpUrlEncodingCodec } from './encoder';
 })
 export class SoftAuthServiceBase implements SoftAuthServiceInterface {
 
+  public can = {} as any;
+
   protected config: Required<SoftAuthServiceConfig> = {
     authenticationScheme: 'Bearer',
     tokenUrl: '',
@@ -57,6 +59,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
 
     this.config.refreshTokenUrl = this.config.refreshTokenUrl || this.config.tokenUrl;
     this.setStorageDependOnRememberMe();
+    this.setAuthorize();
   }
 
   /*
@@ -239,6 +242,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
           }
           this.storeAccessToken(response.access_token, response.refresh_token, response.expires_in, response.scope);
           this.setAdditionalAuthData(response);
+          this.setAuthorize();
         }
         return of(response);
       }),
@@ -288,6 +292,10 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
         this.storage.setItem(data, auth[data]);
       }
     }
+  }
+
+  // override to set authorize into this.can
+  setAuthorize() {
   }
 
   removeAdditionalAuthData(): void {
