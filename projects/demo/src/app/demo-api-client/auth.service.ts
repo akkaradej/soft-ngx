@@ -32,7 +32,7 @@ export class AuthService extends SoftAuthServiceBase { // or implements SoftAuth
   //   super(oauthService, storage, config);
   // }
 
-  can = {} as Can;
+  can: Can;
 
   getAdditionalAuthData() {
     return Object.keys(AuthData);
