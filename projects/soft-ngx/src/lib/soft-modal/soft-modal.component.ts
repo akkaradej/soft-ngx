@@ -1,14 +1,28 @@
-import { Component, OnInit, Input, Output, EventEmitter, ContentChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ContentChild, Inject } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 
 import { SoftModalContent } from './soft-modal-content';
+import { softPopupAnimations } from '../soft-popup/soft-popup.component';
+import { userSoftPopupConfigToken } from '../soft-popup/user-config.token';
+import { SoftPopupConfig, defaultConfig } from '../soft-popup/soft-popup.config';
 
 @Component({
   selector: 'soft-modal',
   template: `
-    <div class="modal has-no-footer {{ modalClass }}"
+    <div
+      [@.disabled]="!isAnimated"
+      class="modal has-no-footer {{ modalClass }}"
       [class.is-active]="isOpen">
-      <div class="modal-background" (click)="close()"></div>
-      <div class="modal-card">
+      <div
+        [@backdrop]="{ value: animationState, params: backdropAnimations }"
+        (@backdrop.done)="onBackdropAnimationDone($event)"
+        class="modal-background"
+        (click)="close()">
+      </div>
+      <div
+        [@card]="{ value: animationState, params: cardAnimations }"
+        (@card.done)="onCardAnimationdropDone($event)"
+        class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">
             <ng-content select="modal-title"></ng-content>
@@ -23,6 +37,7 @@ import { SoftModalContent } from './soft-modal-content';
       </div>
     </div>
   `,
+  animations: softPopupAnimations,
 })
 export class SoftModalComponent implements OnInit {
   @Input() modalClass = '';
@@ -40,12 +55,30 @@ export class SoftModalComponent implements OnInit {
   // and would not re-create modalContent every time opening.
   isFirstOpen = false;
 
+  // animations
+  isAnimated: boolean;
+  backdropAnimations: any;
+  cardAnimations: any;
+  animationState: 'open' | 'closed' | 'void' = 'void';
+  private isBackdropAnimationDone = false;
+  private isCardAnimationDone = false;
+
+  constructor(
+    @Inject(userSoftPopupConfigToken) userConfig: SoftPopupConfig,
+  ) {
+    const config: SoftPopupConfig = Object.assign({}, defaultConfig, userConfig);
+    this.isAnimated = config.isAnimated;
+    this.backdropAnimations = config.backdropAnimations;
+    this.cardAnimations = config.cardAnimations;
+  }
+
   ngOnInit() {
   }
 
   open() {
     this.isOpen = true;
     this.isFirstOpen = true;
+    this.animationState = 'open';
     this.opened.emit();
     window.setTimeout(() => {
       if (this.modalContent && this.modalContent.onModalOpen) {
@@ -55,10 +88,13 @@ export class SoftModalComponent implements OnInit {
   }
 
   close() {
-    this.isOpen = false;
-    this.closed.emit();
-    if (this.modalContent && this.modalContent.onModalClose) {
-      this.modalContent.onModalClose();
+    this.animationState = 'closed';
+    if (!this.isAnimated) {
+      this.isOpen = false;
+      this.closed.emit();
+      if (this.modalContent && this.modalContent.onModalClose) {
+        this.modalContent.onModalClose();
+      }
     }
   }
 
@@ -66,6 +102,33 @@ export class SoftModalComponent implements OnInit {
     this.isOpen = false;
     this.isFirstOpen = false;
     this.removed.emit();
+  }
+
+  onBackdropAnimationDone(event: AnimationEvent) {
+    if (event.fromState === 'open' && event.toState === 'closed') {
+      this.isBackdropAnimationDone = true;
+      this.allAnimationDone();
+    }
+  }
+
+  onCardAnimationdropDone(event: AnimationEvent) {
+    if (event.fromState === 'open' && event.toState === 'closed') {
+      this.isCardAnimationDone = true;
+      this.allAnimationDone();
+    }
+  }
+
+  private allAnimationDone() {
+    if (this.isBackdropAnimationDone && this.isCardAnimationDone) {
+      this.isOpen = false;
+      this.closed.emit();
+      if (this.modalContent && this.modalContent.onModalClose) {
+        this.modalContent.onModalClose();
+      }
+      this.isBackdropAnimationDone = false;
+      this.isCardAnimationDone = false;
+      this.animationState = 'void';
+    }
   }
 }
 

@@ -8,14 +8,14 @@ import { softPopupAnimations } from 'projects/soft-ngx/src/lib/soft-popup/soft-p
     <div [@.disabled]="!isAnimated" class="modal is-active">
       <div
         class="modal-background"
-        [@backdrop]="{ value: isOpen ? 'open' : 'closed', params: backdropAnimations }"
+        [@backdrop]="{ value: animationState, params: backdropAnimations }"
         (@backdrop.done)="onBackdropAnimationDone($event)"
         (click)="onDismiss()"
       >
       </div>
       <div
         class="modal-content"
-        [@card]="{ value: isOpen ? 'open' : 'closed', params: cardAnimations }"
+        [@card]="{ value: animationState, params: cardAnimations }"
         (@card.done)="onCardAnimationdropDone($event)"
       >
         <div class="box">

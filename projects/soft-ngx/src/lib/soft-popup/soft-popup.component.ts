@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Subject, config } from 'rxjs';
+import { Subject } from 'rxjs';
 import { SoftDialog } from './soft-dialog.interface';
 import { trigger, state, style, animate, transition, AnimationEvent } from '@angular/animations';
 
@@ -44,13 +44,13 @@ export const softPopupAnimations = [
       class="modal has-no-footer is-small is-{{ data.colorVar }} is-active">
       <div
         class="modal-background"
-        [@backdrop]="{ value: isOpen ? 'open' : 'closed', params: backdropAnimations }"
+        [@backdrop]="{ value: animationState, params: backdropAnimations }"
         (@backdrop.done)="onBackdropAnimationDone($event)"
         (click)="onDismiss()"></div>
       <div
         class="modal-card"
         style="width: 350px;"
-        [@card]="{ value: isOpen ? 'open' : 'closed', params: cardAnimations }"
+        [@card]="{ value: animationState, params: cardAnimations }"
         (@card.done)="onCardAnimationdropDone($event)">
         <header class="modal-card-head">
           <p class="modal-card-title">
@@ -88,18 +88,17 @@ export const softPopupAnimations = [
 })
 export class SoftPopupComponent implements SoftDialog {
 
-  isOpen = true;
   isConfirm = false;
 
   data: SoftPopupModel;
-
   hasAnimation = true;
-  backdropAnimations: any;
-  cardAnimations: any;
 
   isAnimated: boolean;
-  isBackdropAnimationDone = false;
-  isCardAnimationDone = false;
+  backdropAnimations: any;
+  cardAnimations: any;
+  animationState: 'open' | 'closed' | 'void' = 'open';
+  private isBackdropAnimationDone = false;
+  private isCardAnimationDone = false;
 
   protected result = new Subject<boolean>();
   public result$ = this.result.asObservable();
@@ -108,7 +107,7 @@ export class SoftPopupComponent implements SoftDialog {
   }
 
   onConfirm() {
-    this.isOpen = false;
+    this.animationState = 'closed';
     this.isConfirm = true;
     if (!this.isAnimated || !this.hasAnimation) {
       this.result.next(this.isConfirm);
@@ -117,7 +116,7 @@ export class SoftPopupComponent implements SoftDialog {
   }
 
   onDismiss() {
-    this.isOpen = false;
+    this.animationState = 'closed';
     this.isConfirm = false;
     if (!this.isAnimated || !this.hasAnimation) {
       this.result.next(this.isConfirm);
@@ -139,7 +138,7 @@ export class SoftPopupComponent implements SoftDialog {
     }
   }
 
-  allAnimationDone() {
+  private allAnimationDone() {
     if (this.isBackdropAnimationDone && this.isCardAnimationDone) {
       this.result.next(this.isConfirm);
       this.result.complete();
