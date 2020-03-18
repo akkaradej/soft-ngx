@@ -34,6 +34,10 @@ export class SoftPopupService {
       agreeText,
       disagreeText: '',
       isAgreeFirst: true,
+    }, {
+      isAnimated: this.config.isAnimated,
+      backdropAnimations: this.config.backdropAnimations,
+      cardAnimations: this.config.cardAnimations,
     });
   }
 
@@ -55,6 +59,10 @@ export class SoftPopupService {
       agreeText,
       disagreeText,
       isAgreeFirst,
+    }, {
+      isAnimated: this.config.isAnimated,
+      backdropAnimations: this.config.backdropAnimations,
+      cardAnimations: this.config.cardAnimations,
     });
   }
 
@@ -78,10 +86,18 @@ export class SoftPopupService {
       agreeText,
       disagreeText,
       isAgreeFirst,
+    }, {
+      isAnimated: this.config.isAnimated,
+      backdropAnimations: this.config.backdropAnimations,
+      cardAnimations: this.config.cardAnimations,
     });
   }
 
   custom(component: any, data: any) {
-    return this.dialogService.addDialog(component, data);
+    return this.dialogService.addDialog(component, data, {
+      isAnimated: this.config.isAnimated,
+      backdropAnimations: this.config.backdropAnimations,
+      cardAnimations: this.config.cardAnimations,
+    });
   }
 }

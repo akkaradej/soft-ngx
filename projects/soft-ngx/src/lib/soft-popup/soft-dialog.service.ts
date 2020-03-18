@@ -1,5 +1,6 @@
 import { Injectable, ComponentRef, ComponentFactoryResolver, ApplicationRef, Injector, EmbeddedViewRef } from '@angular/core';
 import { SoftDialog } from './soft-dialog.interface';
+import { SoftPopupAnimationModel } from './soft-popup.component';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class SoftDialogService {
     private injector: Injector,
   ) { }
 
-  addDialog<DataType = any>(component: any, data: DataType) {
+  addDialog<DataType = any>(component: any, data: DataType, animations: SoftPopupAnimationModel) {
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory<SoftDialog>(component)
       .create(this.injector);
@@ -25,6 +26,9 @@ export class SoftDialogService {
     const id = ++this.id;
     this.componentRefs[id] = componentRef;
     componentRef.instance.data = data;
+    componentRef.instance.isAnimated = animations.isAnimated;
+    componentRef.instance.backdropAnimations = animations.backdropAnimations;
+    componentRef.instance.cardAnimations = animations.cardAnimations;
     componentRef.instance.result$.subscribe(() => {
       this.removeDialog(id);
     });

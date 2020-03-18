@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
 import { SoftPopupComponent, SoftDialog } from 'soft-ngx';
+import { softPopupAnimations } from 'projects/soft-ngx/src/lib/soft-popup/soft-popup.component';
 
 @Component({
   selector: 'app-custom-dialog',
   template: `
-    <div class="modal is-active">
-      <div class="modal-background" (click)="onDismiss()"></div>
-      <div class="modal-content">
+    <div [@.disabled]="!isAnimated" class="modal is-active">
+      <div
+        class="modal-background"
+        [@backdrop]="{ value: isOpen ? 'open' : 'closed', params: backdropAnimations }"
+        (@backdrop.done)="onBackdropAnimationDone($event)"
+        (click)="onDismiss()"
+      >
+      </div>
+      <div
+        class="modal-content"
+        [@card]="{ value: isOpen ? 'open' : 'closed', params: cardAnimations }"
+        (@card.done)="onCardAnimationdropDone($event)"
+      >
         <div class="box">
           <div class="block">
             <div>Custom Dialog</div>
@@ -22,9 +33,11 @@ import { SoftPopupComponent, SoftDialog } from 'soft-ngx';
     </div>
   `,
   styles: [],
+  animations: softPopupAnimations,
 })
 export class CustomDialogComponent extends SoftPopupComponent implements SoftDialog {
 
   data: any;
+  hasAnimation = true;
 
 }
