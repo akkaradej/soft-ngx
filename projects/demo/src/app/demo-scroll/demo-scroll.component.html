@@ -1,0 +1,110 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2">SoftScroll</h2>
+
+    <div class="box">
+      <h3 class="subtitle">
+        normal
+      </h3>
+      <div class="is-flex is-align-center">
+        <span class="push-right">Point A</span>
+        <button
+          #buttonA
+          class="button"
+          (click)="goToB()"
+        >Go to Point B</button>
+      </div>
+      <br><br><br>
+      <div class="is-flex is-align-center">
+        <span class="push-right">Point B</span>
+        <button
+          #buttonB
+          class="button"
+          (click)="goToA()"
+        >Go to Point A</button>
+      </div>
+      <pre>
+        goToA() &#123;
+          this.scrollService.scrollTo(this.buttonA.nativeElement);
+        &#125;
+        
+        goToB() &#123;
+          this.scrollService.scrollTo(this.buttonB.nativeElement);
+        &#125;
+      </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        overflow
+      </h3>
+      <div
+        #overflowContainer
+        class="_overflow"
+      >
+        <button
+          class="button"
+          (click)="goToInput()"
+        >Go to Input</button>
+
+        <br><br><br><br>
+        <div class="control">
+          <input
+            #input
+            type="text"
+            class="button"
+          >
+        </div>
+        <br><br><br><br>
+
+        <button
+          class="button"
+          (click)="goToInput()"
+        >Go to Input</button>
+      </div>
+      <pre>
+        goToInput() &#123;
+          this.scrollService.scrollTo(this.inputOverflow.nativeElement, this.overflowContainer.nativeElement);
+        &#125;
+      </pre>
+    </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        modal
+      </h3>
+      <button
+        class="button"
+        (click)="modal.open()"
+      >Scroll in modal</button>
+
+      <soft-modal #modal>
+        <modal-title>Required input #2</modal-title>
+        <form
+          (softForm)="save($event)"
+          *ngIf="modal.isOpen"
+        >
+          <div
+            class="field"
+            *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"
+          >
+            <div class="control">
+              <input
+                name="first-{{ i }}"
+                class="input"
+                ngModel
+                [required]="i === 2"
+                placeholder="{{ i }}#"
+              >
+            </div>
+          </div>
+          <div class="buttons is-centered">
+            <button class="button">Submit</button>
+          </div>
+        </form>
+      </soft-modal>
+
+    </div>
+
+  </div>
+</section>

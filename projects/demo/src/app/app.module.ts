@@ -31,6 +31,7 @@ import { DemoPopupComponent } from './demo-popup/demo-popup.component';
 import { DemoUIStateComponent } from './demo-ui-state/demo-ui-state.component';
 import { FormsModule } from '@angular/forms';
 import { CustomDialogComponent } from './demo-popup/custom-dialog-component';
+import { DemoScrollComponent } from './demo-scroll/demo-scroll.component';
 
 export function initApiClientConfig(): SoftApiClientConfig {
   return {
@@ -101,6 +102,7 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     DemoModelComponent,
     DemoPipeComponent,
     DemoPopupComponent,
+    DemoScrollComponent,
     DemoUIStateComponent,
     CustomDialogComponent,
   ],
@@ -119,6 +121,7 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     // SoftApiClientModule.forRoot(),
     // SoftAuthModule.forRoot(AuthService),
     // SoftPopupModule.forRoot(),
+    // SoftScrollModule.forRoot(),
     // SoftStorageModule.forRoot(),
     // SoftUIStateModule.forRoot(),
     // SoftModalModule, // => for Non-Lazy Load Module Only

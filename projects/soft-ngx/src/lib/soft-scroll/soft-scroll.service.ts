@@ -11,12 +11,31 @@ export class SoftScrollService {
   scrollTo(target: HTMLElement, scrollingView: HTMLElement = document.documentElement, offset = 0, duration = 600): Promise<any> {
     return new Promise(resolve => {
       const start = scrollingView.scrollTop;
-      let to;
-      if (scrollingView === document.documentElement) {
-        to = target.getBoundingClientRect().top + start + offset;
-      } else {
-        to = target.offsetTop - scrollingView.offsetTop + offset;
+      // let to;
+      // if (scrollingView === document.documentElement) {
+      //   to = target.getBoundingClientRect().top + start + offset;
+      // } else {
+      //   if (scrollingView.offsetParent) {
+      //     let element = target;
+      //     let offsetTop = element.offsetTop;
+      //     while (element.offsetParent !== scrollingView.offsetParent) {
+      //       element = element.offsetParent as HTMLElement;
+      //       offsetTop += element.offsetTop;
+      //     }
+      //     to = offsetTop - scrollingView.offsetTop + offset;
+      //   } else {
+      //     to = target.offsetTop - scrollingView.offsetTop + offset;
+      //   }
+      // }
+
+      let element = target;
+      let offsetTop = element.offsetTop;
+      while (element.offsetParent !== scrollingView.offsetParent) {
+        element = element.offsetParent as HTMLElement;
+        offsetTop += element.offsetTop;
       }
+      const to = offsetTop - scrollingView.offsetTop + offset;
+
       const scrollDistance = to - start;
       const startDate = +new Date();
       this.animateScroll(scrollingView, startDate, start, to, scrollDistance, duration, resolve);

@@ -42,7 +42,6 @@ export class DemoApiClientComponent implements OnInit {
     this.authService.requestTokenWithPasswordFlow$('uXXXXXX', 'pYYYYYY')
       .subscribe((auth: any) => {
         this.auth = auth;
-        console.log(this.authService.can);
       });
   }
 

@@ -56,4 +56,7 @@ export { SoftPopupModule } from './lib/soft-popup/soft-popup.module';
 export { SoftPopupComponent } from './lib/soft-popup/soft-popup.component';
 export { SoftPopupService } from './lib/soft-popup/soft-popup.service';
 
+export { SoftScrollModule } from './lib/soft-scroll/soft-scroll.module';
+export { SoftScrollService } from './lib/soft-scroll/soft-scroll.service';
+
 export { SoftNgxModule } from './lib/soft-ngx.module';

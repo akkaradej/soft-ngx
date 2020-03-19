@@ -11,7 +11,10 @@
         <li>- add .sumitted class</li>
         <li>- smooth scroll to first .ng-invalid element</li>
       </ul>
-      <form (softForm)="save($event)">
+      <form
+        class="block"
+        (softForm)="save($event)"
+      >
         <div class="field">
           <div class="control">
             <input
@@ -24,6 +27,7 @@
         </div>
         <button class="button">Submit</button>
       </form>
+
       <pre>
       # html
       &lt;form <strong>(softForm)="save($event)"</strong>&gt;
@@ -73,16 +77,18 @@
       </div>
       <pre>
       # html
-      &lt;div class="select"&gt;
-        &lt;select
-          name="items"
-          [(ngModel)]="selectedItem"
-          <strong>[softCompareBy]="'id'"</strong>&gt;
-          &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
-          &lt;option 
-            *ngFor="let item of items"
-            [ngValue]="item"&gt;
-            {{ item.name }<!---->}
+      &lt;div class="
+                select"&gt;
+                &lt;select
+                name="items"
+                [(ngModel)]="selectedItem"
+                <strong
+              >[softCompareBy]="'id'"</strong>&gt;
+              &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
+              &lt;option
+              *ngFor="let item of items"
+              [ngValue]="item"&gt;
+              {{ item.name }<!---->}
           &lt;/option&gt;
         &lt;/select&gt;
       &lt;/div&gt;
