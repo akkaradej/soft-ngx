@@ -10,6 +10,11 @@ export class SoftScrollService {
    */
   scrollTo(target: HTMLElement, scrollingView: HTMLElement = document.documentElement, offset = 0, duration = 600): Promise<any> {
     return new Promise(resolve => {
+      if (!target) {
+        resolve();
+        return;
+      }
+
       const start = scrollingView.scrollTop;
       // let to;
       // if (scrollingView === document.documentElement) {
