@@ -21,22 +21,11 @@ export {
   userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken,
 } from './lib/soft-auth/user-config.token';
 
-export { SoftStorageConfig } from './lib/soft-storage/soft-storage.config';
-export { userSoftStorageConfigToken } from './lib/soft-storage/user-config.token';
-export { SoftStorageModule } from './lib/soft-storage/soft-storage.module';
-export { SoftStorageService } from './lib/soft-storage/soft-storage.service';
-
 export { SoftAuthInterceptor } from './lib/soft-auth/soft-auth.interceptor';
 export { SoftAuthModule } from './lib/soft-auth/soft-auth.module';
 export { SoftAuthServiceBase } from './lib/soft-auth/soft-auth.service.base';
 export { SoftAuthServiceInterface } from './lib/soft-auth/soft-auth.service.interface';
 export { WebHttpUrlEncodingCodec } from './lib/soft-auth/encoder';
-
-export { SoftUIStateConfig } from './lib/soft-ui-state/soft-ui-state.config';
-export { SoftUIStateModule } from './lib/soft-ui-state/soft-ui-state.module';
-export { SoftBusyDirective } from './lib/soft-ui-state/soft-busy.directive';
-export { SoftDisabledDirective } from './lib/soft-ui-state/soft-disabled.directive';
-export { SoftLoadingDirective } from './lib/soft-ui-state/soft-loading.directive';
 
 export { SoftModalComponent, ModalTitleComponent } from './lib/soft-modal/soft-modal.component';
 export { SoftModalContent } from './lib/soft-modal/soft-modal-content';
@@ -58,5 +47,19 @@ export { SoftPopupService } from './lib/soft-popup/soft-popup.service';
 
 export { SoftScrollModule } from './lib/soft-scroll/soft-scroll.module';
 export { SoftScrollService } from './lib/soft-scroll/soft-scroll.service';
+
+export { SoftStorageConfig } from './lib/soft-storage/soft-storage.config';
+export { userSoftStorageConfigToken } from './lib/soft-storage/user-config.token';
+export { SoftStorageModule } from './lib/soft-storage/soft-storage.module';
+export { SoftStorageService } from './lib/soft-storage/soft-storage.service';
+
+export { SoftTooltipModule } from './lib/soft-tooltip/soft-tooltip.module';
+export { SoftTooltipDirective } from './lib/soft-tooltip/soft-tooltip.directive';
+
+export { SoftUIStateConfig } from './lib/soft-ui-state/soft-ui-state.config';
+export { SoftUIStateModule } from './lib/soft-ui-state/soft-ui-state.module';
+export { SoftBusyDirective } from './lib/soft-ui-state/soft-busy.directive';
+export { SoftDisabledDirective } from './lib/soft-ui-state/soft-disabled.directive';
+export { SoftLoadingDirective } from './lib/soft-ui-state/soft-loading.directive';
 
 export { SoftNgxModule } from './lib/soft-ngx.module';

@@ -1,12 +1,13 @@
 {
   "name": "soft-ngx",
-  "version": "0.9.13-beta",
+  "version": "0.9.15-beta",
   "peerDependencies": {
     "@angular/common": ">=9.0.0",
     "@angular/core": ">=9.0.0",
     "tslib": ">=1.10.0"
   },
   "dependencies": {
-    "angular2-promise-buttons": "^4.0.5"
+    "angular2-promise-buttons": "^4.0.5",
+    "tippy.js": "^6.1.0"
   }
 }

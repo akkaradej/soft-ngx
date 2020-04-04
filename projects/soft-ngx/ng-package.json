@@ -5,6 +5,7 @@
     "entryFile": "src/public-api.ts"
   },
   "whitelistedNonPeerDependencies": [
-    "angular2-promise-buttons"
+    "angular2-promise-buttons",
+    "tippy.js"
   ]
 }

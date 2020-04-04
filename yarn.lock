@@ -909,6 +909,11 @@
     rxjs "6.5.3"
     webpack-sources "1.4.3"
 
+"@popperjs/core@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.2.0.tgz#1ed4498e8eea15a2678f9c3c69fb866308ea399d"
+  integrity sha512-CxL7vhVO+m7RoyCSZQqf3NRD1UzWFXdasfyj3PsadWPfRdPB9UO/PjYwTILBaHc2RDPlZUeFtz8sfPVuSyshIA==
+
 "@rollup/plugin-commonjs@^11.0.2":
   version "11.0.2"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-11.0.2.tgz#837cc6950752327cb90177b608f0928a4e60b582"
@@ -8436,6 +8441,13 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+
+tippy.js@^6.1.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.1.1.tgz#9ed09aa4f9c47fb06a0e280e03055f898f5ddfff"
+  integrity sha512-Sk+FPihack9XFbPOc2jRbn6iRLA9my2a8qhaGY6wwD3EeW57/xY5PAPkZOutKVYDWLyNZ/laCkJqg7QJG/gqQw==
+  dependencies:
+    "@popperjs/core" "^2.2.0"
 
 tmp@0.0.30:
   version "0.0.30"

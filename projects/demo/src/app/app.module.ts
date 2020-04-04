@@ -127,11 +127,13 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     // SoftModalModule, // => for Non-Lazy Load Module Only
     // SoftModelModule, // => for Non-Lazy Load Module Only
     // SoftPipeModule, // => for Non-Lazy Load Module Only
+    // SoftTooltipModule, // => for Non-Lazy Load Module Only
 
     //// Selective import at SharedModule // => for Lazy Load Module Only
     // SoftModalModule,
     // SoftModelModule,
     // SoftPipeModule,
+    // SoftTooltipModule,
     // SoftUIStateModule,
   ],
   providers: [

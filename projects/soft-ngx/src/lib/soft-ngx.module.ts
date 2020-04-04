@@ -18,6 +18,7 @@ import {
 } from './soft-auth/soft-auth.config';
 import { SoftPopupConfig } from './soft-popup/soft-popup.config';
 import { SoftStorageConfig } from './soft-storage/soft-storage.config';
+import { SoftTooltipModule } from './soft-tooltip/soft-tooltip.module';
 import { SoftUIStateConfig } from './soft-ui-state/soft-ui-state.config';
 
 @NgModule({
@@ -29,12 +30,14 @@ import { SoftUIStateConfig } from './soft-ui-state/soft-ui-state.config';
     SoftPopupModule,
     SoftScrollModule,
     SoftStorageModule,
+    SoftTooltipModule,
     SoftUIStateModule,
   ],
   exports: [
     SoftModalModule,
     SoftModelModule,
     SoftPipeModule,
+    SoftTooltipModule,
     SoftUIStateModule,
   ],
 })
