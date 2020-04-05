@@ -114,7 +114,7 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     // Single import at AppModule or CoreModule
     SoftNgxModule.forRoot(AuthService),
 
-    //// Single import at SharedModule // => for Lazy Load Module Only
+    //// Single import at SharedModule // => for lazy loading module
     // SoftNgxModule
 
     //// Selective import at AppModule or CoreModule
@@ -124,12 +124,12 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     // SoftScrollModule.forRoot(),
     // SoftStorageModule.forRoot(),
     // SoftUIStateModule.forRoot(),
-    // SoftModalModule, // => for Non-Lazy Load Module Only
-    // SoftModelModule, // => for Non-Lazy Load Module Only
-    // SoftPipeModule, // => for Non-Lazy Load Module Only
-    // SoftTooltipModule, // => for Non-Lazy Load Module Only
+    // SoftModalModule, // => for non-lazy loading module only
+    // SoftModelModule, // => for non-lazy loading module only
+    // SoftPipeModule, // => for non-lazy loading module only
+    // SoftTooltipModule, // => for non-lazy loading module only
 
-    //// Selective import at SharedModule // => for Lazy Load Module Only
+    //// Selective import at SharedModule // => for lazy loading module
     // SoftModalModule,
     // SoftModelModule,
     // SoftPipeModule,

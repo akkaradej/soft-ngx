@@ -1,27 +1,163 @@
 # SoftNgx
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.1.
+## Dependencies
 
-## Development server
+### SoftModalModule and SoftPopupModule
+style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
+import scss `~trunks-ui/trunks.scss`;
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### SoftModelModule
+using `angular2-promise-buttons`\
+style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
+import scss `~trunks-ui/trunks.scss`;
 
-## Code scaffolding
+### SoftTooltipModule 
+using `tippy.js`\
+import css: `~tippy.js/dist/tippy.css`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Usage
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Single import
 
-## Running unit tests
+### Single import at AppModule or CoreModule
+```
+imports: [
+  SoftNgxModule.forRoot(AuthService)
+]
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Single import at SharedModule (to import SharedModule for lazy loading module)
+```
+imports: [
+  SoftNgxModule
+],
+exports: [
+  SoftNgxModule
+],
+```
 
-## Running end-to-end tests
+## Selective import
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Selective import at AppModule or CoreModule
+```
+imports: [
+  SoftApiClientModule.forRoot(),
+  SoftAuthModule.forRoot(AuthService),
+  SoftPopupModule.forRoot(),
+  SoftScrollModule.forRoot(),
+  SoftStorageModule.forRoot(),
+  SoftUIStateModule.forRoot(),
+  SoftModalModule, // => for non-lazy loading module only
+  SoftModelModule, // => for non-lazy loading module only
+  SoftPipeModule, // => for non-lazy loading module only
+  SoftTooltipModule, // => for non-lazy loading module only
+]
+```
 
-## Further help
+### Selective import at SharedModule (to import SharedModule for lazy loading module)
+```
+imports: [
+  SoftModalModule,
+  SoftModelModule,
+  SoftPipeModule,
+  SoftTooltipModule,
+  SoftUIStateModule,
+],
+exports: [
+  SoftModalModule,
+  SoftModelModule,
+  SoftPipeModule,
+  SoftTooltipModule,
+  SoftUIStateModule,
+],
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Example Configurations
+
+```
+export function initSoftApiClientConfig(): SoftApiClientConfig {
+  return {
+    pageHeaderResponseKeys: {
+      pageCount: 'X-Paging-PageCount',
+      totalCount: 'X-Paging-TotalRecordCount',
+    },
+    dateRequestFormatter,
+    dateResponseReviver,
+    errorHandler,
+  };
+}
+
+export function initSoftAuthServiceConfig(): SoftAuthServiceConfig {
+  return {
+    tokenUrl: environment.config.tokenUrl,
+    isOAuth: false,
+    isFormData: false,
+    isJWT: true,
+  };
+}
+
+export function initSoftAuthInterceptorConfigToken(): SoftAuthInterceptorConfig {
+  return {
+    autoRefreshToken: true,
+    loginScreenUrl: environment.config.loginScreenUrl,
+  };
+}
+
+export function initSoftPopupConfig(): SoftPopupConfig {
+  return {
+    // general
+    agreeText: 'Yes',
+    disagreeText: 'No',
+    // alert
+    alertAgreeText: 'OK',
+    // delete
+    deleteTitleFunc: (itemName: string) => {
+      return `Comfirm Deletion`;
+    },
+    deleteMessageFunc: (itemName: string) => {
+      return `Are you sure you want to delete "${itemName}"?`;
+    },
+  };
+}
+
+export function initSoftStorageConfig(): SoftStorageConfig {
+  return {
+    storagePrefix: environment.config.storagePrefix,
+  };
+}
+
+const authRequestKey: SoftAuthRequestKey = {
+  username: 'username',
+  password: 'password',
+};
+
+const authResponseKey: SoftAuthResponseKey = {
+  access_token: 'token',
+};
+
+@NgModule({
+  imports: [
+    SoftNgxModule.forRoot(AuthService),
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
+    { provide: userSoftApiClientConfigToken, useFactory: initSoftApiClientConfig },
+    { provide: userSoftAuthServiceConfigToken, useFactory: initSoftAuthServiceConfig },
+    { provide: userSoftAuthInterceptorConfigToken, useFactory: initSoftAuthInterceptorConfigToken },
+    { provide: userSoftAuthRequestKeyToken, useValue: authRequestKey },
+    { provide: userSoftAuthResponseKeyToken, useValue: authResponseKey },
+    { provide: userSoftPopupConfigToken, useFactory: initSoftPopupConfig },
+    { provide: userSoftStorageConfigToken, useFactory: initSoftStorageConfig },
+    AuthService,
+  ]
+})
+export class CoreModule {
+  constructor(
+    @Optional() @SkipSelf() parentModule: CoreModule) {
+
+    throwIfAlreadyLoaded(parentModule, 'CoreModule');
+  }
+}
+```
