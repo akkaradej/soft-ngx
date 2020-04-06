@@ -1343,10 +1343,10 @@ alphanum-sort@^1.0.0:
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-angular2-promise-buttons@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/angular2-promise-buttons/-/angular2-promise-buttons-4.0.5.tgz#75bb26cb8a293a5d2611a6226948935492a0bbd5"
-  integrity sha512-5c+UiK0rlTfXAHYWrZ6NzhBoMxQNuaerPUo+anRQSUKdbtJcOhzxFGpgr1mrobG+qnf2015tlHSBe2LyIVHfvg==
+angular2-promise-buttons@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/angular2-promise-buttons/-/angular2-promise-buttons-4.0.6.tgz#00f6c8fef597f03ca7146328089dffb75b910b78"
+  integrity sha512-y8iPVStK4fRX64PXuev1nBdm+DE4DcZYCDEakDjDK2+N48gkvLSeviWilWPl/Tj60QUH1Lcvk68ye54UGMS19Q==
 
 ansi-align@^3.0.0:
   version "3.0.0"
