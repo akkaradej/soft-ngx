@@ -38,8 +38,14 @@ export class SoftFormDirective {
   @Output() softForm = new EventEmitter<NgForm>();
 
   @HostListener('ngSubmit') onSubmit() {
-    const scrollingView = this.softFormContainer || this.elementRef.nativeElement.closest('.modal-card-body') || document.documentElement;
-    this.scrollService.scrollTo(this.elementRef.nativeElement.querySelector('.ng-invalid'), scrollingView);
+    const invalidControl = this.elementRef.nativeElement.querySelector('.ng-invalid');
+    if (invalidControl) {
+      const scrollingView = this.softFormContainer || this.elementRef.nativeElement.closest('.modal-card-body') || document.documentElement;
+      this.scrollService.scrollTo(this.elementRef.nativeElement.querySelector('.ng-invalid'), scrollingView);
+    }
+    if (document.activeElement) {
+      (document.activeElement as HTMLElement).blur();
+    }
     this.formClass = 'submitted';
     this.softForm.emit(this.form);
   }
