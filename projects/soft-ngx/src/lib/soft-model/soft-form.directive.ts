@@ -30,6 +30,17 @@ export class SoftFormDirective {
     private elementRef: ElementRef,
     private scrollService: SoftScrollService,
   ) {
+    const resetFormFunc = this.form.resetForm;
+    this.form.resetForm = (args) => {
+      this.formClass = '';
+      resetFormFunc.apply(this.form, args);
+    };
+
+    const resetFunc = this.form.reset;
+    this.form.reset = (args) => {
+      this.formClass = '';
+      resetFunc.apply(this.form, args);
+    };
   }
 
   @HostBinding('class') formClass: string;
