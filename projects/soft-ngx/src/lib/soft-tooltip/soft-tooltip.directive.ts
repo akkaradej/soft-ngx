@@ -13,12 +13,14 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
   @Input() arrow = true;
   @Input() placement: Placement = 'top';
   @Input() trigger = 'mouseenter focus';
+  @Input() triggerTarget: ElementRef = null;
   @Input() theme: string;
 
   @Output() softTooltipShown = new EventEmitter();
   @Output() softTooltipHidden = new EventEmitter();
 
   private tippyInstance;
+  private isShow: boolean;
   private autofocusElement: HTMLElement;
 
   constructor(
@@ -29,6 +31,10 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.softTooltip instanceof TemplateRef) {
+      this.theme = `${this.theme} is-paddingless`;
+    }
+
     this.zone.runOutsideAngular(() => {
       this.tippyInstance = tippy(this.elementRef.nativeElement, {
         appendTo: () => document.body,
@@ -40,29 +46,18 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
         maxWidth: 'none',
         placement: this.placement,
         trigger: this.trigger,
+        triggerTarget: this.triggerTarget ? this.triggerTarget : null as any,
         theme: this.theme,
         onClickOutside(instance, event) {
           instance.hide();
         },
-        onTrigger: (instance, event) => {
-          if (this.softTooltip instanceof TemplateRef) {
-            let viewRef: EmbeddedViewRef<any>;
-            this.zone.run(() => {
-              viewRef = this.viewContainerRef.createEmbeddedView(this.softTooltip as TemplateRef<any>);
-              instance.setContent(viewRef.rootNodes[0]);
-              viewRef.markForCheck();
-            });
-            this.autofocusElement = viewRef.rootNodes[0].querySelector('[autofocus]');
-            if (this.autofocusElement) {
-              this.autofocusElement = this.autofocusElement.querySelector('input') || this.autofocusElement;
-            }
-          }
-        },
+        onTrigger: this.onTrigger,
         onShown: (instance) => {
           if (this.autofocusElement) {
             this.autofocusElement.focus();
           }
           this.zone.run(() => {
+            this.isShow = true;
             this.softTooltipShown.emit();
           });
         },
@@ -75,6 +70,7 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
           }
           this.autofocusElement = undefined;
           this.zone.run(() => {
+            this.isShow = false;
             this.softTooltipHidden.emit();
           });
         },
@@ -90,10 +86,40 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
     });
   }
 
+  show() {
+    this.zone.runOutsideAngular(() => {
+      this.onTrigger(this.tippyInstance, 'manual');
+      this.tippyInstance.show();
+    });
+  }
+
   hide() {
     this.zone.runOutsideAngular(() => {
       this.tippyInstance.hide();
     });
+  }
+
+  toggle() {
+    if (this.isShow) {
+      this.hide();
+    } else {
+      this.show();
+    }
+  }
+
+  private onTrigger = (instance, event) => {
+    if (this.softTooltip instanceof TemplateRef) {
+      let viewRef: EmbeddedViewRef<any>;
+      this.zone.run(() => {
+        viewRef = this.viewContainerRef.createEmbeddedView(this.softTooltip as TemplateRef<any>);
+        instance.setContent(viewRef.rootNodes[0]);
+        viewRef.markForCheck();
+      });
+      this.autofocusElement = viewRef.rootNodes[0].querySelector('[autofocus]');
+      if (this.autofocusElement) {
+        this.autofocusElement = this.autofocusElement.querySelector('input') || this.autofocusElement;
+      }
+    }
   }
 
 }
