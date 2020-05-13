@@ -31,7 +31,7 @@ export interface HttpClientRequestOptions {
     [param: string]: string;
   };
   reportProgress?: boolean;
-  responseType?: 'text';
+  responseType?: 'text' | 'blob';
   withCredentials?: boolean;
 }
 
@@ -124,6 +124,18 @@ export class SoftApiClientService {
     );
   }
 
+  public blobGet(url: string, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Get', url, { body: undefined, params, responseType: 'blob' }, isPublic, headerResponse).pipe(
+      this.globalErrorHandler(),
+    );
+  }
+
+  public blobPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Post', url, { body, params, responseType: 'blob' }, isPublic, headerResponse).pipe(
+      this.globalErrorHandler(),
+    );
+  }
+
   public multipartPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const formData = new FormData();
     // tslint:disable-next-line:forin
@@ -169,11 +181,17 @@ export class SoftApiClientService {
     method: string, url: string, options: HttpClientRequestOptions,
     isPublic?: boolean, headerResponse?: HeaderResponse): Observable<Response> {
     url = `${this.config.apiBaseUrl}${url}`;
-    options.responseType = 'text'; // want to manual parsing json
-    if (headerResponse !== undefined) {
-      options.observe = 'response';
-    } else {
-      options.observe = 'body';
+
+    if (!options.responseType) {
+      options.responseType = 'text'; // want to manual parsing json
+    }
+
+    if (!options.observe) {
+      if (headerResponse == null) {
+        options.observe = 'body'; // need only body
+      } else {
+        options.observe = 'response'; // need whole response
+      }
     }
 
     if (options.params) {
@@ -227,10 +245,10 @@ export class SoftApiClientService {
         if (options.observe === 'response') {
           return {
             headers: res.headers,
-            data: this.formatResponse(res.body),
+            data: options.responseType === 'text' ? this.formatResponse(res.body) : res.body,
           };
         } else {
-          return this.formatResponse(res);
+          return options.responseType === 'text' ? this.formatResponse(res) : res;
         }
       }),
     );
