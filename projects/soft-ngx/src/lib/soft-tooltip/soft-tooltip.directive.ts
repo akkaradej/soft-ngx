@@ -14,6 +14,8 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
   @Input() placement: Placement = 'top';
   @Input() trigger = 'mouseenter focus';
   @Input() triggerTarget: ElementRef = null;
+  @Input() hideOnClickOutside = true;
+  @Input() zIndex = 1020;
   @Input() theme: string;
 
   @Output() softTooltipShown = new EventEmitter();
@@ -48,8 +50,13 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
         trigger: this.trigger,
         triggerTarget: this.triggerTarget ? this.triggerTarget : null as any,
         theme: this.theme,
-        onClickOutside(instance, event) {
-          instance.hide();
+        zIndex: this.zIndex,
+        onClickOutside: (instance, event) => {
+          this.zone.run(() => {
+            if (this.hideOnClickOutside) {
+              instance.hide();
+            }
+          });
         },
         onTrigger: this.onTrigger,
         onShown: (instance) => {
