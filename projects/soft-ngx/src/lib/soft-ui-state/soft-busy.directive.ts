@@ -1,72 +1,54 @@
-import { Directive, Inject, Input, ElementRef } from '@angular/core';
-import { PromiseBtnDirective } from 'angular2-promise-buttons';
+import { Directive, Inject, Input, ElementRef, AfterContentInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { SoftUIStateConfig, defaultConfig } from './soft-ui-state.config';
-import { userSoftUIStateConfigToken } from './user-config.token';
+import { SoftUIStateConfig, defaultBusyConfig, SoftBusyConfig } from './soft-ui-state.config';
+import { userSoftUIStateConfigToken, userSoftBusyฺConfigToken } from './user-config.token';
+import { BaseUIState } from './base-ui-state';
 
 @Directive({
   selector: '[softBusy]',
 })
-export class SoftBusyDirective extends PromiseBtnDirective {
-  config: SoftUIStateConfig;
+export class SoftBusyDirective extends BaseUIState implements AfterContentInit {
+
+  @Input()
+  set softBusy(state: Subscription | Promise<any> | boolean) {
+    this.setState(state);
+  }
+
+  @Input() busyDelay: number;
+  @Input() busyHTML: string;
+  @Input() busyClass = '';
+
+  config: SoftUIStateConfig & SoftBusyConfig;
 
   constructor(
     el: ElementRef,
-    @Inject(userSoftUIStateConfigToken) userConfig: SoftUIStateConfig) {
+    @Inject(userSoftUIStateConfigToken) userConfig: SoftUIStateConfig,
+    @Inject(userSoftBusyฺConfigToken) userBusyConfig: SoftBusyConfig) {
 
-    super(el, {});
-    this.config = Object.assign({}, defaultConfig, userConfig);
-    this.cfg.btnLoadingClass = 'show-busy-spinner';
+    super(el, userConfig);
+    this.config = Object.assign({}, this.config, defaultBusyConfig, userBusyConfig);
   }
 
-  @Input()
-  set hideBackdrop(isHide: boolean) {
-    if (isHide) {
-      this.cfg.btnLoadingClass = 'show-busy-spinner-no-backdrop';
-    } else {
-      this.cfg.btnLoadingClass = 'show-busy-spinner';
+  loadingState(element: HTMLElement) {
+    const minDuration = this.minDuration || this.config.minDuration || 0;
+    let busyDelay = this.busyDelay || this.config.busyDelay || 0;
+    if (busyDelay < minDuration) {
+      busyDelay = 0;
+    }
+
+    window.setTimeout(() => {
+      if (!this.isPromiseDone) {
+        element.insertAdjacentHTML('beforeend', `<div class="busy-wrapper ${this.busyClass}">${this.busyHTML || this.config.busyHTML}</div>`);
+      }
+    }, busyDelay);
+  }
+
+  finishedStateIfDone(element: HTMLElement) {
+    const busyWrapper = document.querySelector('.busy-wrapper');
+    if (busyWrapper) {
+      element.removeChild(busyWrapper);
     }
   }
 
-  @Input()
-  set softBusy(passedValue: any) {
-    this.cfg.disableBtn = false;
-    this.cfg.spinnerTpl = `
-      <div class="busy-spinner">
-        <div class="ng-busy">
-          <div class="ng-busy-default-wrapper">
-            <div class="ng-busy-default-sign">
-              <div class="ng-busy-default-spinner">
-                  <div class="bar1"></div>
-                  <div class="bar2"></div>
-                  <div class="bar3"></div>
-                  <div class="bar4"></div>
-                  <div class="bar5"></div>
-                  <div class="bar6"></div>
-                  <div class="bar7"></div>
-                  <div class="bar8"></div>
-                  <div class="bar9"></div>
-                  <div class="bar10"></div>
-                  <div class="bar11"></div>
-                  <div class="bar12"></div>
-              </div>
-              <div class="ng-busy-default-text">${this.config.busyText}</div>
-            </div>
-          </div>
-        </div>
-        <div class="ng-busy-backdrop">
-        </div>
-      </div>
-    `;
-    this.promiseBtn = passedValue;
-  }
-
-  // Override to add delay before start
-  initLoadingState(btnEl: HTMLElement) {
-    window.setTimeout(() => {
-      if (!this.isPromiseDone) {
-        this.addLoadingClass(btnEl);
-      }
-    }, this.config.busyDelay);
-  }
 }

@@ -1,15 +1,48 @@
-import { Directive, Input } from '@angular/core';
-import { PromiseBtnDirective } from 'angular2-promise-buttons';
+import { Directive, Input, HostListener } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { BaseDisabledState } from './base-disabled-state';
 
 @Directive({
   selector: '[softLoading]',
 })
-export class SoftLoadingDirective extends PromiseBtnDirective {
+export class SoftLoadingDirective extends BaseDisabledState {
+
+  @Input() loadingClass = 'is-loading';
 
   @Input()
-  set softLoading(passedValue: any) {
-    this.cfg.btnLoadingClass = 'is-loading';
-    this.cfg.spinnerTpl = '';
-    this.promiseBtn = passedValue;
+  set softLoading(state: Subscription | Promise<any> | boolean) {
+    this.setState(state);
+  }
+
+  @HostListener('click')
+  handleCurrentBtnOnly() {
+    // Click triggers @Input update
+    // We need to use timeout to wait for @Input to update
+    window.setTimeout(() => {
+      // return if something else than a promise is passed
+      if (!this.promise) {
+        return;
+      }
+
+      // only display loading for clicked element
+      this.addLoadingClass(this.element);
+      this.loadingState(this.element);
+    }, 0);
+  }
+
+  /**
+   * Handles everything to be triggered when state is finished
+   */
+  finishedStateIfDone(element: HTMLElement) {
+    this.removeLoadingClass(element);
+    super.finishedStateIfDone(element);
+  }
+
+  private addLoadingClass(element: HTMLElement) {
+    element.classList.add(this.loadingClass);
+  }
+
+  private removeLoadingClass(element: HTMLElement) {
+    element.classList.remove(this.loadingClass);
   }
 }
