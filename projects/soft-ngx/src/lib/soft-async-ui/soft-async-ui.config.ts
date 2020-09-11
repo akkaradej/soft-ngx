@@ -1,4 +1,4 @@
-export interface SoftUIStateConfig {
+export interface SoftAsyncUIConfig {
   minDuration?: number;
 }
 

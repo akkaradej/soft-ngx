@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
-import { SoftUIStateConfig, SoftBusyConfig } from './soft-ui-state.config';
+import { SoftAsyncUIConfig, SoftBusyConfig } from './soft-async-ui.config';
 import { SoftBusyDirective } from './soft-busy.directive';
 import { SoftDisabledDirective } from './soft-disabled.directive';
 import { SoftLoadingDirective } from './soft-loading.directive';
-import { userSoftUIStateConfigToken, userSoftBusyฺConfigToken } from './user-config.token';
+import { userSoftAsyncUIConfigToken, userSoftBusyฺConfigToken } from './user-config.token';
 
 @NgModule({
   imports: [
@@ -22,15 +22,15 @@ import { userSoftUIStateConfigToken, userSoftBusyฺConfigToken } from './user-c
     SoftLoadingDirective,
   ],
 })
-export class SoftUIStateModule {
+export class SoftAsyncUIModule {
   static forRoot(
-    config?: SoftUIStateConfig,
+    config?: SoftAsyncUIConfig,
     busyConfig?: SoftBusyConfig,
-  ): ModuleWithProviders<SoftUIStateModule> {
+  ): ModuleWithProviders<SoftAsyncUIModule> {
     return {
-      ngModule: SoftUIStateModule,
+      ngModule: SoftAsyncUIModule,
       providers: [
-        { provide: userSoftUIStateConfigToken, useValue: config },
+        { provide: userSoftAsyncUIConfigToken, useValue: config },
         { provide: userSoftBusyฺConfigToken, useValue: busyConfig },
       ],
     };

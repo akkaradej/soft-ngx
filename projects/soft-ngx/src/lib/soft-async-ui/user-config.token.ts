@@ -1,3 +1,3 @@
 import { InjectionToken } from '@angular/core';
-export const userSoftUIStateConfigToken = new InjectionToken('userSoftUIStateConfigToken');
+export const userSoftAsyncUIConfigToken = new InjectionToken('userSoftAsyncUIConfigToken');
 export const userSoftBusyฺConfigToken = new InjectionToken('userSoftBusyฺConfigToken');

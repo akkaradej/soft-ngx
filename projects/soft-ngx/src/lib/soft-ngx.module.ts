@@ -8,7 +8,7 @@ import { SoftPipeModule } from './soft-pipe/soft-pipe.module';
 import { SoftPopupModule } from './soft-popup/soft-popup.module';
 import { SoftScrollModule } from './soft-scroll/soft-scroll.module';
 import { SoftStorageModule } from './soft-storage/soft-storage.module';
-import { SoftUIStateModule } from './soft-ui-state/soft-ui-state.module';
+import { SoftAsyncUIModule } from './soft-async-ui/soft-async-ui.module';
 
 import { SoftAuthService } from './soft-auth/soft-auth.service';
 import { SoftApiClientConfig } from './soft-api-client/soft-api-client.config';
@@ -19,52 +19,52 @@ import {
 import { SoftPopupConfig } from './soft-popup/soft-popup.config';
 import { SoftStorageConfig } from './soft-storage/soft-storage.config';
 import { SoftTooltipModule } from './soft-tooltip/soft-tooltip.module';
-import { SoftUIStateConfig } from './soft-ui-state/soft-ui-state.config';
+import { SoftAsyncUIConfig } from './soft-async-ui/soft-async-ui.config';
 
 @NgModule({
   imports: [
     CommonModule,
 
     SoftApiClientModule,
+    SoftAsyncUIModule,
     SoftAuthModule,
     SoftPopupModule,
     SoftScrollModule,
     SoftStorageModule,
     SoftTooltipModule,
-    SoftUIStateModule,
   ],
   exports: [
+    SoftAsyncUIModule,
     SoftModalModule,
     SoftModelModule,
     SoftPipeModule,
     SoftTooltipModule,
-    SoftUIStateModule,
   ],
 })
 export class SoftNgxModule {
   static forRoot(
     // tslint:disable-next-line: variable-name
     SoftAuthServiceClass: any = SoftAuthService,
+    apiClientConfig?: SoftApiClientConfig,
+    asyncUIConfig?: SoftAsyncUIConfig,
     authConfig: {
       authServiceConfig?: SoftAuthServiceConfig,
       authInterceptorConfig?: SoftAuthInterceptorConfig,
       authRequestKey?: SoftAuthRequestKey,
       authResponseKey?: SoftAuthResponseKey,
     } = {},
-    apiClientConfig?: SoftApiClientConfig,
     popupConfig?: SoftPopupConfig,
     storageConfig?: SoftStorageConfig,
-    uiStateConfig?: SoftUIStateConfig,
   ): ModuleWithProviders<SoftNgxModule> {
     return {
       ngModule: SoftNgxModule,
       providers: [
         ...SoftApiClientModule.forRoot(apiClientConfig).providers,
+        ...SoftAsyncUIModule.forRoot(asyncUIConfig).providers,
         ...SoftAuthModule.forRoot(SoftAuthServiceClass, authConfig).providers,
         ...SoftPopupModule.forRoot(popupConfig).providers,
         ...SoftScrollModule.forRoot().providers,
         ...SoftStorageModule.forRoot(storageConfig).providers,
-        ...SoftUIStateModule.forRoot(uiStateConfig).providers,
       ],
     };
   }

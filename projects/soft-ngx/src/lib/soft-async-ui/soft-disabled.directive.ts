@@ -1,11 +1,11 @@
 import { Directive, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BaseDisabledState } from './base-disabled-state';
+import { BaseAsyncDisabled } from './base-async-disabled';
 
 @Directive({
   selector: '[softDisabled]',
 })
-export class SoftDisabledDirective extends BaseDisabledState {
+export class SoftDisabledDirective extends BaseAsyncDisabled {
 
   @Input()
   set softDisabled(state: Subscription | Promise<any> | boolean) {

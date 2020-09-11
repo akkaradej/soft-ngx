@@ -1,8 +1,8 @@
 import { Directive, Input } from '@angular/core';
-import { BaseUIState } from './base-ui-state';
+import { BaseAsyncUI } from './base-async-ui';
 
 @Directive()
-export class BaseDisabledState extends BaseUIState {
+export class BaseAsyncDisabled extends BaseAsyncUI {
 
   private isDisabledFromTheOutside: boolean;
 

@@ -3,15 +3,15 @@
 import { AfterContentInit, Directive, ElementRef, Inject, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
-import { SoftUIStateConfig } from './soft-ui-state.config';
-import { userSoftUIStateConfigToken } from './user-config.token';
+import { SoftAsyncUIConfig } from './soft-async-ui.config';
+import { userSoftAsyncUIConfigToken } from './user-config.token';
 
 @Directive()
-export abstract class BaseUIState implements OnDestroy, AfterContentInit {
+export abstract class BaseAsyncUI implements OnDestroy, AfterContentInit {
 
   @Input() minDuration: number;
 
-  config: SoftUIStateConfig;
+  config: SoftAsyncUIConfig;
 
   minDurationTimeout: number;
   isMinDurationTimeoutDone: boolean;
@@ -24,7 +24,7 @@ export abstract class BaseUIState implements OnDestroy, AfterContentInit {
 
   constructor(
     el: ElementRef,
-    @Inject(userSoftUIStateConfigToken) userConfig: SoftUIStateConfig) {
+    @Inject(userSoftAsyncUIConfigToken) userConfig: SoftAsyncUIConfig) {
 
     this.config = Object.assign({}, userConfig);
     this.element = el.nativeElement;

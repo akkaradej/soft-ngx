@@ -1,14 +1,14 @@
 import { Directive, Inject, Input, ElementRef, AfterContentInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { SoftUIStateConfig, defaultBusyConfig, SoftBusyConfig } from './soft-ui-state.config';
-import { userSoftUIStateConfigToken, userSoftBusyฺConfigToken } from './user-config.token';
-import { BaseUIState } from './base-ui-state';
+import { SoftAsyncUIConfig, defaultBusyConfig, SoftBusyConfig } from './soft-async-ui.config';
+import { userSoftAsyncUIConfigToken, userSoftBusyฺConfigToken } from './user-config.token';
+import { BaseAsyncUI } from './base-async-ui';
 
 @Directive({
   selector: '[softBusy]',
 })
-export class SoftBusyDirective extends BaseUIState implements AfterContentInit {
+export class SoftBusyDirective extends BaseAsyncUI implements AfterContentInit {
 
   @Input()
   set softBusy(state: Subscription | Promise<any> | boolean) {
@@ -19,11 +19,11 @@ export class SoftBusyDirective extends BaseUIState implements AfterContentInit {
   @Input() busyHTML: string;
   @Input() busyClass = '';
 
-  config: SoftUIStateConfig & SoftBusyConfig;
+  config: SoftAsyncUIConfig & SoftBusyConfig;
 
   constructor(
     el: ElementRef,
-    @Inject(userSoftUIStateConfigToken) userConfig: SoftUIStateConfig,
+    @Inject(userSoftAsyncUIConfigToken) userConfig: SoftAsyncUIConfig,
     @Inject(userSoftBusyฺConfigToken) userBusyConfig: SoftBusyConfig) {
 
     super(el, userConfig);

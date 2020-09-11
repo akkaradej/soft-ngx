@@ -28,7 +28,7 @@ import { DemoModalComponent } from './demo-modal/demo-modal.component';
 import { DemoModelComponent } from './demo-model/demo-model.component';
 import { DemoPipeComponent } from './demo-pipe/demo-pipe.component';
 import { DemoPopupComponent } from './demo-popup/demo-popup.component';
-import { DemoUIStateComponent } from './demo-ui-state/demo-ui-state.component';
+import { DemoAsyncUIComponent } from './demo-async-ui/demo-async-ui.component';
 import { FormsModule } from '@angular/forms';
 import { CustomDialogComponent } from './demo-popup/custom-dialog-component';
 import { DemoScrollComponent } from './demo-scroll/demo-scroll.component';
@@ -98,12 +98,12 @@ const customAuthResponseKey: SoftAuthResponseKey = {
 
     // Demo Component
     DemoApiClientComponent,
+    DemoAsyncUIComponent,
     DemoModalComponent,
     DemoModelComponent,
     DemoPipeComponent,
     DemoPopupComponent,
     DemoScrollComponent,
-    DemoUIStateComponent,
     CustomDialogComponent,
   ],
   imports: [
@@ -123,18 +123,18 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     // SoftPopupModule.forRoot(),
     // SoftScrollModule.forRoot(),
     // SoftStorageModule.forRoot(),
-    // SoftUIStateModule.forRoot(),
+    // SoftAsyncUIModule.forRoot(),
     // SoftModalModule, // => for non-lazy loading module only
     // SoftModelModule, // => for non-lazy loading module only
     // SoftPipeModule, // => for non-lazy loading module only
     // SoftTooltipModule, // => for non-lazy loading module only
 
     //// Selective import at SharedModule // => for lazy loading module
+    // SoftAsyncUIModule,
     // SoftModalModule,
     // SoftModelModule,
     // SoftPipeModule,
     // SoftTooltipModule,
-    // SoftUIStateModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },

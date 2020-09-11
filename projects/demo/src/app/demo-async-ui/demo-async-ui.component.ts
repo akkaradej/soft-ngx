@@ -4,11 +4,11 @@ import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-demo-ui-state',
-  templateUrl: './demo-ui-state.component.html',
-  styleUrls: ['./demo-ui-state.component.scss']
+  selector: 'app-demo-async-ui',
+  templateUrl: './demo-async-ui.component.html',
+  styleUrls: ['./demo-async-ui.component.scss']
 })
-export class DemoUIStateComponent implements OnInit {
+export class DemoAsyncUIComponent implements OnInit {
   busy: any;
   loadingSub: any;
 

@@ -47,7 +47,7 @@ imports: [
   SoftPopupModule.forRoot(),
   SoftScrollModule.forRoot(),
   SoftStorageModule.forRoot(),
-  SoftUIStateModule.forRoot(),
+  SoftAsyncUIModule.forRoot(),
   SoftModalModule, // => for non-lazy loading module only
   SoftModelModule, // => for non-lazy loading module only
   SoftPipeModule, // => for non-lazy loading module only
@@ -58,18 +58,18 @@ imports: [
 ### Selective import at SharedModule (to import SharedModule for lazy loading module)
 ```
 imports: [
+  SoftAsyncUIModule,
   SoftModalModule,
   SoftModelModule,
   SoftPipeModule,
   SoftTooltipModule,
-  SoftUIStateModule,
 ],
 exports: [
+  SoftAsyncUIModule,
   SoftModalModule,
   SoftModelModule,
   SoftPipeModule,
   SoftTooltipModule,
-  SoftUIStateModule,
 ],
 ```
 

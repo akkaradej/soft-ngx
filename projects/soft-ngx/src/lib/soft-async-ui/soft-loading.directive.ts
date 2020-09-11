@@ -1,11 +1,11 @@
 import { Directive, Input, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BaseDisabledState } from './base-disabled-state';
+import { BaseAsyncDisabled } from './base-async-disabled';
 
 @Directive({
   selector: '[softLoading]',
 })
-export class SoftLoadingDirective extends BaseDisabledState {
+export class SoftLoadingDirective extends BaseAsyncDisabled {
 
   @Input() loadingClass = 'is-loading';
 
