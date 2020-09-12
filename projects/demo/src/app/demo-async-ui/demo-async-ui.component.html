@@ -8,33 +8,95 @@
       </h3>
       <ul class="block">
         <li>- loading state apply to container or page</li>
-        <li>- give a subscription or boolean to determine loading state</li>
+        <li>- give a subscription or promise or boolean to determine loading state</li>
+        <li>- default delay = 400</li>
+        <li>- default container = self</li>
+        <li>- default container min height = 50</li>
+        <li>- not show loading state if loading time shorter than delay</li>
       </ul>
-      <div
-        [softBusy]="busy"
-        class="is-busy-parent"
-      >
-        <br> Long loading content
-        <br>
-        <br>
+      .parent
+      <div class="parent box">
+        <div
+          *ngIf="isShow"
+          [softBusy]="busy"
+          [busyDelay]="delay"
+          [busyContainer]="container"
+          [busyContainerMinHeight]="minHeight"
+        >
+          <br> Long loading content
+          <br>
+          <br>
+        </div>
+        <div>Some Content</div>
       </div>
-      <div
-        [softBusy]="busy"
-        [busyClass]="'no-backdrop'"
-        class="is-busy-parent"
-      >
-        <br> Long loading content (no backdrop)
-        <br>
-        <br>
+
+      <div class="is-flex is-align-center block">
+        Loading: &nbsp;
+        <input
+          class="push-right"
+          type="number"
+          [(ngModel)]="loadingTime"
+          (ngModelChange)="destroyContent()"
+        />
+
+        Delay: &nbsp;
+        <input
+          class="push-right"
+          type="number"
+          [(ngModel)]="delay"
+          (ngModelChange)="destroyContent()"
+        />
+
+        <button
+          class="button is-secondary push-right"
+          [disabled]="!isShow"
+          (click)="load()"
+        >Load</button>
+
+        <button
+          class="button"
+          [class.is-primary]="!isShow"
+          [class.is-danger]="isShow"
+          (click)="toggle()"
+        >{{ isShow ? 'Destroy' : 'Create' }} Content</button>
       </div>
+
+      <div class="is-flex is-align-center">
+        Container: &nbsp;
+        <label class="radio">
+          <input
+            type="radio"
+            name="container"
+            [value]="undefined"
+            [(ngModel)]="container"
+            (ngModelChange)="destroyContent()"
+          />
+          <span>self</span>
+        </label>
+        <label class="radio push-right">
+          <input
+            type="radio"
+            name="container"
+            [value]="'.parent'"
+            [(ngModel)]="container"
+            (ngModelChange)="destroyContent()"
+          />
+          <span>.parent</span>
+        </label>
+
+        Container Min Height: &nbsp;
+        <input
+          class="push-right"
+          type="number"
+          [(ngModel)]="minHeight"
+          (ngModelChange)="destroyContent()"
+        />
+      </div>
+
       <pre>
       # html
-      &lt;div <strong>[softBusy]="busy"</strong> class="is-busy-parent"&gt;
+      &lt;div <strong>[softBusy]="busy"</strong>&gt;
         Long loading content
-      &lt;/div&gt;
-      
-      &lt;div <strong>[softBusy]="busy" [busyClass]="'no-backdrop'"</strong> class="is-busy-parent"&gt;
-        Long loading content (no backdrop)
       &lt;/div&gt;
 
       # ts
@@ -49,26 +111,36 @@
       <ul class="block">
         <li>- loading/disabled state apply to element e.g. button</li>
         <li>- give a subscription or promise or boolean to determine loading/disabled state</li>
+        <li>- loading state also has disabled state</li>
+        <li>- loading appear only clicked element, for other element just disabled</li>
+        <li>- existing disabled property is not affected (still disabled)</li>
       </ul>
       <button
         class="button"
         [softLoading]="loadingSub"
         (click)="testLoading()"
       >
-        Click here
+        softLoading
       </button>
       <button
         class="button"
         [softLoading]="loadingSub"
         (click)="testLoading()"
       >
-        Click another
+        another softLoading
       </button>
       <button
         class="button"
         [softDisabled]="loadingSub"
       >
-        Just Disabled
+        softDisabled
+      </button>
+      <button
+        class="button"
+        [softDisabled]="loadingSub"
+        disabled
+      >
+        softDisabled with disabled
       </button>
       <pre>
       # html

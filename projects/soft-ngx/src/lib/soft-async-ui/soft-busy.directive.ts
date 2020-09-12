@@ -1,53 +1,103 @@
-import { Directive, Inject, Input, ElementRef, AfterContentInit } from '@angular/core';
+import { Directive, Inject, Input, ElementRef, Type, ComponentFactoryResolver, Injector, EmbeddedViewRef, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { SoftAsyncUIConfig, defaultBusyConfig, SoftBusyConfig } from './soft-async-ui.config';
-import { userSoftAsyncUIConfigToken, userSoftBusyฺConfigToken } from './user-config.token';
+import { SoftAsyncUIConfig } from './soft-async-ui.config';
+import { userSoftAsyncUIConfigToken } from './user-config.token';
 import { BaseAsyncUI } from './base-async-ui';
+import { DefaultBusySpinnerComponent } from './default-busy-spinner/default-busy-spinner.component';
 
 @Directive({
   selector: '[softBusy]',
 })
-export class SoftBusyDirective extends BaseAsyncUI implements AfterContentInit {
+export class SoftBusyDirective extends BaseAsyncUI implements OnInit, OnChanges, OnDestroy {
 
-  @Input()
-  set softBusy(state: Subscription | Promise<any> | boolean) {
-    this.setState(state);
-  }
+  @Input() softBusy: Subscription | Promise<any> | boolean;
 
+  @Input() busyComponent: Type<any>;
+  @Input() busyContainer: string;
+  @Input() busyContainerMinHeight = 50;
   @Input() busyDelay: number;
-  @Input() busyHTML: string;
-  @Input() busyClass = '';
 
-  config: SoftAsyncUIConfig & SoftBusyConfig;
+  busyHTMLElement: HTMLElement;
+  containerOriginalPosition: string;
+  containerOriginalMinHeight: string;
+  config: SoftAsyncUIConfig;
 
   constructor(
     el: ElementRef,
     @Inject(userSoftAsyncUIConfigToken) userConfig: SoftAsyncUIConfig,
-    @Inject(userSoftBusyฺConfigToken) userBusyConfig: SoftBusyConfig) {
-
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private injector: Injector,
+  ) {
     super(el, userConfig);
-    this.config = Object.assign({}, this.config, defaultBusyConfig, userBusyConfig);
+  }
+
+  ngOnInit() {
+    const componentRef = this.componentFactoryResolver
+      .resolveComponentFactory(this.busyComponent || DefaultBusySpinnerComponent)
+      .create(this.injector);
+    this.busyHTMLElement = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+    componentRef.destroy();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.softBusy) {
+      this.setState(changes.softBusy.currentValue);
+    }
+  }
+
+  ngOnDestroy() {
+    this.finishedState(this.element);
   }
 
   loadingState(element: HTMLElement) {
-    const minDuration = this.minDuration || this.config.minDuration || 0;
-    let busyDelay = this.busyDelay || this.config.busyDelay || 0;
+    let minDuration = this.config.minDuration || 0;
+    if (this.minDuration != null) {
+      minDuration = this.minDuration;
+    }
+
+    let busyDelay = this.config.busyDelay || 0;
+    if (this.busyDelay != null) {
+      busyDelay = this.busyDelay;
+    }
+
     if (busyDelay < minDuration) {
       busyDelay = 0;
     }
 
+    let containerMinHeight = this.config.busyContainerMinHeight;
+    if (this.busyContainerMinHeight != null) {
+      containerMinHeight = this.busyContainerMinHeight;
+    }
+
     window.setTimeout(() => {
       if (!this.isPromiseDone) {
-        element.insertAdjacentHTML('beforeend', `<div class="busy-wrapper ${this.busyClass}">${this.busyHTML || this.config.busyHTML}</div>`);
+        let container = element;
+        if (this.busyContainer) {
+          container = element.closest(this.busyContainer);
+        }
+        if (container) {
+          this.containerOriginalPosition = container.style.position;
+          this.containerOriginalMinHeight = container.style.minHeight;
+          container.style.position = 'relative';
+          if (containerMinHeight) {
+            container.style.minHeight = `${containerMinHeight}px`;
+          }
+          container.appendChild(this.busyHTMLElement);
+        }
       }
     }, busyDelay);
   }
 
-  finishedStateIfDone(element: HTMLElement) {
-    const busyWrapper = document.querySelector('.busy-wrapper');
-    if (busyWrapper) {
-      element.removeChild(busyWrapper);
+  finishedState(element: HTMLElement) {
+    let container = element;
+    if (this.busyContainer) {
+      container = element.closest(this.busyContainer);
+    }
+    if (container && container.contains(this.busyHTMLElement)) {
+      container.removeChild(this.busyHTMLElement);
+      container.style.position = this.containerOriginalPosition;
+      container.style.minHeight = this.containerOriginalMinHeight;
     }
   }
 

@@ -57,7 +57,7 @@ export { SoftTooltipModule } from './lib/soft-tooltip/soft-tooltip.module';
 export { SoftTooltipDirective } from './lib/soft-tooltip/soft-tooltip.directive';
 
 export { SoftAsyncUIConfig } from './lib/soft-async-ui/soft-async-ui.config';
-export { userSoftAsyncUIConfigToken, userSoftBusyฺConfigToken } from './lib/soft-async-ui/user-config.token';
+export { userSoftAsyncUIConfigToken } from './lib/soft-async-ui/user-config.token';
 export { SoftAsyncUIModule } from './lib/soft-async-ui/soft-async-ui.module';
 export { SoftBusyDirective } from './lib/soft-async-ui/soft-busy.directive';
 export { SoftDisabledDirective } from './lib/soft-async-ui/soft-disabled.directive';

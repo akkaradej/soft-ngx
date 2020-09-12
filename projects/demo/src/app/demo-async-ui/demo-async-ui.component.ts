@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
@@ -8,14 +8,35 @@ import { delay } from 'rxjs/operators';
   templateUrl: './demo-async-ui.component.html',
   styleUrls: ['./demo-async-ui.component.scss']
 })
-export class DemoAsyncUIComponent implements OnInit {
-  busy: any;
-  loadingSub: any;
+export class DemoAsyncUIComponent {
+  isShow = true;
+  loadingTime = 5000;
+  delay = 400;
+  minHeight = 50;
+  container = undefined;
+
+  busy: Subscription;
+  loadingSub: Subscription;
 
   constructor() { }
 
-  ngOnInit() {
-    this.busy = of().pipe(delay(Number.MAX_SAFE_INTEGER)).subscribe();
+  load() {
+    this.busy = of().pipe(delay(this.loadingTime)).subscribe();
+  }
+
+  toggle() {
+    if (this.isShow) {
+      this.destroyContent();
+    } else {
+      this.isShow = true;
+    }
+  }
+
+  destroyContent() {
+    this.isShow = false;
+    if (this.busy) {
+      this.busy.unsubscribe();
+    }
   }
 
   testLoading() {

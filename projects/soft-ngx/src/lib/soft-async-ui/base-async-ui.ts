@@ -1,13 +1,13 @@
 // inspired by https://github.com/johannesjo/angular2-promise-buttons/blob/master/projects/angular2-promise-buttons/src/promise-btn.directive.ts
 
-import { AfterContentInit, Directive, ElementRef, Inject, OnDestroy, Input } from '@angular/core';
+import { Directive, ElementRef, Inject, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
-import { SoftAsyncUIConfig } from './soft-async-ui.config';
+import { SoftAsyncUIConfig, defaultConfig } from './soft-async-ui.config';
 import { userSoftAsyncUIConfigToken } from './user-config.token';
 
 @Directive()
-export abstract class BaseAsyncUI implements OnDestroy, AfterContentInit {
+export abstract class BaseAsyncUI implements OnDestroy {
 
   @Input() minDuration: number;
 
@@ -26,13 +26,8 @@ export abstract class BaseAsyncUI implements OnDestroy, AfterContentInit {
     el: ElementRef,
     @Inject(userSoftAsyncUIConfigToken) userConfig: SoftAsyncUIConfig) {
 
-    this.config = Object.assign({}, userConfig);
+    this.config = Object.assign({}, defaultConfig, userConfig);
     this.element = el.nativeElement;
-  }
-
-  ngAfterContentInit() {
-    // trigger changes once to handle initial promises
-    this.checkAndInitStateHandler(this.element);
   }
 
   ngOnDestroy() {
@@ -50,7 +45,7 @@ export abstract class BaseAsyncUI implements OnDestroy, AfterContentInit {
   /**
    * Handles everything to be triggered when state is finished
    */
-  abstract finishedStateIfDone(element: HTMLElement);
+  abstract finishedState(element: HTMLElement);
 
   /**
    * Keep track state inform of Promise
@@ -78,13 +73,18 @@ export abstract class BaseAsyncUI implements OnDestroy, AfterContentInit {
     } else if (isPromise) {
       this.promise = state as Promise<any>;
     } else if (isBoolean) {
-      this.promise = this.createPromiseFromBoolean(state as boolean);
+      const promise = this.createPromiseFromBoolean(state as boolean);
+      // skip if false state
+      if (!promise) {
+        return;
+      }
+      this.promise = promise;
     }
 
     this.checkAndInitStateHandler(this.element);
   }
 
-  private createPromiseFromBoolean(val: boolean): Promise<any> {
+  private createPromiseFromBoolean(val: boolean): Promise<any> | null {
     if (val) {
       return new Promise((resolve) => {
         this.fakePromiseResolve = resolve;
@@ -92,8 +92,9 @@ export abstract class BaseAsyncUI implements OnDestroy, AfterContentInit {
     } else {
       if (this.fakePromiseResolve) {
         this.fakePromiseResolve();
+        this.fakePromiseResolve = undefined;
       }
-      return this.promise;
+      return null;
     }
   }
 
@@ -122,16 +123,24 @@ export abstract class BaseAsyncUI implements OnDestroy, AfterContentInit {
     if (this.minDuration || this.config.minDuration) {
       this.minDurationTimeout = window.setTimeout(() => {
         this.isMinDurationTimeoutDone = true;
+        // skip if not current promise
+        if (promise !== this.promise) {
+          return;
+        }
         if ((!(this.minDuration || this.config.minDuration) || this.isMinDurationTimeoutDone) && this.isPromiseDone) {
-          this.finishedStateIfDone(element);
+          this.finishedState(element);
         }
       }, this.minDuration || this.config.minDuration);
     }
 
     const resolveLoadingState = () => {
       this.isPromiseDone = true;
+      // skip if not current promise
+      if (promise !== this.promise) {
+        return;
+      }
       if ((!(this.minDuration || this.config.minDuration) || this.isMinDurationTimeoutDone) && this.isPromiseDone) {
-        this.finishedStateIfDone(element);
+        this.finishedState(element);
       }
     };
 

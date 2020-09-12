@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
-import { SoftAsyncUIConfig, SoftBusyConfig } from './soft-async-ui.config';
+import { SoftAsyncUIConfig } from './soft-async-ui.config';
 import { SoftBusyDirective } from './soft-busy.directive';
 import { SoftDisabledDirective } from './soft-disabled.directive';
 import { SoftLoadingDirective } from './soft-loading.directive';
-import { userSoftAsyncUIConfigToken, userSoftBusyฺConfigToken } from './user-config.token';
+import { userSoftAsyncUIConfigToken } from './user-config.token';
+import { DefaultBusySpinnerComponent } from './default-busy-spinner/default-busy-spinner.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { userSoftAsyncUIConfigToken, userSoftBusyฺConfigToken } from './user-c
     SoftBusyDirective,
     SoftDisabledDirective,
     SoftLoadingDirective,
+    DefaultBusySpinnerComponent,
   ],
   exports: [
     SoftBusyDirective,
@@ -25,13 +27,11 @@ import { userSoftAsyncUIConfigToken, userSoftBusyฺConfigToken } from './user-c
 export class SoftAsyncUIModule {
   static forRoot(
     config?: SoftAsyncUIConfig,
-    busyConfig?: SoftBusyConfig,
   ): ModuleWithProviders<SoftAsyncUIModule> {
     return {
       ngModule: SoftAsyncUIModule,
       providers: [
         { provide: userSoftAsyncUIConfigToken, useValue: config },
-        { provide: userSoftBusyฺConfigToken, useValue: busyConfig },
       ],
     };
   }

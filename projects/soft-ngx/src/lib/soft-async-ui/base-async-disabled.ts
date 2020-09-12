@@ -8,12 +8,15 @@ export class BaseAsyncDisabled extends BaseAsyncUI {
 
   @Input('disabled')
   set isDisabledFromTheOutsideSetter(disabled: boolean) {
-    this.isDisabledFromTheOutside = disabled;
-    if (disabled) {
+    if (disabled || (disabled !== false && disabled != null)) {
       // disabled means always disabled
+      this.isDisabledFromTheOutside = true;
       this.element.setAttribute('disabled', 'disabled');
-    } else if (this.isPromiseDone || this.isPromiseDone === undefined) {
-      this.element.removeAttribute('disabled');
+    } else {
+      this.isDisabledFromTheOutside = false;
+      if (this.isPromiseDone || this.isPromiseDone === undefined) {
+        this.element.removeAttribute('disabled');
+      }
     }
     // else the element is loading, so do not change the disabled loading state.
   }
@@ -28,7 +31,7 @@ export class BaseAsyncDisabled extends BaseAsyncUI {
   /**
    * Handles everything to be triggered when state is finished
    */
-  finishedStateIfDone(element: HTMLElement) {
+  finishedState(element: HTMLElement) {
     this.enableElement(element);
   }
 
