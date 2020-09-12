@@ -7,8 +7,7 @@ style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
 import scss `~trunks-ui/trunks.scss`;
 
 ### SoftModelModule
-using `angular2-promise-buttons`\
-style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
+default softBusy style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
 import scss `~trunks-ui/trunks.scss`;
 
 ### SoftTooltipModule 
@@ -43,11 +42,11 @@ exports: [
 ```
 imports: [
   SoftApiClientModule.forRoot(),
+  SoftAsyncUIModule.forRoot(),
   SoftAuthModule.forRoot(AuthService),
   SoftPopupModule.forRoot(),
   SoftScrollModule.forRoot(),
   SoftStorageModule.forRoot(),
-  SoftAsyncUIModule.forRoot(),
   SoftModalModule, // => for non-lazy loading module only
   SoftModelModule, // => for non-lazy loading module only
   SoftPipeModule, // => for non-lazy loading module only

@@ -4,7 +4,7 @@
 
     <div class="box">
       <h3 class="subtitle">
-        busyState
+        softBusy
       </h3>
       <ul class="block">
         <li>- loading state apply to container or page</li>
@@ -20,7 +20,7 @@
       </div>
       <div
         [softBusy]="busy"
-        [hideBackdrop]="true"
+        [busyClass]="'no-backdrop'"
         class="is-busy-parent"
       >
         <br> Long loading content (no backdrop)
@@ -33,7 +33,7 @@
         Long loading content
       &lt;/div&gt;
       
-      &lt;div <strong>[softBusy]="busy" [hideBackdrop]="true"</strong> class="is-busy-parent"&gt;
+      &lt;div <strong>[softBusy]="busy" [busyClass]="'no-backdrop'"</strong> class="is-busy-parent"&gt;
         Long loading content (no backdrop)
       &lt;/div&gt;
 
@@ -44,11 +44,11 @@
 
     <div class="box">
       <h3 class="subtitle">
-        loadingState & disabledState
+        softLoading & softDisabled
       </h3>
       <ul class="block">
         <li>- loading/disabled state apply to element e.g. button</li>
-        <li>- give a subscription or boolean to determine loading/disabled state</li>
+        <li>- give a subscription or promise or boolean to determine loading/disabled state</li>
       </ul>
       <button
         class="button"
@@ -59,9 +59,16 @@
       </button>
       <button
         class="button"
+        [softLoading]="loadingSub"
+        (click)="testLoading()"
+      >
+        Click another
+      </button>
+      <button
+        class="button"
         [softDisabled]="loadingSub"
       >
-        Another Button
+        Just Disabled
       </button>
       <pre>
       # html
@@ -72,8 +79,14 @@
       &lt;/button&gt;
 
       &lt;button class="button"
+        <strong>[softLoading]="loadingSub"</strong>
+        (click)="testLoading()"&gt;
+        Click another
+      &lt;/button&gt;
+
+      &lt;button class="button"
         <strong>[softDisabled]="loadingSub"</strong>&gt;
-        Another Button
+        Just Disabled
       &lt;/button&gt;
 
       # ts
