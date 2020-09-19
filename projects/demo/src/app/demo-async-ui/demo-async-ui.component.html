@@ -123,9 +123,68 @@
       &lt;/div&gt;
 
       # ts
-      this.busy = of().pipe(delay(Number.MAX_SAFE_INTEGER)).subscribe();
+      load() &#123;
+        this.busy = of().pipe(delay(this.loadingTime)).subscribe();
+      &#125;
     </pre>
     </div>
+
+    <div class="box">
+      <h3 class="subtitle">
+        softSkel
+      </h3>
+      <ul class="block">
+        <li>- skeleton/placeholder loading apply to container</li>
+        <li>- remove content at inital state like *ngIf</li>
+        <li>- bring content back when finished</li>
+        <li>- give a subscription to determine loading state</li>
+        <li>- give a registered type or a template ref, otherwise default skeleton will show</li>
+        <li>- give a context object to pass custom data</li>
+        <li>- built-in types are:</li>
+        <li class="push-left-1"> > 'bar-chart' with context: &#123; count: number &#125;</li>
+        <li class="push-left-1"> > 'pie-chart' with context: &#123; size: number &#125;</li>
+        <li class="push-left-1"> > 'summary'</li>
+        <li class="push-left-1"> > 'table'</li>
+        <li>- there are 2 ways to register new type:</li>
+        <li class="push-left-1"> > option 1 - add SoftSkeletonType to userRegisteredSkeletonComponentsToken</li>
+        <li class="push-left-1"> > option 2 - add SoftSkeletonType to SoftAsyncUIModule.forRoot() at 2nd parameter</li>
+      </ul>
+
+      <div class="box">
+        <div *softSkel="dataSub; type: 'sample'; context: { count: 2 }">
+          <p>long loading content</p>
+          <p>content content content content content content</p>
+        </div>
+      </div>
+      <div class="buttons">
+        <button
+          class="button"
+          (click)="getData()"
+        >
+          Load
+        </button>
+      </div>
+      <pre>
+      # html
+      &lt;div class="box"&gt;
+        &lt;div <strong>*softSkel="dataSub; type: 'sample'; context: &#123; count: 2 &#125;"</strong>&gt;
+          &lt;p>long loading content&lt;/p&gt;
+          &lt;p>content content content content content content&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button 
+        class="button"
+        (click)="getData()"&gt;
+        Click here
+      &lt;/button&gt;
+
+      # ts
+      getData() &#123;
+        this.dataSub = of().pipe(delay(3000)).subscribe();
+      &#125;
+      </pre>
+    </div>
+
 
     <div class="box">
       <h3 class="subtitle">

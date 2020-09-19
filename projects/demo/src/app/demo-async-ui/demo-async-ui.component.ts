@@ -16,10 +16,12 @@ export class DemoAsyncUIComponent {
   container = undefined;
 
   busy: Subscription;
+  dataSub: Subscription;
   loadingSub: Subscription;
 
   constructor() { }
 
+  // busy
   load() {
     this.busy = of().pipe(delay(this.loadingTime)).subscribe();
   }
@@ -39,6 +41,12 @@ export class DemoAsyncUIComponent {
     }
   }
 
+  // skel
+  getData() {
+    this.dataSub = of().pipe(delay(3000)).subscribe();
+  }
+
+  // loading/disabled
   testLoading() {
     this.loadingSub = of().pipe(delay(3000)).subscribe();
   }

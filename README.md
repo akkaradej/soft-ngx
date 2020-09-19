@@ -2,17 +2,21 @@
 
 ## Dependencies
 
-### SoftModalModule and SoftPopupModule
-style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
-import scss `~trunks-ui/trunks.scss`;
+### SoftAsyncUIModule
+softBusy - DefaultBusyComponent style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
+softLoading - default loadingClass style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
+softSkel - Built-in skeleton components style with [Placeholder Loading](https://github.com/zalog/placeholder-loading), [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
-### SoftModelModule
-default softBusy style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
-import scss `~trunks-ui/trunks.scss`;
+### SoftModalModule and SoftPopupModule
+style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
 ### SoftTooltipModule 
-using `tippy.js`\
-import css: `~tippy.js/dist/tippy.css`
+using [tippy.js](https://github.com/atomiks/tippyjs)\
+more style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
+
+`@import "~tippy.js/dist/tippy.css";`\
+`@import "~placeholder-loading/src/scss/placeholder-loading.scss";`\
+`@import "~trunks-ui/trunks.scss";`
 
 
 ## Usage

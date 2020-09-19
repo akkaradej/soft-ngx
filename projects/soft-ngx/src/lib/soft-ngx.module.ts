@@ -19,7 +19,7 @@ import {
 import { SoftPopupConfig } from './soft-popup/soft-popup.config';
 import { SoftStorageConfig } from './soft-storage/soft-storage.config';
 import { SoftTooltipModule } from './soft-tooltip/soft-tooltip.module';
-import { SoftAsyncUIConfig } from './soft-async-ui/soft-async-ui.config';
+import { SoftAsyncUIConfig, SoftSkeletonType } from './soft-async-ui/soft-async-ui.config';
 
 @NgModule({
   imports: [
@@ -47,6 +47,7 @@ export class SoftNgxModule {
     SoftAuthServiceClass: any = SoftAuthService,
     apiClientConfig?: SoftApiClientConfig,
     asyncUIConfig?: SoftAsyncUIConfig,
+    registeredSkeletonComponents?: SoftSkeletonType,
     authConfig: {
       authServiceConfig?: SoftAuthServiceConfig,
       authInterceptorConfig?: SoftAuthInterceptorConfig,
@@ -60,7 +61,7 @@ export class SoftNgxModule {
       ngModule: SoftNgxModule,
       providers: [
         ...SoftApiClientModule.forRoot(apiClientConfig).providers,
-        ...SoftAsyncUIModule.forRoot(asyncUIConfig).providers,
+        ...SoftAsyncUIModule.forRoot(asyncUIConfig, registeredSkeletonComponents).providers,
         ...SoftAuthModule.forRoot(SoftAuthServiceClass, authConfig).providers,
         ...SoftPopupModule.forRoot(popupConfig).providers,
         ...SoftScrollModule.forRoot().providers,

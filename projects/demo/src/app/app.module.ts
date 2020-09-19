@@ -6,8 +6,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import {
   // Configs
-  SoftApiClientConfig, SoftAuthServiceConfig, SoftAuthInterceptorConfig,
-  SoftPopupConfig, SoftStorageConfig, SoftAuthRequestKey, SoftAuthResponseKey,
+  SoftApiClientConfig, SoftAuthServiceConfig, SoftAsyncUIConfig, SoftSkeletonType,
+  SoftAuthInterceptorConfig, SoftPopupConfig, SoftStorageConfig, SoftAuthRequestKey, SoftAuthResponseKey,
 
   // Modules
   SoftNgxModule,
@@ -17,6 +17,7 @@ import {
 
   // Config Tokens
   userSoftApiClientConfigToken, userSoftAuthServiceConfigToken, userSoftAuthInterceptorConfigToken,
+  userSoftAsyncUIConfigToken, userRegisteredSkeletonComponentsToken,
   userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken, userSoftPopupConfigToken,
   userSoftStorageConfigToken,
 
@@ -32,6 +33,7 @@ import { DemoAsyncUIComponent } from './demo-async-ui/demo-async-ui.component';
 import { FormsModule } from '@angular/forms';
 import { CustomDialogComponent } from './demo-popup/custom-dialog-component';
 import { DemoScrollComponent } from './demo-scroll/demo-scroll.component';
+import { SampleSkeletonComponent } from './demo-async-ui/sample-skeleton';
 
 export function initApiClientConfig(): SoftApiClientConfig {
   return {
@@ -40,6 +42,20 @@ export function initApiClientConfig(): SoftApiClientConfig {
       pageCount: 'X-Paging-PageCount',
       totalCount: 'X-Paging-TotalRecordCount',
     },
+  };
+}
+
+export function initAsyncUIConfig(): SoftAsyncUIConfig {
+  return {
+    busyDelay: 400,
+    busyContainerMinHeight: 50,
+    minDuration: 0,
+  };
+}
+
+export function initRegisteredSkeletonComponents(): SoftSkeletonType {
+  return {
+    sample: SampleSkeletonComponent,
   };
 }
 
@@ -105,6 +121,7 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     DemoPopupComponent,
     DemoScrollComponent,
     CustomDialogComponent,
+    SampleSkeletonComponent,
   ],
   imports: [
     BrowserModule,
@@ -140,6 +157,8 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
     { provide: userSoftApiClientConfigToken, useFactory: initApiClientConfig },
+    { provide: userSoftAsyncUIConfigToken, useFactory: initAsyncUIConfig },
+    { provide: userRegisteredSkeletonComponentsToken, useFactory: initRegisteredSkeletonComponents },
     { provide: userSoftAuthServiceConfigToken, useFactory: initAuthServiceConfig },
     { provide: userSoftAuthInterceptorConfigToken, useFactory: initAuthInterceptorConfigToken },
     { provide: userSoftAuthRequestKeyToken, useValue: customAuthRequestKey },
