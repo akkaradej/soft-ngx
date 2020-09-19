@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-demo-model',
@@ -13,6 +13,7 @@ export class DemoModelComponent implements OnInit {
   selectedItem = { id: 2, whatever: 'just matched with id' };
 
   file: any;
+  previewImage: any;
 
   constructor() { }
 

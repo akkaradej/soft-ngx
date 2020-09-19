@@ -14,6 +14,21 @@
         <li>- default container min height = 50</li>
         <li>- not show loading state if loading time shorter than delay</li>
       </ul>
+
+      [busyComponent]
+      <ul class="block">
+        <li>- allow to add custom component</li>
+        <li>- default component is DefaultBusySpinnerComponent</li>
+        <li>- passing data to component via [busyData]</li>
+      </ul>
+
+      [busyData] of DefaultBusySpinnerComponent
+      <ul class="block">
+        <li>- default top = undefined</li>
+        <li>- default size = '24px'</li>
+        <li>- default text = 'Please wait...'</li>
+      </ul>
+
       .parent
       <div class="parent box">
         <div
@@ -30,25 +45,23 @@
         <div>Some Content</div>
       </div>
 
-      <div class="is-flex is-align-center block">
-        Loading: &nbsp;
+      <div class="block is-spacing is-horizontal">
+        <label>Loading:</label>
         <input
-          class="push-right"
           type="number"
           [(ngModel)]="loadingTime"
           (ngModelChange)="destroyContent()"
         />
 
-        Delay: &nbsp;
+        <label>Delay:</label>
         <input
-          class="push-right"
           type="number"
           [(ngModel)]="delay"
           (ngModelChange)="destroyContent()"
         />
 
         <button
-          class="button is-secondary push-right"
+          class="button is-secondary"
           [disabled]="!isShow"
           (click)="load()"
         >Load</button>
@@ -61,41 +74,51 @@
         >{{ isShow ? 'Destroy' : 'Create' }} Content</button>
       </div>
 
-      <div class="is-flex is-align-center">
-        Container: &nbsp;
-        <label class="radio">
-          <input
-            type="radio"
-            name="container"
-            [value]="undefined"
-            [(ngModel)]="container"
-            (ngModelChange)="destroyContent()"
-          />
-          <span>self</span>
-        </label>
-        <label class="radio push-right">
-          <input
-            type="radio"
-            name="container"
-            [value]="'.parent'"
-            [(ngModel)]="container"
-            (ngModelChange)="destroyContent()"
-          />
-          <span>.parent</span>
-        </label>
+      <div class="block is-horizontal">
+        <div class="block is-horizontal">
+          <label class="brick">Container:</label>
+          <label class="radio">
+            <input
+              type="radio"
+              name="container"
+              [value]="undefined"
+              [(ngModel)]="container"
+              (ngModelChange)="destroyContent()"
+            />
+            <span>self</span>
+          </label>
+          <label class="radio">
+            <input
+              type="radio"
+              name="container"
+              [value]="'.parent'"
+              [(ngModel)]="container"
+              (ngModelChange)="destroyContent()"
+            />
+            <span>.parent</span>
+          </label>
+        </div>
 
-        Container Min Height: &nbsp;
-        <input
-          class="push-right"
-          type="number"
-          [(ngModel)]="minHeight"
-          (ngModelChange)="destroyContent()"
-        />
+        <div class="block is-horizontal">
+          <label class="brick">Container Min Height:</label>
+          <input
+            type="number"
+            [(ngModel)]="minHeight"
+            (ngModelChange)="destroyContent()"
+          />
+        </div>
       </div>
 
       <pre>
       # html
-      &lt;div <strong>[softBusy]="busy"</strong>&gt;
+      &lt;div <strong>
+        [softBusy]="busy"
+        [busyDelay]="delay"
+        [busyContainer]="container"
+        [busyContainerMinHeight]="minHeight"
+        [busyComponent]="customSpinnerComponent" // example
+        [busyData]="&#123; text: 'Please Wait...' &#125;"  // example
+      </strong>&gt;
         Long loading content
       &lt;/div&gt;
 
@@ -115,33 +138,35 @@
         <li>- loading appear only clicked element, for other element just disabled</li>
         <li>- existing disabled property is not affected (still disabled)</li>
       </ul>
-      <button
-        class="button"
-        [softLoading]="loadingSub"
-        (click)="testLoading()"
-      >
-        softLoading
-      </button>
-      <button
-        class="button"
-        [softLoading]="loadingSub"
-        (click)="testLoading()"
-      >
-        another softLoading
-      </button>
-      <button
-        class="button"
-        [softDisabled]="loadingSub"
-      >
-        softDisabled
-      </button>
-      <button
-        class="button"
-        [softDisabled]="loadingSub"
-        disabled
-      >
-        softDisabled with disabled
-      </button>
+      <div class="buttons">
+        <button
+          class="button"
+          [softLoading]="loadingSub"
+          (click)="testLoading()"
+        >
+          softLoading
+        </button>
+        <button
+          class="button"
+          [softLoading]="loadingSub"
+          (click)="testLoading()"
+        >
+          another softLoading
+        </button>
+        <button
+          class="button"
+          [softDisabled]="loadingSub"
+        >
+          softDisabled
+        </button>
+        <button
+          class="button"
+          [softDisabled]="loadingSub"
+          disabled
+        >
+          softDisabled with disabled
+        </button>
+      </div>
       <pre>
       # html
       &lt;button class="button"

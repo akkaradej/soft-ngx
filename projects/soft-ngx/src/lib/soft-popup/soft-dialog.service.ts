@@ -12,7 +12,7 @@ export class SoftDialogService {
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private appRef: ApplicationRef,
+    private applicationRef: ApplicationRef,
     private injector: Injector,
   ) { }
 
@@ -20,7 +20,7 @@ export class SoftDialogService {
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory<SoftDialog>(component)
       .create(this.injector);
-    this.appRef.attachView(componentRef.hostView);
+    this.applicationRef.attachView(componentRef.hostView);
     const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     document.body.appendChild(domElem);
     const id = ++this.id;
@@ -38,7 +38,7 @@ export class SoftDialogService {
 
   removeDialog(id: number): void {
     if (this.componentRefs[id]) {
-      this.appRef.detachView(this.componentRefs[id].hostView);
+      this.applicationRef.detachView(this.componentRefs[id].hostView);
       this.componentRefs[id].destroy();
     }
   }

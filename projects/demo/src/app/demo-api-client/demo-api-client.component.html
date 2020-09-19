@@ -9,15 +9,17 @@
       <li>- Global error handler</li>
     </ul>
     <div class="box">
-      <h3 class="subtitle">
-        GET
-      </h3>
-      <button
-        class="button"
-        (click)="getPosts()"
-      >
-        Get Posts
-      </button>
+      <div class="block">
+        <h3 class="subtitle">
+          GET
+        </h3>
+        <button
+          class="button"
+          (click)="getPosts()"
+        >
+          Get Posts
+        </button>
+      </div>
       <div>
         {{ posts | json }}
       </div>
@@ -30,31 +32,33 @@
     </div>
 
     <div class="box">
-      <h3 class="subtitle">
-        POST
-      </h3>
-      <div class="field">
-        <input
-          type="text"
-          class="input"
-          placeholder="title"
-          #title
+      <div class="block">
+        <h3 class="subtitle">
+          POST
+        </h3>
+        <div class="field">
+          <input
+            type="text"
+            class="input"
+            placeholder="title"
+            #title
+          >
+        </div>
+        <div class="field">
+          <textarea
+            class="textarea"
+            placeholder="message"
+            #message
+          ></textarea>
+        </div>
+        <button
+          class="button"
+          (click)="createPost(title.value, message.value)"
         >
+          Create New Post
+        </button>
       </div>
-      <div class="field">
-        <textarea
-          class="textarea"
-          placeholder="message"
-          #message
-        ></textarea>
-      </div>
-      <button
-        class="button"
-        (click)="createPost(title.value, message.value)"
-      >
-        Create New Post
-      </button>
-      <div>
+      <div class="block">
         {{ newPost | json }}
       </div>
       <pre>
@@ -69,30 +73,32 @@
       <h3 class="subtitle">
         Auth
       </h3>
-      <button
-        class="button"
-        (click)="login()"
-      >
-        Login
-      </button>
-      <button
-        class="button"
-        (click)="expire()"
-      >
-        Make Token Expire
-      </button>
-      <button
-        class="button"
-        (click)="requestPrivateApi()"
-      >
-        Private Api (Auto refresh token)
-      </button>
-      <button
-        class="button"
-        (click)="logout()"
-      >
-        Logout
-      </button>
+      <div class="block is-spacing is-horizontal">
+        <button
+          class="button"
+          (click)="login()"
+        >
+          Login
+        </button>
+        <button
+          class="button"
+          (click)="expire()"
+        >
+          Make Token Expire
+        </button>
+        <button
+          class="button"
+          (click)="requestPrivateApi()"
+        >
+          Private Api (Auto refresh token)
+        </button>
+        <button
+          class="button"
+          (click)="logout()"
+        >
+          Logout
+        </button>
+      </div>
       <div class="block">
         {{ comment | json }}
       </div>

@@ -5,18 +5,20 @@
       <li>- Popup service, to create dialog on the fly</li>
     </ul>
     <div class="box">
-      <h3 class="subtitle">
-        Alert
-      </h3>
-      <ul class="block">
-        <li>- optional to subscribe to be notified when dismiss</li>
-      </ul>
-      <button
-        class="button"
-        (click)="alert()"
-      >
-        Alert
-      </button>
+      <div class="block">
+        <h3 class="subtitle">
+          Alert
+        </h3>
+        <ul class="block">
+          <li>- optional to subscribe to be notified when dismiss</li>
+        </ul>
+        <button
+          class="button"
+          (click)="alert()"
+        >
+          Alert
+        </button>
+      </div>
       <pre>
       {{'
         # html
@@ -34,26 +36,29 @@
     </div>
 
     <div class="box">
-      <h3 class="subtitle">
-        Confirm
-      </h3>
-      <ul class="block">
-        <li>- subscribe result, true if confirm, false if dismiss</li>
-      </ul>
-      <button
-        class="button"
-        (click)="confirm()"
-      >
-        Confirm
-      </button>
-      <button
-        class="button"
-        (click)="confirmCustomText()"
-      >
-        Custom Text
-        <small>&nbsp;(and Agree at 2nd)</small>
-      </button>
-
+      <div class="block">
+        <h3 class="subtitle">
+          Confirm
+        </h3>
+        <ul class="block">
+          <li>- subscribe result, true if confirm, false if dismiss</li>
+        </ul>
+        <div class="is-spacing is-horizontal">
+          <button
+            class="button"
+            (click)="confirm()"
+          >
+            Confirm
+          </button>
+          <button
+            class="button"
+            (click)="confirmCustomText()"
+          >
+            Custom Text
+            <small>&nbsp;(and Agree at 2nd)</small>
+          </button>
+        </div>
+      </div>
       <pre>
         # html
         &lt;button class="button" 
@@ -87,21 +92,26 @@
     </div>
 
     <div class="box">
-      <h3 class="subtitle">
-        Confirm Delete
-      </h3>
-      <ul class="block">
-        <li>- like confirm with preset of deletion message, just give the name of deleted item</li>
-      </ul>
-      <ul>
-        <li *ngFor="let product of products">
-          {{ product.name }} -
-          <button
-            class="button"
-            (click)="delete(product)"
-          >Confirm Delete</button>
-        </li>
-      </ul>
+      <div class="block">
+        <h3 class="subtitle">
+          Confirm Delete
+        </h3>
+        <ul class="block">
+          <li>- like confirm with preset of deletion message, just give the name of deleted item</li>
+        </ul>
+        <ul class="is-spacing">
+          <li
+            *ngFor="let product of products"
+            class="is-spacing is-horizontal"
+          >
+            <span>{{ product.name }} -</span>
+            <button
+              class="button"
+              (click)="delete(product)"
+            >Confirm Delete</button>
+          </li>
+        </ul>
+      </div>
       <pre>
       # html
       &lt;ul&gt;
@@ -130,18 +140,20 @@
     </div>
 
     <div class="box">
-      <h3 class="subtitle">
-        Custom
-      </h3>
-      <ul class="block">
-        <li>- give a custom component to show as dialog</li>
-      </ul>
-      <button
-        class="button"
-        (click)="custom()"
-      >
-        Custom
-      </button>
+      <div class="block">
+        <h3 class="subtitle">
+          Custom
+        </h3>
+        <ul class="block">
+          <li>- give a custom component to show as dialog</li>
+        </ul>
+        <button
+          class="button"
+          (click)="custom()"
+        >
+          Custom
+        </button>
+      </div>
       <pre>
         # html
         &lt;button class="button" 

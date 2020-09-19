@@ -28,7 +28,41 @@
         <button class="button">Submit</button>
       </form>
 
-      <pre>
+      <div class="block">
+        <p class="brick">- work fine in softModal</p>
+        <button
+          class="button"
+          (click)="modal.open()"
+        >Open modal</button>
+
+        <soft-modal #modal>
+          <modal-title>Required input #2</modal-title>
+          <form
+            (softForm)="save($event)"
+            *ngIf="modal.isOpen"
+          >
+            <div
+              class="field"
+              *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"
+            >
+              <div class="control">
+                <input
+                  name="first-{{ i }}"
+                  class="input"
+                  ngModel
+                  [required]="i === 2"
+                  placeholder="{{ i }}#"
+                >
+              </div>
+            </div>
+            <div class="buttons is-centered">
+              <button class="button">Submit</button>
+            </div>
+          </form>
+        </soft-modal>
+      </div>
+
+      <pre class="block">
       # html
       &lt;form <strong>(softForm)="save($event)"</strong>&gt;
         &lt;div class="field"&gt;
@@ -46,49 +80,51 @@
         // do after form valid
       &#125;
       </pre>
+
     </div>
 
     <div class="box">
-      <h3 class="subtitle">
-        softCompareBy
-      </h3>
-      <ul class="block">
-        <li>- select compare with object's property</li>
-        <li>- use simple directive instead of writing compare function</li>
-      </ul>
-      <div class="select">
-        <select
-          name="items"
-          [(ngModel)]="selectedItem"
-          [softCompareBy]="'id'"
-        >
-          <option
-            [disabled]="true"
-            [hidden]="true"
-            [ngValue]="undefined"
-          >-- select --</option>
-          <option
-            *ngFor="let item of items"
-            [ngValue]="item"
+      <div class="block">
+        <h3 class="subtitle">
+          softCompareBy
+        </h3>
+        <ul class="block">
+          <li>- select compare with object's property</li>
+          <li>- use simple directive instead of writing compare function</li>
+        </ul>
+        <div class="select">
+          <select
+            name="items"
+            [(ngModel)]="selectedItem"
+            [softCompareBy]="'id'"
           >
-            {{ item.name }}
-          </option>
-        </select>
+            <option
+              [disabled]="true"
+              [hidden]="true"
+              [ngValue]="undefined"
+            >-- select --</option>
+            <option
+              *ngFor="let item of items"
+              [ngValue]="item"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
       </div>
       <pre>
       # html
-      &lt;div class="
-                select"&gt;
-                &lt;select
-                name="items"
-                [(ngModel)]="selectedItem"
-                <strong
-              >[softCompareBy]="'id'"</strong>&gt;
-              &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
-              &lt;option
-              *ngFor="let item of items"
-              [ngValue]="item"&gt;
-              {{ item.name }<!---->}
+      &lt;div class="select"&gt;
+        &lt;select
+          name="items"
+          [(ngModel)]="selectedItem"
+          <strong
+          >[softCompareBy]="'id'"</strong>&gt;
+          &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
+          &lt;option
+            *ngFor="let item of items"
+            [ngValue]="item"&gt;
+            {{ item.name }<!---->}
           &lt;/option&gt;
         &lt;/select&gt;
       &lt;/div&gt;
@@ -109,25 +145,43 @@
         <li>- [maxSize] validate max file size in MB</li>
         <li>- (loaded) get dataUri</li>
       </ul>
-      {{ file?.name }}
+      <div
+        *ngIf="file"
+        class="brick"
+      >
+        file name: {{ file.name }}
+      </div>
+      <img
+        class="brick"
+        *ngIf="previewImage "
+        src="{{ previewImage }}"
+      >
       <input
         class="input"
         type="file"
         name="file"
         ngModel
+        accept="image/*"
         [maxSize]="10"
         [(softFileModel)]="file"
+        (loaded)="previewImage = $event"
       > * Max file size: 10 MB
       <pre>
       {{ file?.name }<!---->}
+      &lt;img
+        *ngIf="previewImage"
+        src="{{ previewImage }<!---->}"
+      &gt;
       &lt;input class="input"
-        type="file"  
+        type="file"
         name="file"
         ngModel
-        [maxSize]="10"
-        <strong>[(softFileModel)]="file"</strong>&gt;
+        accept="image/*"
+        <strong>[maxSize]="10"</strong>
+        <strong>[(softFileModel)]="file"</strong>
+        <strong>(loaded)="previewImage = $event"</strong>&gt;
       * Max file size: 10 MB
-    </pre>
-  </div>
+      </pre>
+    </div>
   </div>
 </section>
