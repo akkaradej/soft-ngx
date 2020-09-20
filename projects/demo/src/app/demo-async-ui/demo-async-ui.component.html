@@ -174,7 +174,8 @@
       &lt;/div&gt;
       &lt;button 
         class="button"
-        (click)="getData()"&gt;
+        (click)="getData()"
+      &gt;
         Click here
       &lt;/button&gt;
 
@@ -228,21 +229,35 @@
       </div>
       <pre>
       # html
-      &lt;button class="button"
+      &lt;button 
+        class="button"
         <strong>[softLoading]="loadingSub"</strong>
-        (click)="testLoading()"&gt;
-        Click here
+        (click)="testLoading()"
+      &gt;
+        softLoading
       &lt;/button&gt;
 
-      &lt;button class="button"
+      &lt;button 
+        class="button"
         <strong>[softLoading]="loadingSub"</strong>
-        (click)="testLoading()"&gt;
-        Click another
+        (click)="testLoading()"
+      &gt;
+        another softLoading
       &lt;/button&gt;
 
-      &lt;button class="button"
-        <strong>[softDisabled]="loadingSub"</strong>&gt;
-        Just Disabled
+      &lt;button 
+        class="button"
+        <strong>[softDisabled]="loadingSub"</strong>
+      &gt;
+        softDisabled
+      &lt;/button&gt;
+
+      &lt;button 
+        class="button"
+        <strong>[softDisabled]="loadingSub"</strong>
+        disabled
+      &gt;
+        softDisabled with disabled
       &lt;/button&gt;
 
       # ts

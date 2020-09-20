@@ -21,6 +21,15 @@ export {
   userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken,
 } from './lib/soft-auth/user-config.token';
 
+export { SoftAsyncUIConfig, SoftSkeletonType } from './lib/soft-async-ui/soft-async-ui.config';
+export { userSoftAsyncUIConfigToken, userRegisteredSkeletonComponentsToken } from './lib/soft-async-ui/user-config.token';
+export { SoftAsyncUIModule } from './lib/soft-async-ui/soft-async-ui.module';
+export { SoftBusyComponent } from './lib/soft-async-ui/soft-busy.interface';
+export { SoftBusyDirective } from './lib/soft-async-ui/soft-busy.directive';
+export { SoftDisabledDirective } from './lib/soft-async-ui/soft-disabled.directive';
+export { SoftLoadingDirective } from './lib/soft-async-ui/soft-loading.directive';
+export { SoftSkelDirective } from './lib/soft-async-ui/soft-skel.directive';
+
 export { SoftAuthInterceptor } from './lib/soft-auth/soft-auth.interceptor';
 export { SoftAuthModule } from './lib/soft-auth/soft-auth.module';
 export { SoftAuthServiceBase } from './lib/soft-auth/soft-auth.service.base';
@@ -34,6 +43,7 @@ export { SoftModalModule } from './lib/soft-modal/soft-modal.module';
 export { SoftModelModule } from './lib/soft-model/soft-model.module';
 export { SoftCompareByDirective, SoftCompareByOptionDirective } from './lib/soft-model/soft-compare-by.directive';
 export { SoftFileModelDirective } from './lib/soft-model/soft-file-model.directive';
+export { SoftFormDirective } from './lib/soft-model/soft-form.directive';
 
 export { SoftPipeModule } from './lib/soft-pipe/soft-pipe.module';
 export { SafePipe } from './lib/soft-pipe/safe.pipe';
@@ -55,13 +65,5 @@ export { SoftStorageService } from './lib/soft-storage/soft-storage.service';
 
 export { SoftTooltipModule } from './lib/soft-tooltip/soft-tooltip.module';
 export { SoftTooltipDirective } from './lib/soft-tooltip/soft-tooltip.directive';
-
-export { SoftAsyncUIConfig, SoftSkeletonType } from './lib/soft-async-ui/soft-async-ui.config';
-export { userSoftAsyncUIConfigToken, userRegisteredSkeletonComponentsToken } from './lib/soft-async-ui/user-config.token';
-export { SoftAsyncUIModule } from './lib/soft-async-ui/soft-async-ui.module';
-export { SoftBusyComponent } from './lib/soft-async-ui/soft-busy.interface';
-export { SoftBusyDirective } from './lib/soft-async-ui/soft-busy.directive';
-export { SoftDisabledDirective } from './lib/soft-async-ui/soft-disabled.directive';
-export { SoftLoadingDirective } from './lib/soft-async-ui/soft-loading.directive';
 
 export { SoftNgxModule } from './lib/soft-ngx.module';

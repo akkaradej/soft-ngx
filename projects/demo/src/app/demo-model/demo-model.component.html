@@ -119,7 +119,8 @@
           name="items"
           [(ngModel)]="selectedItem"
           <strong
-          >[softCompareBy]="'id'"</strong>&gt;
+          >[softCompareBy]="'id'"</strong>
+        &gt;
           &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
           &lt;option
             *ngFor="let item of items"

@@ -14,9 +14,6 @@ import { userSoftPopupConfigToken } from './user-config.token';
   declarations: [
     SoftPopupComponent,
   ],
-  entryComponents: [
-    SoftPopupComponent,
-  ],
   exports: [
     SoftPopupComponent,
   ],

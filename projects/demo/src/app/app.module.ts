@@ -170,8 +170,5 @@ const customAuthResponseKey: SoftAuthResponseKey = {
   bootstrap: [
     AppComponent
   ],
-  entryComponents: [
-    CustomDialogComponent,
-  ]
 })
 export class AppModule { }

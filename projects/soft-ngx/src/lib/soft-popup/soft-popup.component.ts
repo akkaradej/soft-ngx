@@ -60,8 +60,8 @@ export const softPopupAnimations = [
           (click)="onDismiss()">
           </button>
         </header>
-        <section class="modal-card-body has-text-centered">
-          <div class="block-2" *ngIf="data.message">
+        <section class="modal-card-body text-center">
+          <div class="block" *ngIf="data.message">
             <strong class="is-pre-wrap">{{ data.message }}</strong>
           </div>
           <div *ngIf="data.type == 'alert'">
