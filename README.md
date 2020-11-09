@@ -26,7 +26,7 @@ more style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
 ### Single import at AppModule or CoreModule
 ```
 imports: [
-  SoftNgxModule.forRoot(AuthService)
+  SoftNgxModule.forRoot()
 ]
 ```
 
@@ -47,7 +47,7 @@ exports: [
 imports: [
   SoftApiClientModule.forRoot(),
   SoftAsyncUIModule.forRoot(),
-  SoftAuthModule.forRoot(AuthService),
+  SoftAuthModule.forRoot(),
   SoftPopupModule.forRoot(),
   SoftScrollModule.forRoot(),
   SoftStorageModule.forRoot(),
@@ -141,9 +141,17 @@ const authResponseKey: SoftAuthResponseKey = {
 
 @NgModule({
   imports: [
-    SoftNgxModule.forRoot(AuthService),
+    SoftNgxModule.forRoot(),
   ],
+  //// If use own AuthInterceptor, not need authServiceClassForSoftAuthInterceptorToken
+  // providers: [
+  //   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  //   { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
+  //   { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
+  // ]
   providers: [
+    { provide: authServiceClassForSoftAuthInterceptorToken, useClass: AuthService },
+    { provide: HTTP_INTERCEPTORS, useClass: SoftAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
     { provide: userSoftApiClientConfigToken, useFactory: initSoftApiClientConfig },

@@ -11,16 +11,6 @@ export { HeaderResponse } from './lib/soft-api-client/soft-api-client.service';
 export { DateRequestInterceptor } from './lib/soft-api-client/date-request.interceptor';
 export { NoCacheInterceptor } from './lib/soft-api-client/no-cache.interceptor';
 
-export {
-  SoftAuthServiceConfig, SoftAuthInterceptorConfig,
-  SoftAuthRequestKey, SoftAuthResponseKey,
-} from './lib/soft-auth/soft-auth.config';
-
-export {
-  userSoftAuthServiceConfigToken, userSoftAuthInterceptorConfigToken,
-  userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken,
-} from './lib/soft-auth/user-config.token';
-
 export { SoftAsyncUIConfig, SoftSkeletonType } from './lib/soft-async-ui/soft-async-ui.config';
 export { userSoftAsyncUIConfigToken, userRegisteredSkeletonComponentsToken } from './lib/soft-async-ui/user-config.token';
 export { SoftAsyncUIModule } from './lib/soft-async-ui/soft-async-ui.module';
@@ -29,6 +19,17 @@ export { SoftBusyDirective } from './lib/soft-async-ui/soft-busy.directive';
 export { SoftDisabledDirective } from './lib/soft-async-ui/soft-disabled.directive';
 export { SoftLoadingDirective } from './lib/soft-async-ui/soft-loading.directive';
 export { SoftSkelDirective } from './lib/soft-async-ui/soft-skel.directive';
+
+export {
+  SoftAuthServiceConfig, SoftAuthInterceptorConfig,
+  SoftAuthRequestKey, SoftAuthResponseKey,
+} from './lib/soft-auth/soft-auth.config';
+
+export {
+  authServiceClassForSoftAuthInterceptorToken,
+  userSoftAuthServiceConfigToken, userSoftAuthInterceptorConfigToken,
+  userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken,
+} from './lib/soft-auth/user-config.token';
 
 export { SoftAuthInterceptor } from './lib/soft-auth/soft-auth.interceptor';
 export { SoftAuthModule } from './lib/soft-auth/soft-auth.module';

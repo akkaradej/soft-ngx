@@ -24,12 +24,13 @@ export class AuthService extends SoftAuthServiceBase { // or implements SoftAuth
 
   // // Example: To create constructor
   // constructor(
-  //   @Inject(apiClientUserConfigToken) config: AuthConfig,
-  //   oauthService: OAuthService,
-  //   storage: StorageService,
-  //   private http: HttpClient) {
-
-  //   super(oauthService, storage, config);
+  //   http: HttpClient,
+  //   storage: SoftStorageService,
+  //   @Inject(userSoftAuthServiceConfigToken) userConfig: SoftAuthServiceConfig,
+  //   @Inject(userSoftAuthRequestKeyToken) userAuthRequestKeyConfig: SoftAuthRequestKey,
+  //   @Inject(userSoftAuthResponseKeyToken) userAuthResponseKeyConfig: SoftAuthResponseKey,
+  // ) {
+  //   super(http, storage, userConfig, userAuthRequestKeyConfig, userAuthResponseKeyConfig);
   // }
 
   can: Can;

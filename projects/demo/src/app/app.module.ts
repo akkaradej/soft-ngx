@@ -13,14 +13,14 @@ import {
   SoftNgxModule,
 
   // Interceptors
-  DateRequestInterceptor, NoCacheInterceptor,
+  SoftAuthInterceptor, DateRequestInterceptor, NoCacheInterceptor,
 
   // Config Tokens
   userSoftApiClientConfigToken, userSoftAuthServiceConfigToken, userSoftAuthInterceptorConfigToken,
   userSoftAsyncUIConfigToken, userRegisteredSkeletonComponentsToken,
+  authServiceClassForSoftAuthInterceptorToken,
   userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken, userSoftPopupConfigToken,
   userSoftStorageConfigToken,
-
 } from 'soft-ngx';
 
 import { AuthService } from './demo-api-client/auth.service';
@@ -129,14 +129,14 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     FormsModule,
 
     // Single import at AppModule or CoreModule
-    SoftNgxModule.forRoot(AuthService),
+    SoftNgxModule.forRoot(),
 
     //// Single import at SharedModule // => for lazy loading module
     // SoftNgxModule
 
     //// Selective import at AppModule or CoreModule
     // SoftApiClientModule.forRoot(),
-    // SoftAuthModule.forRoot(AuthService),
+    // SoftAuthModule.forRoot(),
     // SoftPopupModule.forRoot(),
     // SoftScrollModule.forRoot(),
     // SoftStorageModule.forRoot(),
@@ -153,7 +153,15 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     // SoftPipeModule,
     // SoftTooltipModule,
   ],
+  //// If use own AuthInterceptor, not need authServiceClassForSoftAuthInterceptorToken
+  // providers: [
+  //   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  //   { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
+  //   { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
+  // ]
   providers: [
+    { provide: authServiceClassForSoftAuthInterceptorToken, useClass: AuthService },
+    { provide: HTTP_INTERCEPTORS, useClass: SoftAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
     { provide: userSoftApiClientConfigToken, useFactory: initApiClientConfig },

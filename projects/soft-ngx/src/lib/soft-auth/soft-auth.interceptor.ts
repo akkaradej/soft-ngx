@@ -11,8 +11,7 @@ import { mergeMap, catchError, take } from 'rxjs/operators';
 
 import { SoftAuthInterceptorConfig } from './soft-auth.config';
 import { SoftAuthServiceInterface } from './soft-auth.service.interface';
-import { SoftAuthService } from './soft-auth.service';
-import { userSoftAuthInterceptorConfigToken } from './user-config.token';
+import { authServiceClassForSoftAuthInterceptorToken, userSoftAuthInterceptorConfigToken } from './user-config.token';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +28,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
   private _refresherStream: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    @Inject(SoftAuthService) protected authService: SoftAuthServiceInterface,
+    @Inject(authServiceClassForSoftAuthInterceptorToken) protected authService: SoftAuthServiceInterface,
     @Optional() @Inject(userSoftAuthInterceptorConfigToken) userConfig?: SoftAuthInterceptorConfig) {
 
     if (userConfig) {
@@ -48,8 +47,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
           return this.refreshTokenAndRetry$(request, next);
         }
         if (this.config.loginScreenUrl) {
-          this.redirectToLoginUrl();
-          return EMPTY;
+          return this.redirectToLoginUrl$();
         }
       }
     }
@@ -60,8 +58,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
             return this.refreshTokenAndRetry$(request, next, err);
           }
           if (this.config.loginScreenUrl) {
-            this.redirectToLoginUrl();
-            return EMPTY;
+            return this.redirectToLoginUrl$();
           }
         }
         return throwError(err);
@@ -131,8 +128,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
             // console.debug('First request excute with new token');
             request = this.setAuthHeader(request);
           } else if (this.config.loginScreenUrl) {
-            this.redirectToLoginUrl();
-            return EMPTY;
+            return this.redirectToLoginUrl$();
           }
           return next.handle(request);
         }),
@@ -140,7 +136,8 @@ export class SoftAuthInterceptor implements HttpInterceptor {
     }
   }
 
-  protected redirectToLoginUrl() {
+  protected redirectToLoginUrl$() {
     window.location.href = this.config.loginScreenUrl;
+    return EMPTY;
   }
 }

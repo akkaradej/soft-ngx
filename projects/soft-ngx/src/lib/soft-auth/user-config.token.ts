@@ -3,3 +3,4 @@ export const userSoftAuthServiceConfigToken = new InjectionToken('userSoftAuthSe
 export const userSoftAuthInterceptorConfigToken = new InjectionToken('userSoftAuthInterceptorConfigToken');
 export const userSoftAuthRequestKeyToken = new InjectionToken('userSoftAuthRequestKeyToken');
 export const userSoftAuthResponseKeyToken = new InjectionToken('userSoftAuthResponseKeyToken');
+export const authServiceClassForSoftAuthInterceptorToken = new InjectionToken('authServiceClassForSoftAuthInterceptorToken');

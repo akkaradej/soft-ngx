@@ -10,7 +10,6 @@ import { SoftScrollModule } from './soft-scroll/soft-scroll.module';
 import { SoftStorageModule } from './soft-storage/soft-storage.module';
 import { SoftAsyncUIModule } from './soft-async-ui/soft-async-ui.module';
 
-import { SoftAuthService } from './soft-auth/soft-auth.service';
 import { SoftApiClientConfig } from './soft-api-client/soft-api-client.config';
 import {
   SoftAuthServiceConfig, SoftAuthInterceptorConfig,
@@ -43,8 +42,6 @@ import { SoftAsyncUIConfig, SoftSkeletonType } from './soft-async-ui/soft-async-
 })
 export class SoftNgxModule {
   static forRoot(
-    // tslint:disable-next-line: variable-name
-    SoftAuthServiceClass: any = SoftAuthService,
     apiClientConfig?: SoftApiClientConfig,
     asyncUIConfig?: SoftAsyncUIConfig,
     registeredSkeletonComponents?: SoftSkeletonType,
@@ -62,7 +59,7 @@ export class SoftNgxModule {
       providers: [
         ...SoftApiClientModule.forRoot(apiClientConfig).providers,
         ...SoftAsyncUIModule.forRoot(asyncUIConfig, registeredSkeletonComponents).providers,
-        ...SoftAuthModule.forRoot(SoftAuthServiceClass, authConfig).providers,
+        ...SoftAuthModule.forRoot(authConfig).providers,
         ...SoftPopupModule.forRoot(popupConfig).providers,
         ...SoftScrollModule.forRoot().providers,
         ...SoftStorageModule.forRoot(storageConfig).providers,
