@@ -30,6 +30,14 @@ import { TableSkeletonComponent } from './skeletons/table-skeleton.component';
     SummarySkeletonComponent,
     TableSkeletonComponent,
   ],
+  entryComponents: [
+    DefaultBusySpinnerComponent,
+    DefaultSkeletonComponent,
+    BarChartSkeletonComponent,
+    PieChartSkeletonComponent,
+    SummarySkeletonComponent,
+    TableSkeletonComponent,
+  ],
   exports: [
     SoftBusyDirective,
     SoftDisabledDirective,
