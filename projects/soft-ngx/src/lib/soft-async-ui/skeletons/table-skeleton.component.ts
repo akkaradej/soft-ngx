@@ -1,11 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'table-skeleton',
   template: `
     <div class="ph-item">
-      <div *ngFor="let i of [1,2,3,4,5,6,7,8]"
-        class="ph-col-1">
+      <div *ngFor="let i of numArray"
+        class="ph-col-1"
+        [class.is-hidden-mobile]="i > mobileNum">
         <div class="ph-row">
           <div class="ph-col-12 big"></div>
           <div class="ph-col-12"></div>
@@ -44,5 +45,14 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableSkeletonComponent {
+  numArray = [1, 2, 3, 4, 5, 6, 7, 8];
+  mobileNum = this.numArray.length;
 
+  @Input() set context(context: { count: number, mobileCount: number }) {
+    this.numArray = Array(context.count).fill(0).map((e, i) => i + 1);
+    this.mobileNum = this.numArray.length;
+    if (context.mobileCount) {
+      this.mobileNum = context.mobileCount + 1;
+    }
+  }
 }
