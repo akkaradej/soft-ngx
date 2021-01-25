@@ -8,7 +8,7 @@ export class SoftScrollService {
   /*
    * @param scrollingView - a scrollable container e.g. div with "overflow: scroll" style, default is root document
    */
-  scrollTo(target: HTMLElement, scrollingView: HTMLElement = document.documentElement, offset = 0, duration = 600): Promise<any> {
+  scrollTo(target: HTMLElement, scrollingView: HTMLElement = document.documentElement, offset = 0, duration = 600): Promise<void> {
     return new Promise(resolve => {
       if (!target) {
         resolve();

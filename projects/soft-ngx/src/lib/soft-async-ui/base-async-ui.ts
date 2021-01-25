@@ -84,7 +84,7 @@ export abstract class BaseAsyncUI implements OnDestroy {
     this.checkAndInitStateHandler(this.element);
   }
 
-  private createPromiseFromBoolean(val: boolean): Promise<any> | null {
+  private createPromiseFromBoolean(val: boolean): Promise<void> | null {
     if (val) {
       return new Promise((resolve) => {
         this.fakePromiseResolve = resolve;
