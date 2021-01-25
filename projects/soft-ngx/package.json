@@ -2,8 +2,8 @@
   "name": "soft-ngx",
   "version": "0.10.4-beta",
   "peerDependencies": {
-    "@angular/common": ">=10.0.0",
-    "@angular/core": ">=10.0.0"
+    "@angular/common": ">=11.0.0",
+    "@angular/core": ">=11.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0",
