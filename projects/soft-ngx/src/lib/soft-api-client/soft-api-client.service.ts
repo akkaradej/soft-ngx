@@ -50,10 +50,6 @@ export class SoftApiClientService {
     this.config = Object.assign({}, defaultConfig, userConfig);
   }
 
-  public getBaseUrl() {
-    return this.config.apiBaseUrl;
-  }
-
   public request(
     httpMethod: HttpMethod, url: string, options: HttpClientRequestOptions,
     isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {

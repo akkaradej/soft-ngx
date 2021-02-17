@@ -5,6 +5,7 @@ import { SoftAsyncUIConfig, SoftSkeletonType } from './soft-async-ui.config';
 import { SoftBusyDirective } from './soft-busy.directive';
 import { SoftDisabledDirective } from './soft-disabled.directive';
 import { SoftLoadingDirective } from './soft-loading.directive';
+import { SoftLoadingBtnDirective } from './soft-loading-btn.directive';
 import { userSoftAsyncUIConfigToken, userRegisteredSkeletonComponentsToken } from './user-config.token';
 import { DefaultBusySpinnerComponent } from './default-busy-spinner/default-busy-spinner.component';
 import { SoftSkelDirective } from './soft-skel.directive';
@@ -22,6 +23,7 @@ import { TableSkeletonComponent } from './skeletons/table-skeleton.component';
     SoftBusyDirective,
     SoftDisabledDirective,
     SoftLoadingDirective,
+    SoftLoadingBtnDirective,
     DefaultBusySpinnerComponent,
     SoftSkelDirective,
     DefaultSkeletonComponent,
@@ -42,6 +44,7 @@ import { TableSkeletonComponent } from './skeletons/table-skeleton.component';
     SoftBusyDirective,
     SoftDisabledDirective,
     SoftLoadingDirective,
+    SoftLoadingBtnDirective,
     SoftSkelDirective,
   ],
 })

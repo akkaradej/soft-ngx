@@ -1,4 +1,4 @@
-import { Directive, Input, HostListener } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BaseAsyncDisabled } from './base-async-disabled';
 
@@ -14,20 +14,12 @@ export class SoftLoadingDirective extends BaseAsyncDisabled {
     this.setState(state);
   }
 
-  @HostListener('click')
-  handleCurrentBtnOnly() {
-    // Click triggers @Input update
-    // We need to use timeout to wait for @Input to update
-    window.setTimeout(() => {
-      // return if something else than a promise is passed
-      if (!this.promise) {
-        return;
-      }
-
-      // only display loading for clicked element
-      this.addLoadingClass(this.element);
-      this.loadingState(this.element);
-    }, 0);
+  /**
+   * Handles everything to be triggered when state is loading
+   */
+  loadingState(element: HTMLElement) {
+    this.addLoadingClass(element);
+    super.loadingState(element);
   }
 
   /**

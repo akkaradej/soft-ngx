@@ -189,13 +189,13 @@
 
     <div class="box">
       <h3 class="subtitle">
-        softLoading & softDisabled
+        softLoading & softLoadingBtn & softDisabled
       </h3>
       <ul class="block">
         <li>- loading/disabled state apply to element e.g. button</li>
         <li>- give a subscription or promise or boolean to determine loading/disabled state</li>
-        <li>- loading state also has disabled state</li>
-        <li>- loading appear only clicked element, for other element just disabled</li>
+        <li>- loading state apply both loading/disabled to element</li>
+        <li>- softLoadingBtn apply loading only clicked element.</li>
         <li>- existing disabled property is not affected (still disabled)</li>
       </ul>
       <div class="buttons">
@@ -208,10 +208,17 @@
         </button>
         <button
           class="button"
-          [softLoading]="loadingSub"
+          [softLoadingBtn]="loadingSub"
           (click)="testLoading()"
         >
-          another softLoading
+          softLoadingBtn
+        </button>
+        <button
+          class="button"
+          [softLoadingBtn]="loadingSub"
+          (click)="testLoading()"
+        >
+          another softLoadingBtn
         </button>
         <button
           class="button"
@@ -239,10 +246,18 @@
 
       &lt;button 
         class="button"
-        <strong>[softLoading]="loadingSub"</strong>
+        <strong>[softLoadingBtn]="loadingSub"</strong>
         (click)="testLoading()"
       &gt;
-        another softLoading
+        softLoadingBtn
+      &lt;/button&gt;
+
+      &lt;button 
+        class="button"
+        <strong>[softLoadingBtn]="loadingSub"</strong>
+        (click)="testLoading()"
+      &gt;
+        another softLoadingBtn
       &lt;/button&gt;
 
       &lt;button 
