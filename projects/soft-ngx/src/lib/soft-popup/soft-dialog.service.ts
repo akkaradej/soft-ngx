@@ -29,10 +29,9 @@ export class SoftDialogService {
     componentRef.instance.isAnimated = animations.isAnimated;
     componentRef.instance.backdropAnimations = animations.backdropAnimations;
     componentRef.instance.cardAnimations = animations.cardAnimations;
-    componentRef.instance.result$.subscribe(() => {
+    componentRef.instance.dispose = () => {
       this.removeDialog(id);
-    });
-
+    }
     return componentRef.instance.result$;
   }
 
@@ -42,4 +41,5 @@ export class SoftDialogService {
       this.componentRefs[id].destroy();
     }
   }
+
 }

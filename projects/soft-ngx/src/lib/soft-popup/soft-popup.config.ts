@@ -1,5 +1,3 @@
-import { trigger, state, style, animate, transition } from '@angular/animations';
-
 export interface SoftPopupConfig {
   // general
   isAgreeFirst?: boolean;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { SoftDialog } from './soft-dialog.interface';
 import { trigger, state, style, animate, transition, AnimationEvent } from '@angular/animations';
 
@@ -7,10 +7,21 @@ export interface SoftPopupModel {
   title: string;
   message: string;
   colorVar: string;
-  type: 'alert' | 'confirm';
+  type: SoftPopupType;
   agreeText: string;
   disagreeText: string;
   isAgreeFirst: boolean;
+}
+
+export enum SoftPopupType {
+  Alert = 1,
+  Confirm = 2,
+}
+
+export interface SoftPopup {
+  actionSub: Subscription;
+  loading: () => void;
+  close: () => void;
 }
 
 export interface SoftPopupAnimationModel {
@@ -46,7 +57,7 @@ export const softPopupAnimations = [
         class="modal-background"
         [@backdrop]="{ value: animationState, params: backdropAnimations }"
         (@backdrop.done)="onBackdropAnimationDone($event)"
-        (click)="onDismiss()"></div>
+        (click)="data.type == SoftPopupType.Confirm && !isLoading && onDismiss()"></div>
       <div
         class="modal-card"
         style="width: 350px;"
@@ -56,29 +67,36 @@ export const softPopupAnimations = [
           <p class="modal-card-title">
             {{ data.title }}
           </p>
-          <button type="button" class="delete" aria-label="close"
-          (click)="onDismiss()">
+          <button 
+            *ngIf="data.type == SoftPopupType.Confirm"
+            type="button" class="delete" aria-label="close"
+            [style.pointer-events]="closeButtonPointerEvents()"
+            (click)="onDismiss()">
           </button>
         </header>
         <section class="modal-card-body text-center">
           <div class="block" *ngIf="data.message">
             <strong class="is-pre-wrap">{{ data.message }}</strong>
           </div>
-          <div *ngIf="data.type == 'alert'">
-            <button class="button is-fat is-{{ data.colorVar }}" (click)="onDismiss()">{{ data.agreeText }}</button>
+          <div *ngIf="data.type == SoftPopupType.Alert">
+            <button 
+              class="button is-fat is-{{ data.colorVar }}" 
+              [class.is-loading]="isLoading"
+              (click)="onConfirm()">{{ data.agreeText }}</button>
           </div>
-          <div *ngIf="data.type == 'confirm'">
-            <ng-container *ngIf="data.isAgreeFirst">
-              <button class="button is-fat is-{{ data.colorVar }}" (click)="onConfirm()">{{ data.agreeText }}</button>
-              &nbsp;
-              <button class="button is-fat is-light" (click)="onDismiss()">{{ data.disagreeText }}</button>
-            </ng-container>
-
-            <ng-container *ngIf="!data.isAgreeFirst">
-              <button class="button is-fat is-light" (click)="onDismiss()">{{ data.disagreeText }}</button>
-              &nbsp;
-              <button class="button is-fat is-{{ data.colorVar }}" (click)="onConfirm()">{{ data.agreeText }}</button>
-            </ng-container>
+          <div 
+            *ngIf="data.type == SoftPopupType.Confirm" 
+            class="buttons is-centered"
+            [class.is-flex-row-reverse]="!data.isAgreeFirst">
+            <button 
+              class="button is-fat is-{{ data.colorVar }}"
+              [class.is-loading]="isLoading"
+              (click)="onConfirm()">{{ data.agreeText }}</button>
+            &nbsp;
+            <button 
+              class="button is-fat is-light" 
+              [disabled]="isLoading"
+              (click)="onDismiss()">{{ data.disagreeText }}</button>
           </div>
         </section>
       </div>
@@ -88,10 +106,12 @@ export const softPopupAnimations = [
 })
 export class SoftPopupComponent implements SoftDialog {
 
-  isConfirm = false;
+  SoftPopupType = SoftPopupType;
 
   data: SoftPopupModel;
+  isLoading: boolean;
   hasAnimation = true;
+  dispose: () => void;
 
   isAnimated: boolean;
   backdropAnimations: any;
@@ -100,28 +120,50 @@ export class SoftPopupComponent implements SoftDialog {
   private isBackdropAnimationDone = false;
   private isCardAnimationDone = false;
 
-  protected result = new Subject<boolean>();
-  public result$ = this.result.asObservable();
+  protected result = new Subject<SoftPopup>();
+  result$ = this.result.asObservable();
 
   constructor() {
   }
 
   onConfirm() {
-    this.animationState = 'closed';
-    this.isConfirm = true;
-    if (!this.isAnimated || !this.hasAnimation) {
-      this.result.next(this.isConfirm);
+    if (this.result.observers.length > 0) {
+      this.result.next(
+        {
+          set actionSub(actionSub: Subscription) {
+            this.loading();
+            actionSub.add(() => {
+              this.close();
+            });
+          },
+          loading: () => {
+            this.isLoading = true;
+          },
+          close: () => {
+            this.close();
+          }
+        }
+      );
       this.result.complete();
+
+      // auto close if does not show loading
+      if (!this.isLoading) {
+        this.close();
+      }
+    } else {
+      // auto close if does not subscribe
+      this.close();
     }
   }
 
   onDismiss() {
-    this.animationState = 'closed';
-    this.isConfirm = false;
-    if (!this.isAnimated || !this.hasAnimation) {
-      this.result.next(this.isConfirm);
-      this.result.complete();
-    }
+    this.result.next(null);
+    this.result.complete();
+    this.close();
+  }
+
+  closeButtonPointerEvents() {
+    return this.isLoading ? 'none' : 'inherit';
   }
 
   onBackdropAnimationDone(event: AnimationEvent) {
@@ -138,10 +180,16 @@ export class SoftPopupComponent implements SoftDialog {
     }
   }
 
+  private close() {
+    this.animationState = 'closed';
+    if (!this.isAnimated || !this.hasAnimation) {
+      this.dispose();
+    }
+  }
+
   private allAnimationDone() {
     if (this.isBackdropAnimationDone && this.isCardAnimationDone) {
-      this.result.next(this.isConfirm);
-      this.result.complete();
+      this.dispose();
     }
   }
 }

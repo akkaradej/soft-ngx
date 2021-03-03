@@ -18,6 +18,7 @@ export { SoftBusyComponent } from './lib/soft-async-ui/soft-busy.interface';
 export { SoftBusyDirective } from './lib/soft-async-ui/soft-busy.directive';
 export { SoftDisabledDirective } from './lib/soft-async-ui/soft-disabled.directive';
 export { SoftLoadingDirective } from './lib/soft-async-ui/soft-loading.directive';
+export { SoftLoadingBtnDirective } from './lib/soft-async-ui/soft-loading-btn.directive';
 export { SoftSkelDirective } from './lib/soft-async-ui/soft-skel.directive';
 
 export {
@@ -53,7 +54,7 @@ export { SoftDialog } from './lib/soft-popup/soft-dialog.interface';
 export { SoftPopupConfig } from './lib/soft-popup/soft-popup.config';
 export { userSoftPopupConfigToken } from './lib/soft-popup/user-config.token';
 export { SoftPopupModule } from './lib/soft-popup/soft-popup.module';
-export { SoftPopupComponent } from './lib/soft-popup/soft-popup.component';
+export { SoftPopupComponent, SoftPopup } from './lib/soft-popup/soft-popup.component';
 export { SoftPopupService } from './lib/soft-popup/soft-popup.service';
 
 export { SoftScrollModule } from './lib/soft-scroll/soft-scroll.module';

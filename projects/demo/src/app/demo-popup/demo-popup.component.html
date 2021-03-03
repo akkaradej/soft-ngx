@@ -53,6 +53,18 @@
           </button>
           <button
             class="button"
+            (click)="confirmActionSubLoading()"
+          >
+            Confirm actionSub loading
+          </button>
+          <button
+            class="button"
+            (click)="confirmManualLoadingClose()"
+          >
+            Confirm manual loading/close
+          </button>
+          <button
+            class="button"
             (click)="confirmCustomText()"
           >
             Custom Text
@@ -61,35 +73,33 @@
         </div>
       </div>
       <pre>
-        # html
-        &lt;button 
-          class="button" 
-          (click)="confirm()"
-        &gt;
-          Confirm
-        &lt;/button&gt;
-        &lt;button 
-          class="button" 
-          (click)="confirmCustomText()"
-        &gt;
-          Custom Text
-        &lt;/button&gt;
-
         # ts
         confirm() &#123;
           <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
-            .subscribe((result: boolean) => &#123;
+            .subscribe(result => &#123;
               if (result) &#123;
                 window.alert('Sure!');
               &#125;
             &#125;);
         &#125;
 
-        confirmCustomText() &#123;
-          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning', 'Sure', 'Not Sure', false)
-            .subscribe((result: boolean) => &#123;
+        confirmActionSubLoading() &#123;
+          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
+            .subscribe(result => &#123;
               if (result) &#123;
-                window.alert('Sure!');
+                result.actionSub = of(true).pipe(delay(1000)).subscribe();
+              &#125;
+            &#125;);
+        &#125;
+
+        confirmManualLoadingClose() &#123;
+          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning', 'Sure', 'Not Sure', false)
+            .subscribe(result => &#123;
+              if (result) &#123;
+                result.loading();
+                of(true).pipe(delay(1000)).subscribe(() => &#123;
+                  result.close();
+                &#125;);
               &#125;
             &#125;);
         &#125;
@@ -134,7 +144,7 @@
 
       delete(product: any) &#123;
         <strong>this.popupService.confirmDelete</strong>(product.name)
-          .subscribe((result: boolean) => &#123;
+          .subscribe(result => &#123;
             if (result) &#123;
               this.products.splice(this.products.indexOf(product), 1);
             &#125;
@@ -170,7 +180,7 @@
         # ts
         confirm() &#123;
           <strong>this.popupService.custom</strong>(CustomDialogComponent, &#123; say: 'hello' &#125;
-            .subscribe((result: boolean) => &#123;
+            .subscribe(result => &#123;
               if (result) &#123;
                 window.alert('Sure!');
               &#125;

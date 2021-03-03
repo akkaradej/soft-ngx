@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { SoftPopupComponent, SoftPopupModel } from './soft-popup.component';
+import { SoftPopup, SoftPopupComponent, SoftPopupModel, SoftPopupType } from './soft-popup.component';
 import { SoftPopupConfig, defaultConfig } from './soft-popup.config';
 import { userSoftPopupConfigToken } from './user-config.token';
 import { SoftDialogService } from './soft-dialog.service';
@@ -21,13 +21,15 @@ export class SoftPopupService {
     this.config = Object.assign({}, defaultConfig, userConfig);
   }
 
-  alert(title: string, message = '', colorVar?: string, agreeText?: string) {
+  alert(title: string, message = '', colorVar?: string, 
+    agreeText?: string,
+  ): Observable<SoftPopup | null> {
 
     colorVar = colorVar || this.config.alertColorVar;
     agreeText = agreeText || this.config.alertAgreeText;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
-      type: 'alert',
+      type: SoftPopupType.Alert,
       title,
       message,
       colorVar,
@@ -44,7 +46,7 @@ export class SoftPopupService {
   confirm(
     title: string, message = '', colorVar?: string,
     agreeText?: string, disagreeText?: string, isAgreeFirst?: boolean,
-  ): Observable<boolean> {
+  ): Observable<SoftPopup | null> {
 
     colorVar = colorVar || this.config.confirmColorVar;
     agreeText = agreeText || this.config.agreeText;
@@ -52,7 +54,7 @@ export class SoftPopupService {
     isAgreeFirst = isAgreeFirst !== undefined ? isAgreeFirst : this.config.isAgreeFirst;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
-      type: 'confirm',
+      type: SoftPopupType.Confirm,
       title,
       message,
       colorVar,
@@ -69,7 +71,7 @@ export class SoftPopupService {
   confirmDelete(
     itemName: string, title?: string, message?: string, colorVar?: string,
     agreeText?: string, disagreeText?: string, isAgreeFirst?: boolean,
-  ): Observable<boolean> {
+  ): Observable<SoftPopup | null> {
 
     title = title || (this.config.deleteTitleFunc && this.config.deleteTitleFunc(itemName));
     message = message || (this.config.deleteMessageFunc && this.config.deleteMessageFunc(itemName));
@@ -79,7 +81,7 @@ export class SoftPopupService {
     isAgreeFirst = isAgreeFirst !== undefined ? isAgreeFirst : this.config.isAgreeFirst;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
-      type: 'confirm',
+      type: SoftPopupType.Confirm,
       title,
       message,
       colorVar,
@@ -93,7 +95,7 @@ export class SoftPopupService {
     });
   }
 
-  custom(component: any, data: any) {
+  custom(component: any, data: any): Observable<SoftPopup | null> {
     return this.dialogService.addDialog(component, data, {
       isAnimated: this.config.isAnimated,
       backdropAnimations: this.config.backdropAnimations,
