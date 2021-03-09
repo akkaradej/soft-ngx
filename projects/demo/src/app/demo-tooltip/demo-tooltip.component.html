@@ -1,0 +1,81 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2">SoftTooltip</h2>
+    <div class="box">
+      <div class="block">
+        <h3 class="subtitle">
+          softTooltip with string
+        </h3>
+
+        <button class="button" [softTooltip]="'Hello'">Hover Me</button>
+        <button class="button" [softTooltip]="'Hello'" [trigger]="'click'">[trigger]="'click'"</button>
+        <button class="button" [softTooltip]="'Hello'" [placement]="'right'">[placement]="'right'"</button>
+        <br><br>
+
+        <button class="button" [softTooltip]="'Hello'" [theme]="'is-bordered'">[theme]="'is-bordered'"</button>
+        <button class="button" [softTooltip]="'Hello'" [theme]="'is-primary'">[theme]="'is-primary'"</button>
+        <button class="button" [softTooltip]="'Hello'" [theme]="'is-bordered is-secondary'">[theme]="'is-bordered is-secondary'"</button>
+        <button class="button" [softTooltip]="'Hello'" [arrow]="false" [theme]="'is-bordered'">[arrow]="false" [theme]="'is-bordered'"</button>
+        <br><br>
+
+        <button class="button" #target>#target</button>
+        <button class="button" [softTooltip]="'Hello'" [triggerTarget]="target">[triggerTarget]="target"</button>
+        <br><br>
+
+        <button class="button" [softTooltip]="'Hello'" [trigger]="'click'" [hideOnClickOutside]="false">[trigger]="'click'" [hideOnClickOutside]="false"</button>
+        <br><br>
+      </div>
+      <pre>
+        # html
+        &lt;button 
+          class="button"
+          <strong>[softTooltip]="'Hello'"</strong>
+          Hover Me
+        &lt;/button&gt;
+      </pre>
+    </div>
+
+    <div class="box">
+      <div class="block">
+        <h3 class="subtitle">
+          softTooltip with templateRef
+        </h3>
+
+        <button 
+          #tooltip="softTooltip"
+          class="button"
+          [softTooltip]="tooltipTpl"
+          [theme]="'is-bordered'">
+          Hover Me
+        </button>
+        <ng-template #tooltipTpl>
+          <form>
+            <div class="is-spacing is-horizontal pad-1">
+              <input class="input" type="text">
+              <button class="button" (click)="tooltip.hide()">OK</button>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+      <pre>
+        # html
+        &lt;button 
+          <strong>#tooltip="softTooltip"</strong>
+          class="button"
+          <strong>[softTooltip]="tooltipTpl"</strong>
+          <strong>[theme]="'is-bordered'"</strong>&gt;
+          Hover Me
+        &lt;/button&gt;
+        &lt;ng-template <strong>#tooltipTpl</strong>&gt;
+          &lt;form&gt;
+            &lt;div class="is-spacing is-horizontal pad-1"&gt;
+              &lt;input class="input" type="text"&gt;
+              &lt;button class="button" <strong>(click)="tooltip.hide()"</strong>&gt;OK&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/ng-template&gt;
+      </pre>
+    </div>
+
+  </div>
+</section>

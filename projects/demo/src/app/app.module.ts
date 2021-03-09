@@ -34,6 +34,7 @@ import { FormsModule } from '@angular/forms';
 import { CustomDialogComponent } from './demo-popup/custom-dialog-component';
 import { DemoScrollComponent } from './demo-scroll/demo-scroll.component';
 import { SampleSkeletonComponent } from './demo-async-ui/sample-skeleton';
+import { DemoTooltipComponent } from './demo-tooltip/demo-tooltip.component';
 
 export function initApiClientConfig(): SoftApiClientConfig {
   return {
@@ -120,6 +121,7 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     DemoPipeComponent,
     DemoPopupComponent,
     DemoScrollComponent,
+    DemoTooltipComponent,
     CustomDialogComponent,
     SampleSkeletonComponent,
   ],
