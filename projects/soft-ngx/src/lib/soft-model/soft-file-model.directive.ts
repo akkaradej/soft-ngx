@@ -42,6 +42,7 @@ export class SoftFileModelDirective implements Validator {
 
   @Input() softFileModel: any;
   @Output() softFileModelChange = new EventEmitter();
+
   /*
    * validate max size in MB
    */
@@ -59,14 +60,6 @@ export class SoftFileModelDirective implements Validator {
 
   constructor(
     private _element: ElementRef) {
-  }
-
-  clear() {
-    this._element.nativeElement.value = '';
-    if (this._element.nativeElement.value) {
-      this._element.nativeElement.value.type = 'text';
-      this._element.nativeElement.value.type = 'file';
-    }
   }
 
   validate(control: AbstractControl): ValidationErrors {
@@ -97,6 +90,9 @@ export class SoftFileModelDirective implements Validator {
     this.softFileModelChange.emit(value);
 
     this._setValidity(value);
+
+    // clear input to be trigger change after choose same file
+    this.clear();
   }
 
   private _setValidity(value: File | FileList | undefined): void {
@@ -161,11 +157,23 @@ export class SoftFileModelDirective implements Validator {
         })(i);
       }
     } else {
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.loaded.emit(event.target.result);
-      };
-      reader.readAsDataURL(files[0]);
+      if (files[0]) {
+        const reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.loaded.emit(event.target.result);
+        };
+        reader.readAsDataURL(files[0]);
+      } else {
+        this.loaded.emit(undefined);
+      }
+    }
+  }
+
+  private clear() {
+    this._element.nativeElement.value = '';
+    if (this._element.nativeElement.value) {
+      this._element.nativeElement.value.type = 'text';
+      this._element.nativeElement.value.type = 'file';
     }
   }
 

@@ -157,16 +157,19 @@
         *ngIf="previewImage "
         src="{{ previewImage }}"
       >
-      <input
-        class="input"
-        type="file"
-        name="file"
-        ngModel
-        accept="image/*"
-        [maxSize]="10"
-        [(softFileModel)]="file"
-        (loaded)="previewImage = $event"
-      > * Max file size: 10 MB
+      <form>
+        <input
+          class="input"
+          type="file"
+          name="file"
+          ngModel
+          accept="image/*"
+          [maxSize]="10"
+          [(softFileModel)]="file"
+          (loaded)="previewImage = $event"
+          required
+        > * Max file size: 10 MB
+      </form>
       <pre>
       {{ file?.name }<!---->}
       &lt;img
