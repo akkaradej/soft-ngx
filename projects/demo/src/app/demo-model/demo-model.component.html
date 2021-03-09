@@ -146,45 +146,41 @@
         <li>- [maxSize] validate max file size in MB</li>
         <li>- (loaded) get dataUri</li>
       </ul>
-      <div
-        *ngIf="file"
-        class="brick"
-      >
-        file name: {{ file.name }}
+      
+      <div class="block">
+        <form #form="ngForm" [class.submitted]="form.submitted">
+          [maxSize]="1" (MB)
+          <input type="file"
+            class="input"
+            name="file"
+            accept="image/*"
+            [(ngModel)]="file"
+            softFileModel
+            [maxSize]="1"
+            (loaded)="previewImage = $event"
+            required/>
+          <p>File Name: {{ file?.name }}</p>
+          <p>File Size: {{ file?.size / 1024 / 1024 }} MB</p>
+          <div *ngIf="previewImage ">
+            <img class="brick" src="{{ previewImage }}">
+          </div>
+          <button class="button">Submit</button>
+        </form>
       </div>
-      <img
-        class="brick"
-        *ngIf="previewImage "
-        src="{{ previewImage }}"
-      >
-      <form>
-        <input
-          class="input"
-          type="file"
-          name="file"
-          ngModel
-          accept="image/*"
-          [maxSize]="10"
-          [(softFileModel)]="file"
-          (loaded)="previewImage = $event"
-          required
-        > * Max file size: 10 MB
-      </form>
       <pre>
-      {{ file?.name }<!---->}
-      &lt;img
-        *ngIf="previewImage"
-        src="{{ previewImage }<!---->}"
-      &gt;
-      &lt;input class="input"
-        type="file"
-        name="file"
-        ngModel
-        accept="image/*"
-        <strong>[maxSize]="10"</strong>
-        <strong>[(softFileModel)]="file"</strong>
-        <strong>(loaded)="previewImage = $event"</strong>&gt;
-      * Max file size: 10 MB
+        &lt;<strong>input type="file"</strong>
+          class="input"
+          name="file"
+          accept="image/*"
+          <strong>[(ngModel)]="file"</strong>
+          <strong>softFileModel</strong>
+          <strong>[maxSize]="1"</strong>
+          <strong>(loaded)="previewImage = $event"</strong>
+          required/&gt;
+
+        File Name: {{ file?.name }<!---->}
+        File Size: {{ file?.size / 1024 / 1024 }<!---->}
+        &lt;img *ngIf="previewImage" src="{{ previewImage }<!---->}"&gt;
       </pre>
     </div>
   </div>

@@ -3,17 +3,20 @@ import {
   Input, Output, EventEmitter, HostListener,
 } from '@angular/core';
 
-import { NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
-
-export type HTMLFileInputAttribute = any | boolean;
-interface FileInputEventTarget extends EventTarget {
-  files: FileList;
-}
+import { 
+  NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, 
+  ControlValueAccessor, NG_VALUE_ACCESSOR 
+} from '@angular/forms';
 
 @Directive({
-  selector: 'input[type="file"][softFileModel][ngModel]',
+  selector: 'input[type="file"][ngModel][softFileModel]',
   exportAs: 'softFileModel',
   providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: SoftFileModelDirective,
+      multi: true,
+    },
     {
       provide: NG_VALIDATORS,
       useExisting: SoftFileModelDirective,
@@ -21,27 +24,17 @@ interface FileInputEventTarget extends EventTarget {
     },
   ],
 })
-export class SoftFileModelDirective implements Validator {
+export class SoftFileModelDirective implements ControlValueAccessor, Validator {
 
-  _required = false;
-  @Input()
-  set required(value: boolean) {
-    if (value === '' as any) {
-      this._required = true;
-    } else {
-      this._required = value;
+  @HostListener('change', ['$event.target.files'])
+  onHostChange(files: FileList) {
+    if (this.loaded.observers.length > 0) {
+      this.load(files);
     }
-    if (!this._isFirstRequired) {
-      this._setValidity(this._getInputValue(this._element.nativeElement as FileInputEventTarget));
-    }
-    this._isFirstRequired = false;
+    this.onChange(this.getInputValue(files));
+    this.clear();
+    this.onBlur({});
   }
-  get required(): boolean {
-    return this._required;
-  }
-
-  @Input() softFileModel: any;
-  @Output() softFileModelChange = new EventEmitter();
 
   /*
    * validate max size in MB
@@ -50,80 +43,48 @@ export class SoftFileModelDirective implements Validator {
 
   @Output() loaded = new EventEmitter<string | { dataUrl: string, index: number }[]>();
 
-  private _isFirstRequired = true;
-  private _control: AbstractControl;
-
-  @HostListener('change', ['$event'])
-  onHostChange(event) {
-    this.onChange(event.target);
-  }
+  disabled = false;
 
   constructor(
-    private _element: ElementRef) {
+    private element: ElementRef<HTMLInputElement>) {
+  }
+
+  writeValue(value: any): void {
+    // this.value = value;
+  }
+
+  onBlur(event) {
+    this.onTouched(event);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
   validate(control: AbstractControl): ValidationErrors {
-    if (!this._control) {
-      this._control = control;
+    // valid for empty value
+    if (control.value == null || control.value === '') {
+      return null;
     }
-
-    const errors: ValidationErrors = Object.assign({}, this._control.errors);
-
-    if (this._hasError(this._control.value)) {
-      errors.required = { valid: false };
-    } else {
-      if (this._control.hasError('required')) {
-        delete errors.required;
-      }
+    // validate max size
+    if (this.maxSize && this.overMaxSize(control.value)) {
+      return { maxSize: true };
     }
-
-    return errors;
-  }
-
-  onChange(eventTarget: FileInputEventTarget): void {
-    const value: File | FileList | undefined = this._getInputValue(eventTarget as FileInputEventTarget);
-
-    if (this.loaded.observers.length > 0) {
-      this._load(eventTarget.files);
-    }
-
-    this.softFileModelChange.emit(value);
-
-    this._setValidity(value);
-
-    // clear input to be trigger change after choose same file
-    this.clear();
-  }
-
-  private _setValidity(value: File | FileList | undefined): void {
-    const errors: ValidationErrors = Object.assign({}, this._control.errors);
-
-    if (this._hasError(value)) {
-      errors.required = { valid: false };
-    } else {
-      if (this._control.hasError('required')) {
-        delete errors.required;
-      }
-    }
-
-    this._control.setErrors(Object.keys(errors).length ? errors : null);
-  }
-
-  private _hasError(value: File | FileList | undefined): boolean {
-    return (this.required && !this._hasValue(value)) || this.overMaxSize(value);
-  }
-
-  private _hasValue(value: File | FileList | undefined): boolean {
-    if (this._element.nativeElement.hasAttribute('multiple')) {
-      return value instanceof FileList && !!value.length;
-    }
-    return value instanceof File;
+    return null;
   }
 
   private overMaxSize(value: File | FileList | undefined | any): boolean {
     if (this.maxSize && value) {
       const maxSizeByte = this.maxSize * 1024 * 1024;
-      if (this._element.nativeElement.hasAttribute('multiple')) {
+      if (this.element.nativeElement.hasAttribute('multiple')) {
         for (let i = 0; i < value['length']; i++) {
           if (value[i].size > maxSizeByte) {
             return true;
@@ -138,15 +99,15 @@ export class SoftFileModelDirective implements Validator {
     return false;
   }
 
-  private _getInputValue(eventTarget: FileInputEventTarget): File | FileList | undefined {
-    if (this._element.nativeElement.hasAttribute('multiple')) {
-      return eventTarget.files;
+  private getInputValue(files: FileList): File | FileList | undefined {
+    if (this.element.nativeElement.hasAttribute('multiple')) {
+      return files;
     }
-    return eventTarget.files[0];
+    return files[0];
   }
 
-  private _load(files: FileList) {
-    if (this._element.nativeElement.hasAttribute('multiple')) {
+  private load(files: FileList) {
+    if (this.element.nativeElement.hasAttribute('multiple')) {
       for (let i = 0; i < files.length; i++) {
         ((index) => {
           const reader = new FileReader();
@@ -170,11 +131,13 @@ export class SoftFileModelDirective implements Validator {
   }
 
   private clear() {
-    this._element.nativeElement.value = '';
-    if (this._element.nativeElement.value) {
-      this._element.nativeElement.value.type = 'text';
-      this._element.nativeElement.value.type = 'file';
+    this.element.nativeElement.value = '';
+    if (this.element.nativeElement.value) {
+      this.element.nativeElement.type = 'text';
+      this.element.nativeElement.type = 'file';
     }
   }
 
+  private onChange = (_: any) => { };
+  private onTouched = (_: any) => { };
 }
