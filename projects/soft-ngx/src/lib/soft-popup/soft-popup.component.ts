@@ -64,7 +64,8 @@ export const softPopupAnimations = [
         [@card]="{ value: animationState, params: cardAnimations }"
         (@card.done)="onCardAnimationdropDone($event)">
         <header class="modal-card-head">
-          <p class="modal-card-title">
+          <p class="modal-card-title"
+            [class.push-0]="data.type != SoftPopupType.Confirm">
             {{ data.title }}
           </p>
           <button 

@@ -10,7 +10,6 @@ import {
 
 @Directive({
   selector: 'input[type="file"][ngModel][softFileModel]',
-  exportAs: 'softFileModel',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
