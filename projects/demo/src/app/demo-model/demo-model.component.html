@@ -154,8 +154,8 @@
             class="input"
             name="file"
             accept="image/*"
-            [(ngModel)]="file"
             softFileModel
+            [(ngModel)]="file"
             [maxSize]="1"
             (loaded)="previewImage = $event"
             required/>
@@ -172,14 +172,14 @@
           class="input"
           name="file"
           accept="image/*"
-          <strong>[(ngModel)]="file"</strong>
           <strong>softFileModel</strong>
+          <strong>[(ngModel)]="file"</strong>
           <strong>[maxSize]="1"</strong>
           <strong>(loaded)="previewImage = $event"</strong>
           required/&gt;
 
         File Name: {{ file?.name }<!---->}
-        File Size: {{ file?.size / 1024 / 1024 }<!---->}
+        File Size: {{ file?.size / 1024 / 1024 }<!---->} MB
         &lt;img *ngIf="previewImage" src="{{ previewImage }<!---->}"&gt;
       </pre>
     </div>
