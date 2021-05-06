@@ -1,12 +1,13 @@
 {
   "name": "soft-ngx",
-  "version": "0.11.4-beta",
+  "version": "0.11.5-beta",
   "peerDependencies": {
     "@angular/common": ">=11.0.0",
     "@angular/core": ">=11.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0",
+    "ngx-toastr": "^13.2.1",
     "tippy.js": "^6.2.6",
     "placeholder-loading": "^0.2.6"
   }

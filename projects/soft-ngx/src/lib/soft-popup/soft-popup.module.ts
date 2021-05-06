@@ -6,10 +6,14 @@ import { SoftPopupComponent } from './soft-popup.component';
 import { SoftPopupConfig } from './soft-popup.config';
 import { SoftDialogService } from './soft-dialog.service';
 import { userSoftPopupConfigToken } from './user-config.token';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
     CommonModule,
+    ToastrModule.forRoot(
+      
+    ),
   ],
   declarations: [
     SoftPopupComponent,

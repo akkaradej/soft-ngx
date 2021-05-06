@@ -6,6 +6,7 @@ import { SoftPopup, SoftPopupComponent, SoftPopupModel, SoftPopupType } from './
 import { SoftPopupConfig, defaultConfig } from './soft-popup.config';
 import { userSoftPopupConfigToken } from './user-config.token';
 import { SoftDialogService } from './soft-dialog.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,40 @@ export class SoftPopupService {
 
   constructor(
     private dialogService: SoftDialogService,
+    private toastr: ToastrService,
     @Inject(userSoftPopupConfigToken) userConfig: SoftPopupConfig) {
 
     this.config = Object.assign({}, defaultConfig, userConfig);
+  }
+
+  toast(title: string, message = '', colorVar?: string, autoClose?: boolean,
+    position?: 'bottom-left' | 'bottom-right' | 'bottom-center' | 'bottom-full-width' |
+               'top-left' | 'top-right' | 'top-center' | 'top-full-width'): void {
+    
+    colorVar = colorVar || this.config.toastColorVar;
+
+    if (!position) {
+      if (colorVar === 'danger') {
+        position = 'top-full-width';
+      } else {
+        position = 'bottom-left';
+      }
+    }
+
+    if (autoClose == null) {
+      if (colorVar === 'danger') {
+        autoClose = false;
+      } else {
+        autoClose = true;
+      }
+    }
+
+    this.toastr.show(message, title, {
+      toastClass: `ngx-toastr is-${colorVar}`,
+      positionClass: `toast-${position}`,
+      disableTimeOut: !autoClose,
+      closeButton: !autoClose,
+    });
   }
 
   alert(title: string, message = '', colorVar?: string, 

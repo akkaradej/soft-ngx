@@ -7,6 +7,42 @@
     <div class="box">
       <div class="block">
         <h3 class="subtitle">
+          Toast
+        </h3>
+        <ul class="block">
+          <li>- simple alert, non-block popup</li>
+          <li>- default autoClose = true (except danger color)</li>
+          <li>- default position = bottom-left (top-full-width for danger color)
+          <li>- all position values = [top or bottom]-[left or right or center or full-width]
+        </ul>
+        <button
+          class="button"
+          (click)="toast()"
+        >
+          Toast
+        </button>
+      </div>
+      <pre>
+      {{'
+        # html
+        &lt;button class="button" 
+          (click)="toast()"
+        &gt;
+          Alert
+        &lt;/button&gt;
+
+        # ts
+        alert() {
+          '}}<strong>{{'this.popupService.toast'}}</strong>{{'(\'Hi! Everybody\', \'I\\\'m Simple Toast\', \'success\');
+          '}}<strong>{{'this.popupService.toast'}}</strong>{{'(\'I\\\'m Important Toast, click to close\', undefined, \'danger\');
+        }
+      '}}
+      </pre>
+    </div>
+
+    <div class="box">
+      <div class="block">
+        <h3 class="subtitle">
           Alert
         </h3>
         <ul class="block">

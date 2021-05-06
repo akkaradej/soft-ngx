@@ -20,6 +20,11 @@ export class DemoPopupComponent implements OnInit {
   ngOnInit() {
   }
 
+  toast() {
+    this.popupService.toast('Hi! Everybody', 'I\'m Simple Toast', 'success');
+    this.popupService.toast('I\'m Important Toast, click to close', undefined, 'danger');
+  }
+
   alert() {
     this.popupService.alert('Hi! Everybody', 'I\'m Alert Popup', 'primary');
   }

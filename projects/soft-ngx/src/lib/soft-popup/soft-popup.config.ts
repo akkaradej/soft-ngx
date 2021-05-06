@@ -1,4 +1,6 @@
 export interface SoftPopupConfig {
+  // toast
+  toastColorVar?: string;
   // general
   isAgreeFirst?: boolean;
   agreeText?: string;
@@ -34,6 +36,8 @@ export interface SoftPopupConfig {
 }
 
 export const defaultConfig = {
+  // toast
+  toastColorVar: 'primary',
   // general
   isAgreeFirst: true,
   agreeText: 'Yes',

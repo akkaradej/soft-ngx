@@ -7,8 +7,15 @@ softBusy - DefaultBusyComponent style with [Trunks UI](https://github.com/akkara
 softLoading - default loadingClass style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
 softSkel - Built-in skeleton components style with [Placeholder Loading](https://github.com/zalog/placeholder-loading), [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
-### SoftModalModule and SoftPopupModule
+### SoftModalModule
 style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
+
+### SoftPopupModule 
+toast() using [ngx-toastr](https://github.com/scttcper/ngx-toastr)\
+more style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
+
+`@import "~ngx-toastr/toastr;`\
+`@import "~trunks-ui/trunks.scss";`
 
 ### SoftTooltipModule 
 using [tippy.js](https://github.com/atomiks/tippyjs)\
