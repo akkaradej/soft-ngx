@@ -53,6 +53,10 @@ export class SoftPopupService {
     });
   }
 
+  clearToast(): void {
+    this.toastr.clear();
+  }
+
   alert(title: string, message = '', colorVar?: string, 
     agreeText?: string,
   ): Observable<SoftPopup | null> {

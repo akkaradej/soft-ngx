@@ -63,11 +63,7 @@ export class DateRequestInterceptor implements HttpInterceptor {
     }
     Object.keys(obj).forEach(key => {
       if (obj[key] instanceof Date) {
-        if (this.config.dateRequestFormatter) {
-          newObj[key] = this.config.dateRequestFormatter(obj[key]);
-        } else {
-          newObj[key] = obj[key].toISOString();
-        }
+        newObj[key] = this.config.dateRequestFormatter(obj[key]);
       } else if (typeof obj[key] === 'object' && !(obj[key] instanceof FormData) && obj[key]) {
         newObj[key] = this.iterateFormatDate(obj[key]);
       } else {

@@ -5,7 +5,8 @@
 export { SoftApiClientConfig } from './lib/soft-api-client/soft-api-client.config';
 export { userSoftApiClientConfigToken } from './lib/soft-api-client/user-config.token';
 export { SoftApiClientModule } from './lib/soft-api-client/soft-api-client.module';
-export { SoftApiError, SoftApiErrorHandler } from './lib/soft-api-client/soft-api-error.model';
+export { SoftApiErrorHandlerService } from './lib/soft-api-client/soft-api-error-handler.service';
+export { SoftApiError } from './lib/soft-api-client/soft-api-error.model';
 export { SoftApiClientService } from './lib/soft-api-client/soft-api-client.service';
 export { HeaderResponse } from './lib/soft-api-client/soft-api-client.service';
 export { DateRequestInterceptor } from './lib/soft-api-client/date-request.interceptor';

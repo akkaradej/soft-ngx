@@ -14,7 +14,7 @@ style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
 toast() using [ngx-toastr](https://github.com/scttcper/ngx-toastr)\
 more style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
-`@import "~ngx-toastr/toastr;`\
+`@import "~ngx-toastr/toastr.css;`\
 `@import "~trunks-ui/trunks.scss";`
 
 ### SoftTooltipModule 
@@ -94,7 +94,6 @@ export function initSoftApiClientConfig(): SoftApiClientConfig {
     },
     dateRequestFormatter,
     dateResponseReviver,
-    errorHandler,
   };
 }
 
@@ -157,6 +156,7 @@ const authResponseKey: SoftAuthResponseKey = {
   //   { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
   // ]
   providers: [
+    { provide: SoftApiErrorHandlerService, useClass: ApiErrorHandlerService },
     { provide: authServiceClassForSoftAuthInterceptorToken, useClass: AuthService },
     { provide: HTTP_INTERCEPTORS, useClass: SoftAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
@@ -178,4 +178,24 @@ export class CoreModule {
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
 }
+
+```
+
+## Example ApiErrorHandlerService
+
+```
+@Injectable()
+export class ApiErrorHandlerService extends SoftApiErrorHandlerService {
+
+  constructor(
+    private popupService: SoftPopupService,
+  ) {
+    super();
+  }
+  
+  handleError(err: HttpErrorResponse): void {
+    this.popupService.alert('Cannot Operate', 'Something wrong, please try again.', 'danger');
+  }
+}
+
 ```
