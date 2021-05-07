@@ -42,4 +42,11 @@ export class SoftDialogService {
     }
   }
 
+  clear(): void {
+    const keys = Object.keys(this.componentRefs);
+    for (const id of keys) {
+      this.removeDialog(+id);
+    } 
+  }
+
 }

@@ -53,8 +53,9 @@ export class SoftPopupService {
     });
   }
 
-  clearToast(): void {
+  clear(): void {
     this.toastr.clear();
+    this.dialogService.clear();
   }
 
   alert(title: string, message = '', colorVar?: string, 
