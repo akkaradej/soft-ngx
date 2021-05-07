@@ -45,6 +45,12 @@ export class SoftPopupService {
       }
     }
 
+    // if only title, convert to toast message
+    if (!message) {
+      message = title;
+      title = '';
+    }
+
     this.toastr.show(message, title, {
       toastClass: `ngx-toastr is-${colorVar}`,
       positionClass: `toast-${position}`,
