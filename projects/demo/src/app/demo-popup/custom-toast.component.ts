@@ -1,6 +1,6 @@
-import { animate, state, style, transition, trigger } from "@angular/animations";
-import { Component } from "@angular/core";
-import { Toast } from "ngx-toastr";
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component } from '@angular/core';
+import { Toast } from 'ngx-toastr';
 
 @Component({
   selector: 'custom-toast-component',
