@@ -35,6 +35,7 @@ import { CustomDialogComponent } from './demo-popup/custom-dialog-component';
 import { DemoScrollComponent } from './demo-scroll/demo-scroll.component';
 import { SampleSkeletonComponent } from './demo-async-ui/sample-skeleton';
 import { DemoTooltipComponent } from './demo-tooltip/demo-tooltip.component';
+import { CustomToastComponent } from './demo-popup/custom-toast.component';
 
 export function initApiClientConfig(): SoftApiClientConfig {
   return {
@@ -123,6 +124,7 @@ const customAuthResponseKey: SoftAuthResponseKey = {
     DemoScrollComponent,
     DemoTooltipComponent,
     CustomDialogComponent,
+    CustomToastComponent,
     SampleSkeletonComponent,
   ],
   imports: [

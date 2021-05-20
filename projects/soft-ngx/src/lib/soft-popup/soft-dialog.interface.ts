@@ -1,4 +1,4 @@
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SoftPopup } from './soft-popup.component';
 
 export interface SoftDialog {

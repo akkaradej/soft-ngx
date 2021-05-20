@@ -4,6 +4,7 @@ import { delay } from 'rxjs/operators';
 
 import { SoftPopupService } from 'soft-ngx';
 import { CustomDialogComponent } from './custom-dialog-component';
+import { CustomToastComponent } from './custom-toast.component';
 
 @Component({
   selector: 'app-demo-popup',
@@ -21,8 +22,19 @@ export class DemoPopupComponent implements OnInit {
   }
 
   toast() {
-    this.popupService.toast('Hi! Everybody', 'I\'m Simple Toast', 'success');
-    this.popupService.toast('I\'m Important Toast, click to close', undefined, 'danger');
+    this.popupService.toast('I\'m Important Toast', 'danger')
+      .onHidden.subscribe(() => {
+        console.log('dismiss');
+      });
+    
+    this.popupService.toast('I\'m Custom Toast', 'info', false, 'bottom-left', CustomToastComponent)
+      .onAction.subscribe(remove => {
+        window.setTimeout(() => {
+          remove();
+        }, 1000);
+      });
+    
+    this.popupService.toast('I\'m Simple Toast', 'success');
   }
 
   alert() {

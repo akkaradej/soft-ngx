@@ -25,16 +25,28 @@
       <pre>
       {{'
         # html
-        &lt;button class="button" 
+        &lt;button 
+          class="button" 
           (click)="toast()"
         &gt;
-          Alert
+          Toast
         &lt;/button&gt;
 
         # ts
-        alert() {
-          '}}<strong>{{'this.popupService.toast'}}</strong>{{'(\'Hi! Everybody\', \'I\\\'m Simple Toast\', \'success\');
-          '}}<strong>{{'this.popupService.toast'}}</strong>{{'(\'I\\\'m Important Toast, click to close\', undefined, \'danger\');
+        toast() {
+          this.popupService.toast(\'I\\\'m Important Toast\', \'danger\')
+            .onHidden.subscribe(() => {
+              console.log(\'dismiss\');
+            });
+        
+          this.popupService.toast(\'I\\\'m Custom Toast\', \'info\', false, \'bottom-left\', CustomToastComponent)
+            .onAction.subscribe(remove => {
+              window.setTimeout(() => {
+                remove();
+              }, 1000);
+            });
+          
+          this.popupService.toast(\'I\\\'m Simple Toast\', \'success\');
         }
       '}}
       </pre>

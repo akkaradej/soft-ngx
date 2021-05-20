@@ -6,7 +6,7 @@ import { SoftPopup, SoftPopupComponent, SoftPopupModel, SoftPopupType } from './
 import { SoftPopupConfig, defaultConfig } from './soft-popup.config';
 import { userSoftPopupConfigToken } from './user-config.token';
 import { SoftDialogService } from './soft-dialog.service';
-import { ToastrService } from 'ngx-toastr';
+import { ActiveToast, ComponentType, IndividualConfig, Toast, ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -23,9 +23,10 @@ export class SoftPopupService {
     this.config = Object.assign({}, defaultConfig, userConfig);
   }
 
-  toast(title: string, message = '', colorVar?: string, autoClose?: boolean,
+  toast<T = any>(message = '', colorVar?: string, autoClose?: boolean,
     position?: 'bottom-left' | 'bottom-right' | 'bottom-center' | 'bottom-full-width' |
-               'top-left' | 'top-right' | 'top-center' | 'top-full-width'): void {
+               'top-left' | 'top-right' | 'top-center' | 'top-full-width',
+    toastComponent?: ComponentType<T>): ActiveToast<T> {
     
     colorVar = colorVar || this.config.toastColorVar;
 
@@ -45,23 +46,28 @@ export class SoftPopupService {
       }
     }
 
-    // if only title, convert to toast message
-    if (!message) {
-      message = title;
-      title = '';
-    }
-
-    this.toastr.show(message, title, {
+    const opt: Partial<IndividualConfig> = {
       toastClass: `ngx-toastr is-${colorVar}`,
       positionClass: `toast-${position}`,
       disableTimeOut: !autoClose,
-      closeButton: !autoClose,
-    });
+      closeButton: true,
+      tapToDismiss: false,
+      enableHtml: true,
+    }
+
+    if (toastComponent) {
+      opt.toastComponent = toastComponent;
+    }
+
+    return this.toastr.show(message, undefined, opt);
   }
 
   clear(): void {
     this.toastr.clear();
-    this.dialogService.clear();
+  }
+
+  remove(toastId: number): void {
+    this.toastr.remove(toastId);
   }
 
   alert(title: string, message = '', colorVar?: string, 
