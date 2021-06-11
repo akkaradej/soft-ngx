@@ -65,7 +65,7 @@ export class SoftApiClientService {
   }
 
   public get(url: string, params: Params = {}, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    const isPaging: boolean = params.page !== undefined;
+    const isPaging: boolean = params.page != null;
 
     let req = this.requestHelper('Get', url, { body: undefined, params }, isPublic, headerResponse).pipe(
       // retry againg if server error
@@ -89,7 +89,7 @@ export class SoftApiClientService {
     if (isPaging) {
       req = req.pipe(
         mergeMap((res: any) => {
-          if (headerResponse !== undefined && this.config.pageHeaderResponseKeys) {
+          if (headerResponse && this.config.pageHeaderResponseKeys) {
             headerResponse.pageCount = headerResponse[this.config.pageHeaderResponseKeys.pageCount.toLowerCase()];
             headerResponse.totalCount = headerResponse[this.config.pageHeaderResponseKeys.totalCount.toLowerCase()];
           }
@@ -171,7 +171,7 @@ export class SoftApiClientService {
     }
 
     if (!options.observe) {
-      if (headerResponse == null) {
+      if (!headerResponse) {
         options.observe = 'body'; // need only body
       } else {
         options.observe = 'response'; // need whole response
@@ -190,7 +190,7 @@ export class SoftApiClientService {
 
     return this.execute(method, url, options, isPublic).pipe(
       map((res: any) => {
-        if (headerResponse !== undefined) {
+        if (headerResponse) {
           const keys = res.headers.keys();
           for (const key of keys) {
             let value = res.headers.get(key);

@@ -55,7 +55,7 @@ export abstract class BaseAsyncUI implements OnDestroy {
     const isSubscription: boolean = state instanceof Subscription;
     const isBoolean: boolean = typeof state === 'boolean';
     const isPromise: boolean = state instanceof Promise || (
-      state !== null &&
+      state != null &&
       typeof state === 'object' &&
       typeof (state as any).then === 'function' &&
       typeof (state as any).catch === 'function'

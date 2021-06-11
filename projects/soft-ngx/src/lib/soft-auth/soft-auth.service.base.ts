@@ -288,8 +288,10 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   setAdditionalAuthData(auth: any): void {
     const authData = this.getAdditionalAuthData();
     for (const data of authData) {
-      if (auth[data] !== undefined) {
+      if (auth[data] != null) {
         this.storage.setItem(data, auth[data]);
+      } else {
+        this.storage.removeItem(data);
       }
     }
   }

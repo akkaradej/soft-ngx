@@ -100,7 +100,7 @@ export class SoftPopupService {
     colorVar = colorVar || this.config.confirmColorVar;
     agreeText = agreeText || this.config.agreeText;
     disagreeText = disagreeText || this.config.disagreeText;
-    isAgreeFirst = isAgreeFirst !== undefined ? isAgreeFirst : this.config.isAgreeFirst;
+    isAgreeFirst = isAgreeFirst != null ? isAgreeFirst : this.config.isAgreeFirst;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
       type: SoftPopupType.Confirm,
@@ -127,7 +127,7 @@ export class SoftPopupService {
     colorVar = colorVar || this.config.deleteColorVar;
     agreeText = agreeText || this.config.agreeText;
     disagreeText = disagreeText || this.config.disagreeText;
-    isAgreeFirst = isAgreeFirst !== undefined ? isAgreeFirst : this.config.isAgreeFirst;
+    isAgreeFirst = isAgreeFirst != null ? isAgreeFirst : this.config.isAgreeFirst;
 
     return this.dialogService.addDialog<SoftPopupModel>(SoftPopupComponent, {
       type: SoftPopupType.Confirm,
