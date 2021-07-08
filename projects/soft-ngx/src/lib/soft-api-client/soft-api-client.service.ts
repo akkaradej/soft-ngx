@@ -17,8 +17,6 @@ export interface Params {
 }
 
 export interface HeaderResponse {
-  pageCount?: number;
-  totalCount?: number;
   [key: string]: any;
 }
 
