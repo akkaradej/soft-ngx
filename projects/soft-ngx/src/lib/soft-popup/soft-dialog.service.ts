@@ -17,6 +17,7 @@ export class SoftDialogService {
   ) { }
 
   addDialog<DataType = any>(component: any, data: DataType, animations: SoftPopupAnimationModel) {
+    document.documentElement.classList.add('is-overflow-hidden');
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory<SoftDialog>(component)
       .create(this.injector);
@@ -39,6 +40,10 @@ export class SoftDialogService {
     if (this.componentRefs[id]) {
       this.applicationRef.detachView(this.componentRefs[id].hostView);
       this.componentRefs[id].destroy();
+      delete this.componentRefs[id];
+    }
+    if (Object.keys(this.componentRefs).length === 0) {
+      document.documentElement.classList.remove('is-overflow-hidden');
     }
   }
 
