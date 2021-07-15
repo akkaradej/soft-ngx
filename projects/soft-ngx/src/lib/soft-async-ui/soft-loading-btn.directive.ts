@@ -9,24 +9,35 @@ export class SoftLoadingBtnDirective extends BaseAsyncDisabled {
 
   @Input() loadingClass = 'is-loading';
 
+  isNewState = false;
   @Input()
   set softLoadingBtn(state: Subscription | Promise<any> | boolean) {
+    this.isNewState = true;
     this.setState(state);
+    // reset isNewState flag after setState
+    this.isNewState = false;
   }
 
+  isClicked = false;
   @HostListener('click')
   handleCurrentBtnOnly() {
-    // Click triggers @Input update
-    // We need to use timeout to wait for @Input to update
-    window.setTimeout(() => {
-      // return if something else than a promise is passed
-      if (!this.promise) {
-        return;
-      }
+    this.isClicked = true;
 
-      // only display loading for clicked element
-      this.addLoadingClass(this.element);
-    }, 0);
+    // reset isClicked flag after click
+    window.setTimeout(() => {
+      this.isClicked = false;
+    });
+  }
+
+  /**
+   * Handles everything to be triggered when state is loading
+   */
+   loadingState(element: HTMLElement) {
+    // only display loading for clicked element
+    if (this.isClicked && this.isNewState) {
+      this.addLoadingClass(element);
+    }
+    super.loadingState(element);
   }
 
   /**
