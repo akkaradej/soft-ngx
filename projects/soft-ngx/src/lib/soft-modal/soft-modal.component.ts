@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ContentChild, Inject } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ContentChild, Inject, OnDestroy } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 
 import { SoftModalContent } from './soft-modal-content';
@@ -39,7 +39,7 @@ import { SoftPopupConfig, defaultConfig } from '../soft-popup/soft-popup.config'
   `,
   animations: softPopupAnimations,
 })
-export class SoftModalComponent implements OnInit {
+export class SoftModalComponent implements OnInit, OnDestroy {
   @Input() modalClass = '';
 
   @Output() opened = new EventEmitter();
@@ -48,10 +48,10 @@ export class SoftModalComponent implements OnInit {
 
   @ContentChild('modalContent') modalContent: SoftModalContent;
 
-  // Tip: Use with ngIf .isOpen for re-create modalContent every time opening
+  // Tip: Use with ngIf modal.isOpen for re-create modalContent every time opening
   isOpen = false;
 
-  // Tip: Use with ngIf .isFirstOpen for prevent modalContent execute before open,
+  // Tip: Use with ngIf modal.isFirstOpen for prevent modalContent execute before open,
   // and would not re-create modalContent every time opening.
   isFirstOpen = false;
 
@@ -75,6 +75,10 @@ export class SoftModalComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.remove();
+  }
+
   open() {
     this.isOpen = true;
     this.isFirstOpen = true;
@@ -84,6 +88,9 @@ export class SoftModalComponent implements OnInit {
       if (this.modalContent && this.modalContent.onModalOpen) {
         this.modalContent.onModalOpen();
       }
+      if (document.querySelector('.modal.is-active')) {
+        document.documentElement.classList.add('is-overflow-hidden');
+      }
     });
   }
 
@@ -92,9 +99,14 @@ export class SoftModalComponent implements OnInit {
     if (!this.isAnimated) {
       this.isOpen = false;
       this.closed.emit();
-      if (this.modalContent && this.modalContent.onModalClose) {
-        this.modalContent.onModalClose();
-      }
+      window.setTimeout(() => {
+        if (this.modalContent && this.modalContent.onModalClose) {
+          this.modalContent.onModalClose();
+        }
+        if (!document.querySelector('.modal.is-active')) {
+          document.documentElement.classList.remove('is-overflow-hidden');
+        }
+      });
     }
   }
 
@@ -102,6 +114,11 @@ export class SoftModalComponent implements OnInit {
     this.isOpen = false;
     this.isFirstOpen = false;
     this.removed.emit();
+    window.setTimeout(() => {
+      if (!document.querySelector('.modal.is-active')) {
+        document.documentElement.classList.remove('is-overflow-hidden');
+      }
+    });
   }
 
   onBackdropAnimationDone(event: AnimationEvent) {
@@ -121,13 +138,18 @@ export class SoftModalComponent implements OnInit {
   private allAnimationDone() {
     if (this.isBackdropAnimationDone && this.isCardAnimationDone) {
       this.isOpen = false;
-      this.closed.emit();
-      if (this.modalContent && this.modalContent.onModalClose) {
-        this.modalContent.onModalClose();
-      }
       this.isBackdropAnimationDone = false;
       this.isCardAnimationDone = false;
       this.animationState = 'void';
+      this.closed.emit();
+      window.setTimeout(() => {
+        if (this.modalContent && this.modalContent.onModalClose) {
+          this.modalContent.onModalClose();
+        }
+        if (!document.querySelector('.modal.is-active')) {
+          document.documentElement.classList.remove('is-overflow-hidden');
+        }
+      });
     }
   }
 }
