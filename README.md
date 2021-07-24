@@ -1,5 +1,13 @@
 # SoftNgx
 
+## Installation
+
+Install package from a gzipped tarball 
+
+Download [soft-ngx-0.11.18-beta.tgz](https://github.com/akkaradej/soft-ngx/releases/download/v0.11.18-beta/soft-ngx-0.11.18-beta.tgz) to your project
+
+`yarn add file:soft-ngx-0.11.18-beta.tgz`
+
 ## Dependencies
 
 ### SoftAsyncUIModule
@@ -204,19 +212,6 @@ export class ApiErrorHandlerService extends SoftApiErrorHandlerService {
 }
 
 ```
-
-## Installation
-
-Build package
-
-`yarn install`\
-`yarn package`
-
-Install package from a gzipped tarball 
-
-Copy `dist/soft-ngx/soft-ngx-x.x.x.tgz` to your project
-
-`yarn add file:soft-ngx-x.x.x.tgz`
 
 ## Start Demo
 
