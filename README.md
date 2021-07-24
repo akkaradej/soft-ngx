@@ -209,7 +209,7 @@ export class ApiErrorHandlerService extends SoftApiErrorHandlerService {
 
 Build package
 
-`yarn install`
+`yarn install`\
 `yarn package`
 
 Install package from a gzipped tarball 
@@ -220,6 +220,6 @@ Copy `dist/soft-ngx/soft-ngx-x.x.x.tgz` to your project
 
 ## Start Demo
 
-`yarn install`
-`yarn build_lib`
+`yarn install`\
+`yarn build_lib`\
 `yarn start`
