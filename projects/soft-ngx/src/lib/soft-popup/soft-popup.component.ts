@@ -76,9 +76,7 @@ export const softPopupAnimations = [
           </button>
         </header>
         <section class="modal-card-body text-center">
-          <div class="block" *ngIf="data.message">
-            <strong class="is-pre-wrap">{{ data.message }}</strong>
-          </div>
+          <p *ngIf="data.message" class="block is-pre-wrap">{{ data.message }}</p>
           <div *ngIf="data.type == SoftPopupType.Alert">
             <button 
               class="button is-fat is-{{ data.colorVar }}" 
