@@ -8,7 +8,7 @@
       "tippy.js": "tippy.js"
     }
   },
-  "whitelistedNonPeerDependencies": [
+  "allowedNonPeerDependencies": [
     "ngx-toastr",
     "tippy.js",
     "placeholder-loading"
