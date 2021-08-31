@@ -148,9 +148,21 @@
         <li>- there are 2 ways to register new type:</li>
         <li class="push-left-1"> > option 1 - add SoftSkeletonType to userRegisteredSkeletonComponentsToken</li>
         <li class="push-left-1"> > option 2 - add SoftSkeletonType to SoftAsyncUIModule.forRoot() at 2nd parameter</li>
+        <li>- config</li>
+        <li class="push-left-1">> default skelDelay=300ms</li>
+        <li class="push-left-1">> default skelMinDisplayTime=400ms</li>
       </ul>
 
+      
       <div class="box">
+        <p>*softSkel="dataSub; delay: 0" (instant display)</p>
+        <div *softSkel="dataSub; delay: 0; type: 'sample'; context: { count: 2 }">
+          <p>long loading content</p>
+          <p>content content content content content content</p>
+        </div>
+      </div>
+      <div class="box">
+        <p>*softSkel (default delay)</p>
         <div *softSkel="dataSub; type: 'sample'; context: { count: 2 }">
           <p>long loading content</p>
           <p>content content content content content content</p>

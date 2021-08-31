@@ -43,7 +43,7 @@ export class DemoAsyncUIComponent {
 
   // skel
   getData() {
-    this.dataSub = of().pipe(delay(3000)).subscribe();
+    this.dataSub = of().pipe(delay(300)).subscribe();
   }
 
   // loading/disabled
