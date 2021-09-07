@@ -23,8 +23,11 @@ export class SoftDialogService {
     this.applicationRef.attachView(componentRef.hostView);
     const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     document.body.appendChild(domElem);
+    this.hideHtmlScrollbar();
+
     const id = ++this.id;
     this.componentRefs[id] = componentRef;
+    componentRef.instance.modalId = `modal-${(Math.random() + '' + new Date().getTime()).substr(2)}`;
     componentRef.instance.data = data;
     componentRef.instance.isAnimated = animations.isAnimated;
     componentRef.instance.backdropAnimations = animations.backdropAnimations;
@@ -32,25 +35,17 @@ export class SoftDialogService {
     componentRef.instance.dispose = () => {
       this.removeDialog(id);
     }
-    window.setTimeout(() => {
-      if (document.querySelector('.modal.is-active')) {
-        document.documentElement.classList.add('is-overflow-hidden');
-      }
-    });
+
     return componentRef.instance.result$;
   }
 
   removeDialog(id: number): void {
     if (this.componentRefs[id]) {
       this.applicationRef.detachView(this.componentRefs[id].hostView);
+      this.resetHtmlScrollbar(this.componentRefs[id].instance.modalId);
       this.componentRefs[id].destroy();
       delete this.componentRefs[id];
     }
-    window.setTimeout(() => {
-      if (!document.querySelector('.modal.is-active')) {
-        document.documentElement.classList.remove('is-overflow-hidden');
-      }
-    });
   }
 
   clear(): void {
@@ -58,6 +53,26 @@ export class SoftDialogService {
     for (const id of keys) {
       this.removeDialog(+id);
     } 
+  }
+
+  private hideHtmlScrollbar() {
+    if (window.getComputedStyle(document.documentElement).overflowX === 'scroll') {
+      document.documentElement.style.overflowX = 'hidden';
+    }
+    if (window.getComputedStyle(document.documentElement).overflowY === 'scroll') {
+      document.documentElement.style.overflowY = 'hidden';
+      if (window.navigator.userAgent.indexOf('Windows') > -1) {
+        document.documentElement.style.paddingRight = '17px';
+      }
+    }
+  }
+
+  private resetHtmlScrollbar(modalId: string) {
+    if (!document.querySelector(`.modal.is-active:not(#${modalId})`)) {
+      document.documentElement.style.overflowX = '';
+      document.documentElement.style.overflowY = '';
+      document.documentElement.style.paddingRight = '';
+    }
   }
 
 }

@@ -8427,8 +8427,8 @@ tree-kill@1.2.2:
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
 
 "trunks-ui@https://github.com/akkaradej/trunks-ui.git":
-  version "0.5.11-beta"
-  resolved "https://github.com/akkaradej/trunks-ui.git#6a83ee07b0ba85a5e6f2716b0fa25770b4fcbed4"
+  version "0.5.16-beta"
+  resolved "https://github.com/akkaradej/trunks-ui.git#319d855be802dbd45d125fbe13af1dd62463ad71"
   dependencies:
     bulma "0.9.2"
 

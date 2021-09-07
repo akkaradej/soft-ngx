@@ -52,6 +52,7 @@ export const softPopupAnimations = [
   template: `
     <div
       [@.disabled]="!isAnimated"
+      id="{{ modalId }}"
       class="modal has-no-footer is-small is-{{ data.colorVar }} is-active">
       <div
         class="modal-background"
@@ -107,6 +108,7 @@ export class SoftPopupComponent implements SoftDialog {
 
   SoftPopupType = SoftPopupType;
 
+  modalId: string;
   data: SoftPopupModel;
   isLoading: boolean;
   hasAnimation = true;

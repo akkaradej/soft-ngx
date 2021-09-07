@@ -5,7 +5,9 @@ import { softPopupAnimations } from 'projects/soft-ngx/src/lib/soft-popup/soft-p
 @Component({
   selector: 'app-custom-dialog',
   template: `
-    <div [@.disabled]="!isAnimated" class="modal is-active">
+    <div [@.disabled]="!isAnimated"
+      id="{{ modalId }}"
+      class="modal is-active">
       <div
         class="modal-background"
         [@backdrop]="{ value: animationState, params: backdropAnimations }"
@@ -37,6 +39,7 @@ import { softPopupAnimations } from 'projects/soft-ngx/src/lib/soft-popup/soft-p
 })
 export class CustomDialogComponent extends SoftPopupComponent implements SoftDialog {
 
+  modalId: string;
   data: any;
   hasAnimation = true;
 

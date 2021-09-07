@@ -11,6 +11,7 @@ import { SoftPopupConfig, defaultConfig } from '../soft-popup/soft-popup.config'
   template: `
     <div
       [@.disabled]="!isAnimated"
+      id="{{ modalId }}"
       class="modal has-no-footer {{ modalClass }}"
       [class.is-active]="isOpen">
       <div
@@ -48,6 +49,8 @@ export class SoftModalComponent implements OnInit, OnDestroy {
 
   @ContentChild('modalContent') modalContent: SoftModalContent;
 
+  modalId: string;
+
   // Tip: Use with ngIf modal.isOpen for re-create modalContent every time opening
   isOpen = false;
 
@@ -73,6 +76,7 @@ export class SoftModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.modalId = `modal-${(Math.random() + '' + new Date().getTime()).substr(2)}`;
   }
 
   ngOnDestroy() {
@@ -83,13 +87,12 @@ export class SoftModalComponent implements OnInit, OnDestroy {
     this.isOpen = true;
     this.isFirstOpen = true;
     this.animationState = 'open';
+    this.hideHtmlScrollbar();
     this.opened.emit();
+
     window.setTimeout(() => {
       if (this.modalContent && this.modalContent.onModalOpen) {
         this.modalContent.onModalOpen();
-      }
-      if (document.querySelector('.modal.is-active')) {
-        document.documentElement.classList.add('is-overflow-hidden');
       }
     });
   }
@@ -98,13 +101,12 @@ export class SoftModalComponent implements OnInit, OnDestroy {
     this.animationState = 'closed';
     if (!this.isAnimated) {
       this.isOpen = false;
+      this.resetHtmlScrollbar();
       this.closed.emit();
+
       window.setTimeout(() => {
         if (this.modalContent && this.modalContent.onModalClose) {
           this.modalContent.onModalClose();
-        }
-        if (!document.querySelector('.modal.is-active')) {
-          document.documentElement.classList.remove('is-overflow-hidden');
         }
       });
     }
@@ -113,12 +115,8 @@ export class SoftModalComponent implements OnInit, OnDestroy {
   remove() {
     this.isOpen = false;
     this.isFirstOpen = false;
+    this.resetHtmlScrollbar();
     this.removed.emit();
-    window.setTimeout(() => {
-      if (!document.querySelector('.modal.is-active')) {
-        document.documentElement.classList.remove('is-overflow-hidden');
-      }
-    });
   }
 
   onBackdropAnimationDone(event: AnimationEvent) {
@@ -141,15 +139,34 @@ export class SoftModalComponent implements OnInit, OnDestroy {
       this.isBackdropAnimationDone = false;
       this.isCardAnimationDone = false;
       this.animationState = 'void';
+      this.resetHtmlScrollbar();
       this.closed.emit();
+
       window.setTimeout(() => {
         if (this.modalContent && this.modalContent.onModalClose) {
           this.modalContent.onModalClose();
         }
-        if (!document.querySelector('.modal.is-active')) {
-          document.documentElement.classList.remove('is-overflow-hidden');
-        }
       });
+    }
+  }
+
+  private hideHtmlScrollbar() {
+    if (window.getComputedStyle(document.documentElement).overflowX === 'scroll') {
+      document.documentElement.style.overflowX = 'hidden';
+    }
+    if (window.getComputedStyle(document.documentElement).overflowY === 'scroll') {
+      document.documentElement.style.overflowY = 'hidden';
+      if (window.navigator.userAgent.indexOf('Windows') > -1) {
+        document.documentElement.style.paddingRight = '17px';
+      }
+    }
+  }
+
+  private resetHtmlScrollbar() {
+    if (!document.querySelector(`.modal.is-active:not(#${this.modalId})`)) {
+      document.documentElement.style.overflowX = '';
+      document.documentElement.style.overflowY = '';
+      document.documentElement.style.paddingRight = '';
     }
   }
 }
