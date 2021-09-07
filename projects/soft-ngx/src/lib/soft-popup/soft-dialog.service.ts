@@ -27,7 +27,7 @@ export class SoftDialogService {
 
     const id = ++this.id;
     this.componentRefs[id] = componentRef;
-    componentRef.instance.modalId = `modal-${(Math.random() + '' + new Date().getTime()).substr(2)}`;
+    componentRef.instance.modalId = this.generateModalId();
     componentRef.instance.data = data;
     componentRef.instance.isAnimated = animations.isAnimated;
     componentRef.instance.backdropAnimations = animations.backdropAnimations;
@@ -55,7 +55,11 @@ export class SoftDialogService {
     } 
   }
 
-  private hideHtmlScrollbar() {
+  generateModalId() {
+    return `modal-${(Math.random() + '' + new Date().getTime()).substr(2)}`;
+  }
+
+  hideHtmlScrollbar() {
     if (window.getComputedStyle(document.documentElement).overflowX === 'scroll') {
       document.documentElement.style.overflowX = 'hidden';
     }
@@ -67,7 +71,7 @@ export class SoftDialogService {
     }
   }
 
-  private resetHtmlScrollbar(modalId: string) {
+  resetHtmlScrollbar(modalId: string) {
     if (!document.querySelector(`.modal.is-active:not(#${modalId})`)) {
       document.documentElement.style.overflowX = '';
       document.documentElement.style.overflowY = '';

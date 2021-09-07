@@ -76,7 +76,7 @@ export class SoftModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.modalId = `modal-${(Math.random() + '' + new Date().getTime()).substr(2)}`;
+    this.modalId = this.generateModalId();
   }
 
   ngOnDestroy() {
@@ -148,6 +148,10 @@ export class SoftModalComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  private generateModalId() {
+    return `modal-${(Math.random() + '' + new Date().getTime()).substr(2)}`;
   }
 
   private hideHtmlScrollbar() {
