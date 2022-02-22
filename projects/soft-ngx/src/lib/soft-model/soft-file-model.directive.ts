@@ -3,9 +3,9 @@ import {
   Input, Output, EventEmitter, HostListener,
 } from '@angular/core';
 
-import { 
-  NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, 
-  ControlValueAccessor, NG_VALUE_ACCESSOR 
+import {
+  NG_VALIDATORS, Validator, AbstractControl, ValidationErrors,
+  ControlValueAccessor, NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
 @Directive({
@@ -31,7 +31,9 @@ export class SoftFileModelDirective implements ControlValueAccessor, Validator {
       this.load(files);
     }
     this.onChange(this.getInputValue(files));
-    this.clear();
+    if (this.autoClear) {
+      this.clear();
+    }
     this.onBlur({});
   }
 
@@ -39,6 +41,7 @@ export class SoftFileModelDirective implements ControlValueAccessor, Validator {
    * validate max size in MB
    */
   @Input() maxSize: number;
+  @Input() autoClear = false;
 
   @Output() loaded = new EventEmitter<string | { dataUrl: string, index: number }[]>();
 
