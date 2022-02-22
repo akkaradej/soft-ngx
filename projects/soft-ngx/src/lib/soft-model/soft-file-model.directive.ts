@@ -52,7 +52,9 @@ export class SoftFileModelDirective implements ControlValueAccessor, Validator {
   }
 
   writeValue(value: any): void {
-    // this.value = value;
+    if (!value) {
+      this.clear();
+    }
   }
 
   onBlur(event) {

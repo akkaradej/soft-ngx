@@ -26,4 +26,12 @@ export class DemoModelComponent implements OnInit {
     }
     // do after form valid
   }
+
+  upload(form) {
+    if (form.invalid) {
+      return;
+    }
+    this.file = undefined;
+    this.previewImage = undefined;
+  }
 }

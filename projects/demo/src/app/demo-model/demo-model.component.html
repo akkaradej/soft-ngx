@@ -144,13 +144,19 @@
       <ul class="block">
         <li>- ngModel for file input</li>
         <li>- [maxSize] validate max file size in MB</li>
+        <li>- [autoClear] clear input after browse file, user can browse old file again, e.g. upload button</li>
         <li>- (loaded) get dataUri</li>
       </ul>
-      
+
       <div class="block">
-        <form #form="ngForm" [class.submitted]="form.submitted">
+        <form
+          #form="ngForm"
+          (ngSubmit)="upload(form)"
+          [class.submitted]="form.submitted"
+        >
           [maxSize]="1" (MB)
-          <input type="file"
+          <input
+            type="file"
             class="input"
             name="file"
             accept="image/*"
@@ -158,11 +164,15 @@
             [(ngModel)]="file"
             [maxSize]="1"
             (loaded)="previewImage = $event"
-            required/>
+            required
+          />
           <p>File Name: {{ file?.name }}</p>
           <p>File Size: {{ file?.size / 1024 / 1024 }} MB</p>
           <div *ngIf="previewImage ">
-            <img class="brick" src="{{ previewImage }}">
+            <img
+              class="brick"
+              src="{{ previewImage }}"
+            >
           </div>
           <button class="button">Submit</button>
         </form>
