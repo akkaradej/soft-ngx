@@ -9,21 +9,16 @@ import { userSoftPopupConfigToken } from './user-config.token';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ToastrModule.forRoot(
-      
-    ),
-  ],
-  declarations: [
-    SoftPopupComponent,
-  ],
-  entryComponents: [
-    SoftPopupComponent,
-  ],
-  exports: [
-    SoftPopupComponent,
-  ],
+    imports: [
+      CommonModule,
+      ToastrModule.forRoot(),
+    ],
+    declarations: [
+      SoftPopupComponent,
+    ],
+    exports: [
+      SoftPopupComponent,
+    ]
 })
 export class SoftPopupModule {
   static forRoot(

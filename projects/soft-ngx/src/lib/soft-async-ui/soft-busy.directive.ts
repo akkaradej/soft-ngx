@@ -22,7 +22,7 @@ export class SoftBusyDirective extends BaseAsyncUI implements OnInit, OnChanges,
   busyHTMLElement: HTMLElement;
   containerOriginalPosition: string;
   containerOriginalMinHeight: string;
-  config: SoftAsyncUIConfig;
+  override config: SoftAsyncUIConfig;
 
   constructor(
     el: ElementRef,
@@ -60,7 +60,7 @@ export class SoftBusyDirective extends BaseAsyncUI implements OnInit, OnChanges,
     }
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     this.finishedState(this.element);
   }
 

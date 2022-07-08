@@ -7,7 +7,7 @@ export class BaseAsyncDisabled extends BaseAsyncUI {
   private isDisabledFromTheOutside: boolean;
 
   @Input('disabled')
-  set isDisabledFromTheOutsideSetter(disabled: boolean) {
+  set isDisabledFromTheOutsideSetter(disabled: boolean | string) {
     if (disabled || (disabled !== false && disabled != null)) {
       // disabled means always disabled
       this.isDisabledFromTheOutside = true;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { of, Subscription } from 'rxjs';
+import { EMPTY, of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
@@ -23,7 +23,7 @@ export class DemoAsyncUIComponent {
 
   // busy
   load() {
-    this.busy = of().pipe(delay(this.loadingTime)).subscribe();
+    this.busy = of({}).pipe(delay(this.loadingTime)).subscribe();
   }
 
   toggle() {
@@ -43,12 +43,12 @@ export class DemoAsyncUIComponent {
 
   // skel
   getData() {
-    this.dataSub = of().pipe(delay(300)).subscribe();
+    this.dataSub = of({}).pipe(delay(300)).subscribe();
   }
 
   // loading/disabled
   testLoading() {
-    this.loadingSub = of().pipe(delay(3000)).subscribe();
+    this.loadingSub = of({}).pipe(delay(3000)).subscribe();
   }
 
 }

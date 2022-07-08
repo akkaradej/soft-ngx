@@ -16,37 +16,29 @@ import { SummarySkeletonComponent } from './skeletons/summary-skeleton.component
 import { TableSkeletonComponent } from './skeletons/table-skeleton.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [
-    SoftBusyDirective,
-    SoftDisabledDirective,
-    SoftLoadingDirective,
-    SoftLoadingBtnDirective,
-    DefaultBusySpinnerComponent,
-    SoftSkelDirective,
-    DefaultSkeletonComponent,
-    BarChartSkeletonComponent,
-    PieChartSkeletonComponent,
-    SummarySkeletonComponent,
-    TableSkeletonComponent,
-  ],
-  entryComponents: [
-    DefaultBusySpinnerComponent,
-    DefaultSkeletonComponent,
-    BarChartSkeletonComponent,
-    PieChartSkeletonComponent,
-    SummarySkeletonComponent,
-    TableSkeletonComponent,
-  ],
-  exports: [
-    SoftBusyDirective,
-    SoftDisabledDirective,
-    SoftLoadingDirective,
-    SoftLoadingBtnDirective,
-    SoftSkelDirective,
-  ],
+    imports: [
+      CommonModule,
+    ],
+    declarations: [
+      SoftBusyDirective,
+      SoftDisabledDirective,
+      SoftLoadingDirective,
+      SoftLoadingBtnDirective,
+      DefaultBusySpinnerComponent,
+      SoftSkelDirective,
+      DefaultSkeletonComponent,
+      BarChartSkeletonComponent,
+      PieChartSkeletonComponent,
+      SummarySkeletonComponent,
+      TableSkeletonComponent,
+    ],
+    exports: [
+      SoftBusyDirective,
+      SoftDisabledDirective,
+      SoftLoadingDirective,
+      SoftLoadingBtnDirective,
+      SoftSkelDirective,
+    ]
 })
 export class SoftAsyncUIModule {
   static forRoot(

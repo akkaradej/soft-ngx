@@ -124,7 +124,7 @@
 
       # ts
       load() &#123;
-        this.busy = of().pipe(delay(this.loadingTime)).subscribe();
+        this.busy = of(&#123;&#125;).pipe(delay(this.loadingTime)).subscribe();
       &#125;
     </pre>
     </div>
@@ -153,7 +153,7 @@
         <li class="push-left-1">> default skelMinDisplayTime=400ms</li>
       </ul>
 
-      
+
       <div class="box">
         <p>*softSkel="dataSub; delay: 0" (instant display)</p>
         <div *softSkel="dataSub; delay: 0; type: 'sample'; context: { count: 2 }">
@@ -184,7 +184,7 @@
           &lt;p>content content content content content content&lt;/p&gt;
         &lt;/div&gt;
       &lt;/div&gt;
-      &lt;button 
+      &lt;button
         class="button"
         (click)="getData()"
       &gt;
@@ -193,7 +193,7 @@
 
       # ts
       getData() &#123;
-        this.dataSub = of().pipe(delay(3000)).subscribe();
+        this.dataSub = of(&#123;&#125;).pipe(delay(3000)).subscribe();
       &#125;
       </pre>
     </div>
@@ -248,7 +248,7 @@
       </div>
       <pre>
       # html
-      &lt;button 
+      &lt;button
         class="button"
         <strong>[softLoading]="loadingSub"</strong>
         (click)="testLoading()"
@@ -256,7 +256,7 @@
         softLoading
       &lt;/button&gt;
 
-      &lt;button 
+      &lt;button
         class="button"
         <strong>[softLoadingBtn]="loadingSub"</strong>
         (click)="testLoading()"
@@ -264,7 +264,7 @@
         softLoadingBtn
       &lt;/button&gt;
 
-      &lt;button 
+      &lt;button
         class="button"
         <strong>[softLoadingBtn]="loadingSub"</strong>
         (click)="testLoading()"
@@ -272,14 +272,14 @@
         another softLoadingBtn
       &lt;/button&gt;
 
-      &lt;button 
+      &lt;button
         class="button"
         <strong>[softDisabled]="loadingSub"</strong>
       &gt;
         softDisabled
       &lt;/button&gt;
 
-      &lt;button 
+      &lt;button
         class="button"
         <strong>[softDisabled]="loadingSub"</strong>
         disabled
@@ -289,7 +289,7 @@
 
       # ts
       testLoading() &#123;
-        this.loadingSub = of().pipe(delay(3000)).subscribe();
+        this.loadingSub = of(&#123;&#125;).pipe(delay(3000)).subscribe();
       &#125;
     </pre>
     </div>

@@ -39,8 +39,8 @@ import { softPopupAnimations } from 'projects/soft-ngx/src/lib/soft-popup/soft-p
 })
 export class CustomDialogComponent extends SoftPopupComponent implements SoftDialog {
 
-  modalId: string;
-  data: any;
-  hasAnimation = true;
+  override modalId: string;
+  override data: any;
+  override hasAnimation = true;
 
 }

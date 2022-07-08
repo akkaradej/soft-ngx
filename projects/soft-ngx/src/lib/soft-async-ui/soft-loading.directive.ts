@@ -17,7 +17,7 @@ export class SoftLoadingDirective extends BaseAsyncDisabled {
   /**
    * Handles everything to be triggered when state is loading
    */
-  loadingState(element: HTMLElement) {
+  override loadingState(element: HTMLElement) {
     this.addLoadingClass(element);
     super.loadingState(element);
   }
@@ -25,7 +25,7 @@ export class SoftLoadingDirective extends BaseAsyncDisabled {
   /**
    * Handles everything to be triggered when state is finished
    */
-  finishedState(element: HTMLElement) {
+  override finishedState(element: HTMLElement) {
     this.removeLoadingClass(element);
     super.finishedState(element);
   }

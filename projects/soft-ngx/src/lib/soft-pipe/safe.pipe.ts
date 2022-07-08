@@ -10,7 +10,7 @@ export class SafePipe implements PipeTransform {
 
   transform(value: string, type: string): undefined | SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
     if (!value) {
-      return;
+      return undefined;
     }
     switch (type) {
       case 'html':

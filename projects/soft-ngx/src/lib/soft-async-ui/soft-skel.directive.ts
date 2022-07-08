@@ -46,13 +46,13 @@ export class SoftSkelDirective implements OnChanges {
       this.viewContainer.clear();
       const beginningTime = new Date().getTime();
       const delay = this.softSkelDelay ?? this.config.skelDelay;
-      
+
       const timeout = window.setTimeout(() => {
         this.showSkeleton();
       }, delay);
 
       new Promise((resolve) => {
-        this.softSkel.add(resolve);
+        this.softSkel.add(() => resolve(true));
       }).then(() => {
         window.clearTimeout(timeout);
         const executedTime = new Date().getTime() - beginningTime;
