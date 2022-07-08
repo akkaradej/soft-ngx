@@ -131,18 +131,20 @@ export class SoftApiClientService {
 
   public multipartPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const formData = new FormData();
-    // tslint:disable-next-line:forin
-    for (const key in body) {
-      formData.append(key, body[key]);
+    for (const [key, value] of Object.entries(body)) {
+      if (value !== undefined) {
+        formData.append(key, value as any);
+      }
     }
     return this.post(url, formData, params, isPublic, headerResponse);
   }
 
   public multipartPut(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const formData = new FormData();
-    // tslint:disable-next-line:forin
-    for (const key in body) {
-      formData.append(key, body[key]);
+    for (const [key, value] of Object.entries(body)) {
+      if (value !== undefined) {
+        formData.append(key, body[key]);
+      }
     }
     return this.put(url, formData, params, isPublic, headerResponse);
   }
