@@ -59,7 +59,7 @@ export class SoftApiClientService {
     } else if (httpMethod.toLowerCase() === 'delete') {
       return this.delete(url, options.params, isPublic, headerResponse);
     }
-    return of();
+    return of(null);
   }
 
   public get(url: string, params: Params = {}, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {

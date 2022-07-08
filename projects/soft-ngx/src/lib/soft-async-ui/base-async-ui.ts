@@ -67,7 +67,7 @@ export abstract class BaseAsyncUI implements OnDestroy {
       const sub = state as Subscription;
       if (!sub.closed) {
         this.promise = new Promise((resolve) => {
-          sub.add(resolve);
+          sub.add(() => resolve(true));
         });
       }
     } else if (isPromise) {

@@ -32,7 +32,7 @@ export class SoftLoadingBtnDirective extends BaseAsyncDisabled {
   /**
    * Handles everything to be triggered when state is loading
    */
-   loadingState(element: HTMLElement) {
+   override loadingState(element: HTMLElement) {
     // only display loading for clicked element
     if (this.isClicked && this.isNewState) {
       this.addLoadingClass(element);
@@ -43,7 +43,7 @@ export class SoftLoadingBtnDirective extends BaseAsyncDisabled {
   /**
    * Handles everything to be triggered when state is finished
    */
-  finishedState(element: HTMLElement) {
+  override finishedState(element: HTMLElement) {
     this.removeLoadingClass(element);
     super.finishedState(element);
   }

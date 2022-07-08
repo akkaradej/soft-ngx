@@ -13,7 +13,7 @@ export class SoftTooltipDirective implements OnInit, OnDestroy {
   @Input() arrow = true;
   @Input() placement: Placement = 'top';
   @Input() trigger = 'mouseenter focus';
-  @Input() triggerTarget: ElementRef = null;
+  @Input() triggerTarget: ElementRef | HTMLElement = null;
   @Input() hideOnClickOutside = true;
   @Input() zIndex = 1020;
   @Input() theme: string;
