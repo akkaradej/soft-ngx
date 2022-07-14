@@ -18,6 +18,11 @@ export interface SoftAuthServiceInterface {
   getAccessToken(): string | null;
 
   /*
+   * get refresh token
+   */
+  getRefreshToken(): string | null;
+
+  /*
    * get authentication scheme
    */
   getAuthenticationScheme(): string;
@@ -35,5 +40,5 @@ export interface SoftAuthServiceInterface {
   /*
    * request new access_token by refresh_token and keep auth data in storage
    */
-  requestRefreshToken$?(customQuery?: any): Observable<any>;
+  requestRefreshToken$?(customQuery?: any, refreshToken?: string): Observable<any>;
 }

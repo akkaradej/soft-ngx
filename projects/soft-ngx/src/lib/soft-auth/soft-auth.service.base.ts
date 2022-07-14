@@ -106,14 +106,17 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   }
 
   /*
+   * get refresh token
+   */
+  getRefreshToken(): string | null {
+    return this.storage.getItem('refresh_token');
+  }
+
+  /*
    * get authentication scheme
    */
   getAuthenticationScheme(): string {
     return this.config.authenticationScheme;
-  }
-
-  getRefreshToken(): string | null {
-    return this.storage.getItem('refresh_token');
   }
 
   /*
@@ -175,11 +178,11 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   /*
    * request new access_token by refresh_token and keep auth data in storage
    */
-  requestRefreshToken$(customQuery?: any): Observable<any> {
+  requestRefreshToken$(customQuery?: any, refreshToken?: string): Observable<any> {
     if (!this.config.refreshTokenUrl) {
-      throw new Error('authApiUrl is need to be set');
+      throw new Error('refreshTokenUrl needs to be set');
     }
-    const refreshToken = this.getRefreshToken();
+    refreshToken = refreshToken || this.getRefreshToken();
     if (!refreshToken) {
       return throwError('no refresh token');
     }

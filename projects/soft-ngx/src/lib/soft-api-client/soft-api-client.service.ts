@@ -51,22 +51,22 @@ export class SoftApiClientService {
     httpMethod: HttpMethod, url: string, options: HttpClientRequestOptions,
     isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     if (httpMethod.toLowerCase() === 'get') {
-      return this.get(url, options.params, isPublic, headerResponse);
+      return this.get(url, options.params, options.headers, isPublic, headerResponse);
     } else if (httpMethod.toLowerCase() === 'post') {
-      return this.post(url, options.body, options.params, isPublic, headerResponse);
+      return this.post(url, options.body, options.params, options.headers, isPublic, headerResponse);
     } else if (httpMethod.toLowerCase() === 'put') {
-      return this.put(url, options.body, options.params, isPublic, headerResponse);
+      return this.put(url, options.body, options.params, options.headers, isPublic, headerResponse);
     } else if (httpMethod.toLowerCase() === 'delete') {
-      return this.delete(url, options.params, isPublic, headerResponse);
+      return this.delete(url, options.params, options.headers, isPublic, headerResponse);
     }
     return of();
   }
 
-  public get(url: string, params: Params = {}, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+  public get(url: string, params: Params = {}, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const isPaging: boolean = params.page != null;
 
-    let req = this.requestHelper('Get', url, { body: undefined, params }, isPublic, headerResponse).pipe(
-      // retry againg if server error
+    let req = this.requestHelper('Get', url, { body: undefined, params, headers }, isPublic, headerResponse).pipe(
+      // retry again if server error
       // retryWhen((errors) => {
       //   let count = 0;
       //   return errors.pipe(
@@ -99,52 +99,52 @@ export class SoftApiClientService {
     return req;
   }
 
-  public post(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Post', url, { body, params }, isPublic, headerResponse).pipe(
+  public post(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Post', url, { body, params, headers }, isPublic, headerResponse).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public put(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Put', url, { body, params }, isPublic, headerResponse).pipe(
+  public put(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Put', url, { body, params, headers }, isPublic, headerResponse).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public delete(url: string, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Delete', url, { params }, isPublic, headerResponse).pipe(
+  public delete(url: string, params?: Params, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Delete', url, { params, headers }, isPublic, headerResponse).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public blobGet(url: string, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Get', url, { body: undefined, params, responseType: 'blob' }, isPublic, headerResponse).pipe(
+  public blobGet(url: string, params?: Params, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Get', url, { body: undefined, params, headers, responseType: 'blob' }, isPublic, headerResponse).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public blobPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Post', url, { body, params, responseType: 'blob' }, isPublic, headerResponse).pipe(
+  public blobPost(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    return this.requestHelper('Post', url, { body, params, headers, responseType: 'blob' }, isPublic, headerResponse).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public multipartPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+  public multipartPost(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const formData = new FormData();
     // tslint:disable-next-line:forin
     for (const key in body) {
       formData.append(key, body[key]);
     }
-    return this.post(url, formData, params, isPublic, headerResponse);
+    return this.post(url, formData, params, headers, isPublic, headerResponse);
   }
 
-  public multipartPut(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+  public multipartPut(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
     const formData = new FormData();
     // tslint:disable-next-line:forin
     for (const key in body) {
       formData.append(key, body[key]);
     }
-    return this.put(url, formData, params, isPublic, headerResponse);
+    return this.put(url, formData, params, headers, isPublic, headerResponse);
   }
 
   private httpErrorHandler(): OperatorFunction<any, any> {
@@ -216,7 +216,9 @@ export class SoftApiClientService {
   private execute(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
     if (!isPublic) {
       options.headers = options.headers || new HttpHeaders();
-      options.headers = options.headers.set('Authorization', 'ACCESS_TOKEN_IS_NEEDED');
+      if (!options.headers.has('Authorization')) {
+        options.headers = options.headers.set('Authorization', 'ACCESS_TOKEN');
+      }
     }
 
     return this.http.request(method, url, options).pipe(
