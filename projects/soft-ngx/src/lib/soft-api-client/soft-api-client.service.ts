@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 
 import { Observable, throwError, of, OperatorFunction } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { SoftApiClientConfig, defaultConfig } from './soft-api-client.config';
 import { SoftApiError } from './soft-api-error.model';
@@ -16,14 +16,10 @@ export interface Params {
   [param: string]: any;
 }
 
-export interface HeaderResponse {
-  [key: string]: any;
-}
-
 export interface HttpClientRequestOptions {
   body?: any;
   headers?: HttpHeaders;
-  observe?: 'body' | 'response';
+  observe?: 'body' | 'response' | 'events';
   params?: {
     [param: string]: string;
   };
@@ -47,106 +43,75 @@ export class SoftApiClientService {
     this.config = Object.assign({}, defaultConfig, userConfig);
   }
 
-  public request(
+  request(
     httpMethod: HttpMethod, url: string, options: HttpClientRequestOptions,
-    isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+    isPublic?: boolean): Observable<any> {
     if (httpMethod.toLowerCase() === 'get') {
-      return this.get(url, options.params, isPublic, headerResponse);
+      return this.get(url, options.params, options.headers, isPublic);
     } else if (httpMethod.toLowerCase() === 'post') {
-      return this.post(url, options.body, options.params, isPublic, headerResponse);
+      return this.post(url, options.body, options.params, options.headers, isPublic);
     } else if (httpMethod.toLowerCase() === 'put') {
-      return this.put(url, options.body, options.params, isPublic, headerResponse);
+      return this.put(url, options.body, options.params, options.headers, isPublic);
     } else if (httpMethod.toLowerCase() === 'delete') {
-      return this.delete(url, options.params, isPublic, headerResponse);
+      return this.delete(url, options.params, options.headers, isPublic);
     }
     return of(null);
   }
 
-  public get(url: string, params: Params = {}, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    const isPaging: boolean = params.page != null;
-
-    let req = this.requestHelper('Get', url, { body: undefined, params }, isPublic, headerResponse).pipe(
-      // retry againg if server error
-      // retryWhen((errors) => {
-      //   let count = 0;
-      //   return errors.pipe(
-      //     mergeMap(error => {
-      //       count++;
-      //       if (count < 2 && error.status >= 500) {
-      //         return of(error);
-      //       }
-      //       return throwError(error);
-      //     }),
-      //     delay(500)
-      //   );
-      // }),
-      this.httpErrorHandler(),
-    );
-
-    // auto set page totalCount from header
-    if (isPaging) {
-      req = req.pipe(
-        mergeMap((res: any) => {
-          if (headerResponse && this.config.pageHeaderResponseKeys) {
-            headerResponse.pageCount = headerResponse[this.config.pageHeaderResponseKeys.pageCount.toLowerCase()];
-            headerResponse.totalCount = headerResponse[this.config.pageHeaderResponseKeys.totalCount.toLowerCase()];
-          }
-          return of(res);
-        }),
-      );
-    }
-
-    return req;
-  }
-
-  public post(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Post', url, { body, params }, isPublic, headerResponse).pipe(
+  get(url: string, params: Params = {}, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
+    return this.requestHelper('Get', url, { body: undefined, params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public put(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Put', url, { body, params }, isPublic, headerResponse).pipe(
+  post(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
+    return this.requestHelper('Post', url, { body, params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public delete(url: string, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Delete', url, { params }, isPublic, headerResponse).pipe(
+  put(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
+    return this.requestHelper('Put', url, { body, params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public blobGet(url: string, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Get', url, { body: undefined, params, responseType: 'blob' }, isPublic, headerResponse).pipe(
+  delete(url: string, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
+    return this.requestHelper('Delete', url, { params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public blobPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
-    return this.requestHelper('Post', url, { body, params, responseType: 'blob' }, isPublic, headerResponse).pipe(
+  blobGet(url: string, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
+    return this.requestHelper('Get', url, { body: undefined, params, headers, responseType: 'blob' }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
-  public multipartPost(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+  blobPost(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
+    return this.requestHelper('Post', url, { body, params, headers, responseType: 'blob' }, isPublic).pipe(
+      this.httpErrorHandler(),
+    );
+  }
+
+  multipartPost(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
     const formData = new FormData();
     for (const [key, value] of Object.entries(body)) {
       if (value !== undefined) {
         formData.append(key, value as any);
       }
     }
-    return this.post(url, formData, params, isPublic, headerResponse);
+    return this.post(url, formData, params, headers, isPublic);
   }
 
-  public multipartPut(url: string, body: any, params?: Params, isPublic?: boolean, headerResponse?: HeaderResponse): Observable<any> {
+  multipartPut(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
     const formData = new FormData();
     for (const [key, value] of Object.entries(body)) {
       if (value !== undefined) {
         formData.append(key, body[key]);
       }
     }
-    return this.put(url, formData, params, isPublic, headerResponse);
+    return this.put(url, formData, params, headers, isPublic);
   }
 
   private httpErrorHandler(): OperatorFunction<any, any> {
@@ -162,8 +127,7 @@ export class SoftApiClientService {
   }
 
   private requestHelper(
-    method: string, url: string, options: HttpClientRequestOptions,
-    isPublic?: boolean, headerResponse?: HeaderResponse): Observable<Response> {
+    method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
     url = `${this.config.apiBaseUrl}${url}`;
 
     if (!options.responseType) {
@@ -171,11 +135,7 @@ export class SoftApiClientService {
     }
 
     if (!options.observe) {
-      if (!headerResponse) {
-        options.observe = 'body'; // need only body
-      } else {
-        options.observe = 'response'; // need whole response
-      }
+      options.observe = 'response'; // need whole response
     }
 
     if (options.params) {
@@ -188,51 +148,46 @@ export class SoftApiClientService {
         }, {} as { [key: string]: string });
     }
 
-    return this.execute(method, url, options, isPublic).pipe(
-      map((res: any) => {
-        if (headerResponse) {
-          const keys = res.headers.keys();
-          for (const key of keys) {
-            let value = res.headers.get(key);
-            // auto check and convert to expected type
-            if (value) {
-              if (isNaN(value)) {
-                if (value === 'true') {
-                  value = true;
-                } else if (value === 'false') {
-                  value = false;
-                }
-              } else {
-                value = +value;
-              }
-            }
-            headerResponse[key.toLowerCase()] = value;
-          }
-          return res.data;
-        }
-        return res;
-      }),
-    );
+    return this.execute(method, url, options, isPublic);
   }
 
   private execute(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
     if (!isPublic) {
       options.headers = options.headers || new HttpHeaders();
-      options.headers = options.headers.set('Authorization', 'ACCESS_TOKEN_IS_NEEDED');
+      if (!options.headers.has('Authorization')) {
+        options.headers = options.headers.set('Authorization', 'ACCESS_TOKEN');
+      }
     }
 
     return this.http.request(method, url, options).pipe(
-      catchError(err => {
-        return throwError(err);
-      }),
       map(res => {
         if (options.observe === 'response') {
           return {
-            headers: res.headers,
+            headers: this.formatResponseHeader(res.headers),
             data: options.responseType === 'text' ? this.formatResponse(res.body) : res.body,
           };
-        } else {
+        } else if (options.observe === 'body') {
           return options.responseType === 'text' ? this.formatResponse(res) : res;
+        } else if (options.reportProgress) {
+          if (res.type === HttpEventType.UploadProgress) {
+            var eventTotal = res.total ? res.total : 0;
+            return {
+              progress: Math.round(res.loaded / eventTotal * 100),
+              data: undefined,
+            }
+          }
+          if (res.type === HttpEventType.Response) {
+            return {
+              progress: 100,
+              data: options.responseType === 'text' ? this.formatResponse(res.body) : res.body,
+            }
+          }
+          return {
+            progress: 0,
+            data: undefined,
+          }
+        } else {
+          return res;
         }
       }),
     );
@@ -247,5 +202,27 @@ export class SoftApiClientService {
       }
     }
     return '';
+  }
+
+  private formatResponseHeader(headers: HttpHeaders) {
+    const formattedHeaders = [];
+    const keys = headers.keys();
+    for (const key of keys) {
+      let value: any = headers.get(key);
+      // auto convert type
+      if (value) {
+        if (isNaN(value)) {
+          if (value === 'true') {
+            value = true;
+          } else if (value === 'false') {
+            value = false;
+          }
+        } else {
+          value = +value;
+        }
+      }
+      formattedHeaders[key.toLowerCase()] = value;
+    }
+    return formattedHeaders;
   }
 }

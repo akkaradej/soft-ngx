@@ -39,11 +39,7 @@ import { CustomToastComponent } from './demo-popup/custom-toast.component';
 
 export function initApiClientConfig(): SoftApiClientConfig {
   return {
-    apiBaseUrl: 'https://jsonplaceholder.typicode.com',
-    pageHeaderResponseKeys: {
-      pageCount: 'X-Paging-PageCount',
-      totalCount: 'X-Paging-TotalRecordCount',
-    },
+    apiBaseUrl: 'https://jsonplaceholder.typicode.com'
   };
 }
 

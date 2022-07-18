@@ -6,8 +6,8 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 
-import { Observable, throwError, of, Observer, Subject, EMPTY } from 'rxjs';
-import { mergeMap, catchError, take } from 'rxjs/operators';
+import { Observable, throwError, of, Subject, EMPTY } from 'rxjs';
+import { mergeMap, catchError } from 'rxjs/operators';
 
 import { SoftAuthInterceptorConfig } from './soft-auth.config';
 import { SoftAuthServiceInterface } from './soft-auth.service.interface';
@@ -24,8 +24,8 @@ export class SoftAuthInterceptor implements HttpInterceptor {
     forceSendToken: false,
   };
 
-  private _isRefreshing = false;
-  private _refresherStream: Subject<boolean> = new Subject<boolean>();
+  private isRefreshing = {} as { [refreshToken: string]: boolean };
+  private refresher = {} as { [refreshToken: string]: Subject<boolean> };
 
   constructor(
     @Inject(authServiceClassForSoftAuthInterceptorToken) protected authService: SoftAuthServiceInterface,
@@ -37,25 +37,33 @@ export class SoftAuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const refreshToken = request.headers.get('AuthorizationRefresh') || this.authService.getRefreshToken();
+    if (request.headers.has('AuthorizationRefresh')) {
+      request = request.clone({
+        headers: request.headers.delete('AuthorizationRefresh'),
+      });
+    }
+
     if (this.config.forceSendToken) {
       request = this.setAuthHeader(request);
-    } else if (request.headers.has('Authorization')) {
+    } else if (request.headers.get('Authorization') === 'ACCESS_TOKEN') {
       if (this.authService.isLoggedIn) {
         request = this.setAuthHeader(request);
       } else {
-        if (this.config.autoRefreshToken) {
-          return this.refreshTokenAndRetry$(request, next);
+        if (this.config.autoRefreshToken && refreshToken) {
+          return this.refreshTokenAndRetry$(request, refreshToken, next);
         }
         if (this.config.loginScreenUrl) {
           return this.redirectToLoginUrl$();
         }
       }
     }
+
     return next.handle(request).pipe(
       catchError(err => {
         if (err.status === 401) {
-          if (this.config.autoRefreshToken) {
-            return this.refreshTokenAndRetry$(request, next, err);
+          if (this.config.autoRefreshToken && refreshToken) {
+            return this.refreshTokenAndRetry$(request, refreshToken, next, err);
           }
           if (this.config.loginScreenUrl) {
             return this.redirectToLoginUrl$();
@@ -78,9 +86,9 @@ export class SoftAuthInterceptor implements HttpInterceptor {
     });
   }
 
-  protected refreshTokenAndRetry$(request: HttpRequest<any>, next: HttpHandler, err?): Observable<any> {
+  protected refreshTokenAndRetry$(request: HttpRequest<any>, refreshToken: string, next: HttpHandler, err?: any): Observable<any> {
     if (typeof this.authService.requestRefreshToken$ !== 'function') {
-      throw Error('authService is neeeded to implement requestRefreshToken$()');
+      throw Error('authService is needed to implement requestRefreshToken$()');
     }
     if (this.authService.skipUrlsForAutoRefreshToken) {
       const skipUrls = this.authService.skipUrlsForAutoRefreshToken();
@@ -88,21 +96,18 @@ export class SoftAuthInterceptor implements HttpInterceptor {
         return throwError(err);
       }
     }
-    // if refreshing, wait next _refresherStream
-    if (this._isRefreshing) {
+
+    // init refresher
+    this.refresher[refreshToken] = this.refresher[refreshToken] || new Subject<boolean>();
+
+    // if refreshing, wait next refresher
+    if (this.isRefreshing[refreshToken]) {
       // console.debug('Another request is waiting first request');
-      return new Observable((observer: Observer<boolean>) => {
-        this._refresherStream.pipe(
-          take(1),
-        ).subscribe(isSuccess => {
-          observer.next(isSuccess);
-          observer.complete();
-        });
-      }).pipe(
+      return this.refresher[refreshToken].pipe(
         mergeMap(isSuccess => {
           // console.debug('Another request stop waiting');
           if (isSuccess) {
-            // console.debug('Another request excute with new token');
+            // console.debug('Another request execute with new token');
             request = this.setAuthHeader(request);
           } else if (this.config.loginScreenUrl) {
             return EMPTY; // try to silent another request b/c first request will be redirect to loginScreenUrl
@@ -112,9 +117,8 @@ export class SoftAuthInterceptor implements HttpInterceptor {
       );
     } else {
       // console.debug('First request start refresh token');
-      this._isRefreshing = true;
-
-      return this.authService.requestRefreshToken$!().pipe(
+      this.isRefreshing[refreshToken] = true;
+      return this.authService.requestRefreshToken$(undefined, refreshToken).pipe(
         catchError(() => {
           return of(null);
         }),
@@ -122,10 +126,11 @@ export class SoftAuthInterceptor implements HttpInterceptor {
           // console.debug('First request finish refresh token');
           const isSuccess = !!auth;
           // console.debug('refresh success:', isSuccess);
-          this._isRefreshing = false;
-          this._refresherStream.next(isSuccess);
+          this.isRefreshing[refreshToken] = false;
+          this.refresher[refreshToken].next(isSuccess);
+          this.refresher[refreshToken].complete();
           if (isSuccess) {
-            // console.debug('First request excute with new token');
+            // console.debug('First request execute with new token');
             request = this.setAuthHeader(request);
           } else if (this.config.loginScreenUrl) {
             return this.redirectToLoginUrl$();

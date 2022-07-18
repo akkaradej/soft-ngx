@@ -101,10 +101,6 @@ exports: [
 ```
 export function initSoftApiClientConfig(): SoftApiClientConfig {
   return {
-    pageHeaderResponseKeys: {
-      pageCount: 'X-Paging-PageCount',
-      totalCount: 'X-Paging-TotalRecordCount',
-    },
     dateRequestFormatter,
     dateResponseReviver,
   };

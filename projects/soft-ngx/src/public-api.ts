@@ -8,7 +8,6 @@ export { SoftApiClientModule } from './lib/soft-api-client/soft-api-client.modul
 export { SoftApiErrorHandlerService } from './lib/soft-api-client/soft-api-error-handler.service';
 export { SoftApiError } from './lib/soft-api-client/soft-api-error.model';
 export { SoftApiClientService } from './lib/soft-api-client/soft-api-client.service';
-export { HeaderResponse } from './lib/soft-api-client/soft-api-client.service';
 export { DateRequestInterceptor } from './lib/soft-api-client/date-request.interceptor';
 export { NoCacheInterceptor } from './lib/soft-api-client/no-cache.interceptor';
 

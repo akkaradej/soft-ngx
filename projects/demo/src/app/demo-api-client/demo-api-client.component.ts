@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { SoftApiClientService, SoftStorageService } from 'soft-ngx';
 
@@ -25,14 +26,14 @@ export class DemoApiClientComponent implements OnInit {
   }
 
   getPosts() {
-    this.apiClientService.get('/posts', { userId: 1 }, true)
+    this.apiClientService.get('/posts', { userId: 1 }, new HttpHeaders({ Authorization: 'Bearer XYZ' }), true)
       .subscribe(posts => {
         this.posts = posts;
       });
   }
 
   createPost(title: string, message: string) {
-    this.apiClientService.post('/posts', { title, body: message, userId: 1 }, {}, true)
+    this.apiClientService.post('/posts', { title, body: message, userId: 1 }, {}, undefined, true)
       .subscribe(post => {
         this.newPost = post;
       });
