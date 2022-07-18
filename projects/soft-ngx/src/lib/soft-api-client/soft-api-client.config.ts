@@ -1,21 +1,13 @@
 export interface SoftApiClientConfig {
   apiBaseUrl?: string;
-  pageHeaderResponseKeys?: {
-    pageCount: string;
-    totalCount: string;
-  };
   dateRequestFormatter?: (date: Date) => string;
   dateResponseReviver?: (key: string, value: string) => string | Date;
 }
 
 export const defaultConfig = {
   apiBaseUrl: '',
-  pageHeaderResponseKeys: {
-    pageCount: 'X-PageCount',
-    totalCount: 'X-TotalCount',
-  },
-  dateRequestFormatter: (date: Date) => { 
-    return date.toISOString(); 
+  dateRequestFormatter: (date: Date) => {
+    return date.toISOString();
   },
   dateResponseReviver: (key: string, value: string) => {
     let a;
