@@ -1,5 +1,20 @@
 import { Observable } from 'rxjs';
 
+export enum SoftAuthHeader {
+  Authorization = 'Authorization',
+  CustomRefreshToken = 'CustomRefreshToken',
+  newAccessToken = 'newAccessToken',
+  newRefreshToken = 'newRefreshToken',
+}
+
+export interface AuthData {
+  [key: string]: any;
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+}
+
 export interface SoftAuthServiceInterface {
 
   /*
@@ -35,10 +50,10 @@ export interface SoftAuthServiceInterface {
   /*
    * request access_token and keep auth data in storage
    */
-  requestTokenWithPasswordFlow$?(username: string, password: string, customQuery?: any): Observable<any>;
+  requestTokenWithPasswordFlow$?(username: string, password: string, customQuery?: any): Observable<AuthData>;
 
   /*
    * request new access_token by refresh_token and keep auth data in storage
    */
-  requestRefreshToken$?(customQuery?: any, refreshToken?: string): Observable<any>;
+  requestRefreshToken$?(customQuery?: any, refreshToken?: string): Observable<AuthData>;
 }

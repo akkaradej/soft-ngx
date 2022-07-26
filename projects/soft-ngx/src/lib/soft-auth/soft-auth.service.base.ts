@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { SoftStorageService } from '../soft-storage/soft-storage.service';
-import { SoftAuthServiceInterface } from './soft-auth.service.interface';
+import { AuthData, SoftAuthServiceInterface } from './soft-auth.service.interface';
 import { SoftAuthServiceConfig, SoftAuthRequestKey, SoftAuthResponseKey } from './soft-auth.config';
 import { userSoftAuthServiceConfigToken, userSoftAuthRequestKeyToken, userSoftAuthResponseKeyToken } from './user-config.token';
 import { WebHttpUrlEncodingCodec } from './encoder';
@@ -178,11 +178,11 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   /*
    * request new access_token by refresh_token and keep auth data in storage
    */
-  requestRefreshToken$(customQuery?: any, refreshToken?: string): Observable<any> {
+  requestRefreshToken$(customQuery?: any, customRefreshToken?: string): Observable<any> {
     if (!this.config.refreshTokenUrl) {
       throw new Error('refreshTokenUrl needs to be set');
     }
-    refreshToken = refreshToken || this.getRefreshToken();
+    const refreshToken = customRefreshToken || this.getRefreshToken();
     if (!refreshToken) {
       return throwError('no refresh token');
     }
@@ -209,11 +209,11 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
       }
     }
 
-    return this.requestToken(this.config.refreshTokenUrl, body, customQuery);
+    return this.requestToken(this.config.refreshTokenUrl, body, customQuery, customRefreshToken);
   }
 
   // general request token in common
-  requestToken(url: string, body: any, customQuery?: any, headers = new HttpHeaders()): Observable<any> {
+  requestToken(url: string, body: any, customQuery?: any, customRefreshToken?: string, headers = new HttpHeaders()): Observable<any> {
     if (customQuery) {
       if (this.config.isFormData) {
         for (const key of Object.getOwnPropertyNames(customQuery)) {
@@ -229,7 +229,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     }
 
     return this.http.post(url, body, { headers }).pipe(
-      mergeMap((response: any) => {
+      mergeMap((response: AuthData) => {
         if (response) {
           this.setStorageDependOnRememberMe();
           if (!this.config.isOAuth) {
@@ -238,10 +238,21 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
             response.refresh_token = response[this.authResponseKey.refresh_token];
             response.scope = response[this.authResponseKey.scope];
           }
+          let claimsJson: string;
           if (this.config.isJWT) {
-            const [claims, claimsJson] = this.decodeIdToken(response.access_token);
-            this.storage.setItem('claims_obj', claimsJson);
+            const decoded = this.decodeIdToken(response.access_token);
+            let claims = decoded[0];
+            claimsJson = decoded[1];
             response.expires_in = response.expires_in || claims.exp;
+          }
+
+          // not update storage for customRefreshToken
+          if (customRefreshToken) {
+            return of(response);
+          }
+
+          if (claimsJson) {
+            this.storage.setItem('claims_obj', claimsJson);
           }
           this.storeAccessToken(response.access_token, response.refresh_token, response.expires_in, response.scope);
           this.setAdditionalAuthData(response);

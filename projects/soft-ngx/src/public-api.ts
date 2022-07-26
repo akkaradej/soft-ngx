@@ -35,7 +35,7 @@ export {
 export { SoftAuthInterceptor } from './lib/soft-auth/soft-auth.interceptor';
 export { SoftAuthModule } from './lib/soft-auth/soft-auth.module';
 export { SoftAuthServiceBase } from './lib/soft-auth/soft-auth.service.base';
-export { SoftAuthServiceInterface } from './lib/soft-auth/soft-auth.service.interface';
+export { SoftAuthServiceInterface, SoftAuthHeader, AuthData } from './lib/soft-auth/soft-auth.service.interface';
 export { WebHttpUrlEncodingCodec } from './lib/soft-auth/encoder';
 
 export { SoftModalComponent, ModalTitleComponent } from './lib/soft-modal/soft-modal.component';
