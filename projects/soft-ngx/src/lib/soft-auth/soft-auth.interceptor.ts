@@ -73,7 +73,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
             return this.redirectToLoginUrl$();
           }
         }
-        return throwError(err);
+        return throwError(() => err);
       }),
     );
   }
@@ -97,7 +97,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
     if (this.authService.skipUrlsForAutoRefreshToken) {
       const skipUrls = this.authService.skipUrlsForAutoRefreshToken();
       if (skipUrls.indexOf(request.url) !== -1) {
-        return throwError(err);
+        return throwError(() => err);
       }
     }
 
@@ -151,7 +151,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
     request = this.setAuthHeader(request, authData.access_token);
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        return throwError(new HttpErrorResponse({
+        return throwError(() => new HttpErrorResponse({
           error: err.error,
           headers: err.headers
             .set(SoftAuthHeader.newAccessToken, authData.access_token)
@@ -178,7 +178,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError(err => {
         err.error = 'REFRESH_TOKEN_FAILED';
-        return throwError(err);
+        return throwError(() => err);
       })
     );
   }

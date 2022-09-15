@@ -98,7 +98,13 @@ export class SoftApiClientService {
     const formData = new FormData();
     for (const [key, value] of Object.entries(body)) {
       if (value !== undefined) {
-        formData.append(key, value as any);
+        if (Array.isArray(value)) {
+          for (const obj of value) {
+            formData.append(key, obj);
+          }
+        } else {
+          formData.append(key, value as any);
+        }
       }
     }
     return this.post(url, formData, params, headers, isPublic);
@@ -108,7 +114,13 @@ export class SoftApiClientService {
     const formData = new FormData();
     for (const [key, value] of Object.entries(body)) {
       if (value !== undefined) {
-        formData.append(key, body[key]);
+        if (Array.isArray(value)) {
+          for (const obj of value) {
+            formData.append(key, obj);
+          }
+        } else {
+          formData.append(key, value as any);
+        }
       }
     }
     return this.put(url, formData, params, headers, isPublic);
@@ -122,12 +134,12 @@ export class SoftApiClientService {
       err.ignoreErrorHandler = () => {
         window.clearTimeout(handlerTimeout);
       };
-      return throwError(err);
+      return throwError(() => err);
     });
   }
 
   private requestHelper(
-    method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
+    method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<any> {
     url = `${this.config.apiBaseUrl}${url}`;
 
     if (!options.responseType) {
@@ -151,7 +163,7 @@ export class SoftApiClientService {
     return this.execute(method, url, options, isPublic);
   }
 
-  private execute(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<Response> {
+  private execute(method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<any> {
     if (!isPublic) {
       options.headers = options.headers || new HttpHeaders();
       if (!options.headers.has('Authorization')) {
@@ -205,7 +217,7 @@ export class SoftApiClientService {
   }
 
   private formatResponseHeader(headers: HttpHeaders) {
-    const formattedHeaders = [];
+    const formattedHeaders: { [key: string]: any }[] = [];
     const keys = headers.keys();
     for (const key of keys) {
       let value: any = headers.get(key);

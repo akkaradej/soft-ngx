@@ -138,7 +138,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   /*
    * request access_token and keep auth data in storage
    */
-  requestTokenWithPasswordFlow$(username: string, password: string, rememberMe?: boolean, customQuery?: any): Observable<any> {
+  requestTokenWithPasswordFlow$(username: string, password: string, rememberMe?: boolean, customQuery?: any): Observable<AuthData> {
     if (!this.config.tokenUrl) {
       throw new Error('authApiUrl is needed to be set');
     }
@@ -178,13 +178,13 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   /*
    * request new access_token by refresh_token and keep auth data in storage
    */
-  requestRefreshToken$(customQuery?: any, customRefreshToken?: string): Observable<any> {
+  requestRefreshToken$(customQuery?: any, customRefreshToken?: string): Observable<AuthData> {
     if (!this.config.refreshTokenUrl) {
       throw new Error('refreshTokenUrl needs to be set');
     }
     const refreshToken = customRefreshToken || this.getRefreshToken();
     if (!refreshToken) {
-      return throwError('no refresh token');
+      return throwError(() => new Error('no refresh token'));
     }
 
     let body: any;
@@ -213,7 +213,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   }
 
   // general request token in common
-  requestToken(url: string, body: any, customQuery?: any, customRefreshToken?: string, headers = new HttpHeaders()): Observable<any> {
+  requestToken(url: string, body: any, customQuery?: any, customRefreshToken?: string, headers = new HttpHeaders()): Observable<AuthData> {
     if (customQuery) {
       if (this.config.isFormData) {
         for (const key of Object.getOwnPropertyNames(customQuery)) {
@@ -299,13 +299,13 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     return [];
   }
 
-  setAdditionalAuthData(auth: any): void {
-    const authData = this.getAdditionalAuthData();
-    for (const data of authData) {
-      if (auth[data] != null) {
-        this.storage.setItem(data, auth[data]);
+  setAdditionalAuthData(authData: any): void {
+    const additional = this.getAdditionalAuthData();
+    for (const prop of additional) {
+      if (authData[prop] != null) {
+        this.storage.setItem(prop, authData[prop]);
       } else {
-        this.storage.removeItem(data);
+        this.storage.removeItem(prop);
       }
     }
   }
