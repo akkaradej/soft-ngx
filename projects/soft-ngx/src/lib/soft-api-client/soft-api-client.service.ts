@@ -98,7 +98,11 @@ export class SoftApiClientService {
     const formData = new FormData();
     for (const [key, value] of Object.entries(body)) {
       if (value !== undefined) {
-        if (Array.isArray(value)) {
+        if (value instanceof FileList) {
+          for (let i = 0; i < value.length; i++) {
+            formData.append(key, value.item(i));
+          }
+        } else if (Array.isArray(value)) {
           for (const obj of value) {
             formData.append(key, obj);
           }
@@ -114,7 +118,11 @@ export class SoftApiClientService {
     const formData = new FormData();
     for (const [key, value] of Object.entries(body)) {
       if (value !== undefined) {
-        if (Array.isArray(value)) {
+        if (value instanceof FileList) {
+          for (let i = 0; i < value.length; i++) {
+            formData.append(key, value.item(i));
+          }
+        } else if (Array.isArray(value)) {
           for (const obj of value) {
             formData.append(key, obj);
           }
