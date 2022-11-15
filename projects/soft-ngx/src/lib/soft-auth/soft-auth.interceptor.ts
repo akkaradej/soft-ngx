@@ -184,6 +184,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
   }
 
   protected redirectToLoginUrl$(): Observable<any> {
+    this.authService.removeAuthData();
     window.location.href = this.config.loginScreenUrl;
     return EMPTY;
   }

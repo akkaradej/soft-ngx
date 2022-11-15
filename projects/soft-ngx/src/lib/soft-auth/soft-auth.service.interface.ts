@@ -23,9 +23,15 @@ export interface SoftAuthServiceInterface {
   isLoggedIn: boolean;
 
   /*
-   * remove token and auth data in storage
+   * logout remove token by call removeAuthData();
+   * override to do more
    */
   logout(): void;
+
+  /*
+   * remove token and auth data in storage
+   */
+  removeAuthData(): void;
 
   /*
    * get access token

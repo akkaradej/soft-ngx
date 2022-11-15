@@ -88,6 +88,10 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
    * remove token and auth data in storage
    */
   logout(): void {
+    this.removeAuthData();
+  }
+
+  removeAuthData() {
     this.storage.removeItem('access_token');
     this.storage.removeItem('refresh_token');
     this.storage.removeItem('nonce');
