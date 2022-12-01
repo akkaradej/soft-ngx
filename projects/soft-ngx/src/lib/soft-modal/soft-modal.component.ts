@@ -84,6 +84,7 @@ export class SoftModalComponent implements OnInit, OnDestroy {
   }
 
   open() {
+    (document.activeElement as HTMLElement)?.blur();
     this.isOpen = true;
     this.isFirstOpen = true;
     this.animationState = 'open';

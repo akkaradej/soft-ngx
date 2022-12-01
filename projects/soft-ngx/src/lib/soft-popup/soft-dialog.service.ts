@@ -17,6 +17,7 @@ export class SoftDialogService {
   ) { }
 
   addDialog<DataType = any>(component: any, data: DataType, animations: SoftPopupAnimationModel) {
+    (document.activeElement as HTMLElement)?.blur();
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory<SoftDialog>(component)
       .create(this.injector);
@@ -35,7 +36,6 @@ export class SoftDialogService {
     componentRef.instance.dispose = () => {
       this.removeDialog(id);
     }
-
     return componentRef.instance.result$;
   }
 
@@ -52,7 +52,7 @@ export class SoftDialogService {
     const keys = Object.keys(this.componentRefs);
     for (const id of keys) {
       this.removeDialog(+id);
-    } 
+    }
   }
 
   generateModalId() {
