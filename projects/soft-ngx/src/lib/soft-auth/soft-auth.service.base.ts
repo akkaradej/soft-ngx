@@ -1,7 +1,7 @@
 import { Injectable, Inject, Optional } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { Observable, from, of, throwError } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 
 import { SoftStorageService } from '../soft-storage/soft-storage.service';
 import { AuthData, SoftAuthServiceInterface } from './soft-auth.service.interface';
@@ -65,9 +65,9 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   /*
    * check is logged in or token expires
    */
-  get isLoggedIn(): boolean {
+  async isLoggedIn(): Promise<boolean> {
     if (this.getAccessToken()) {
-      const expiresAt = this.storage.getItem('expires_at');
+      const expiresAt = await this.storage.getItem('expires_at');
       const now = new Date();
       if (expiresAt && parseInt(expiresAt, 10) < now.getTime()) {
         return false;
@@ -80,39 +80,39 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   /*
    * check user login with remember me or not
    */
-  get isRememberMe() {
+  isRememberMe() {
     return this.storage.getBooleanPersistent('remember_me');
   }
 
   /*
    * remove token and auth data in storage
    */
-  logout(): void {
-    this.removeAuthData();
+  logout() {
+    return this.removeAuthData();
   }
 
-  removeAuthData() {
-    this.storage.removeItem('access_token');
-    this.storage.removeItem('refresh_token');
-    this.storage.removeItem('nonce');
-    this.storage.removeItem('expires_at');
-    this.storage.removeItem('claims_obj');
-    this.storage.removeItem('granted_scopes');
-    this.storage.removeItemPersistent('remember_me');
-    this.removeAdditionalAuthData();
+  async removeAuthData() {
+    await this.storage.removeItem('access_token');
+    await this.storage.removeItem('refresh_token');
+    await this.storage.removeItem('nonce');
+    await this.storage.removeItem('expires_at');
+    await this.storage.removeItem('claims_obj');
+    await this.storage.removeItem('granted_scopes');
+    await this.storage.removeItemPersistent('remember_me');
+    await this.removeAdditionalAuthData();
   }
 
   /*
    * get access token
    */
-  getAccessToken(): string | null {
+  getAccessToken(): Promise<string | null> {
     return this.storage.getItem('access_token');
   }
 
   /*
    * get refresh token
    */
-  getRefreshToken(): string | null {
+  getRefreshToken(): Promise<string | null> {
     return this.storage.getItem('refresh_token');
   }
 
@@ -130,8 +130,8 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     return [this.config.tokenUrl, this.config.refreshTokenUrl];
   }
 
-  setStorageDependOnRememberMe() {
-    const rememberMe = this.storage.getItemPersistent('remember_me');
+  async setStorageDependOnRememberMe() {
+    const rememberMe = await this.storage.getItemPersistent('remember_me');
     if (rememberMe === 'true') {
       this.storage.usePersistent();
     } else if (rememberMe === 'false') {
@@ -186,34 +186,38 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     if (!this.config.refreshTokenUrl) {
       throw new Error('refreshTokenUrl needs to be set');
     }
-    const refreshToken = customRefreshToken || this.getRefreshToken();
-    if (!refreshToken) {
-      return throwError(() => new Error('no refresh token'));
-    }
+    return from(this.getRefreshToken()).pipe(
+      mergeMap(_refreshToken => {
+        const refreshToken = customRefreshToken || _refreshToken;
+        if (!refreshToken) {
+          return throwError(() => new Error('no refresh token'));
+        }
 
-    let body: any;
-    const params = new HttpParams({ encoder: new WebHttpUrlEncodingCodec() });
+        let body: any;
+        const params = new HttpParams({ encoder: new WebHttpUrlEncodingCodec() });
 
-    if (this.config.isOAuth) {
-      body = params
-        .set('grant_type', 'refresh_token')
-        .set('scope', this.config.scope)
-        .set('client_id', this.config.clientId)
-        .set('refresh_token', refreshToken);
+        if (this.config.isOAuth) {
+          body = params
+            .set('grant_type', 'refresh_token')
+            .set('scope', this.config.scope)
+            .set('client_id', this.config.clientId)
+            .set('refresh_token', refreshToken);
 
-      this.config.isFormData = true;
-    } else {
-      if (this.config.isFormData) {
-        body = params
-          .set(this.authRequestKey.refresh_token, refreshToken);
-      } else {
-        body = {
-          [this.authRequestKey.refresh_token]: refreshToken,
-        };
-      }
-    }
+          this.config.isFormData = true;
+        } else {
+          if (this.config.isFormData) {
+            body = params
+              .set(this.authRequestKey.refresh_token, refreshToken);
+          } else {
+            body = {
+              [this.authRequestKey.refresh_token]: refreshToken,
+            };
+          }
+        }
 
-    return this.requestToken(this.config.refreshTokenUrl, body, customQuery, customRefreshToken);
+        return this.requestToken(this.config.refreshTokenUrl, body, customQuery, customRefreshToken);
+      })
+    );
   }
 
   // general request token in common
@@ -267,22 +271,22 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     );
   }
 
-  storeAccessToken(accessToken: string, refreshToken?: string, expiresIn?: number, grantedScopes?: string) {
-    this.storage.setItem('access_token', accessToken);
+  async storeAccessToken(accessToken: string, refreshToken?: string, expiresIn?: number, grantedScopes?: string) {
+    await this.storage.setItem('access_token', accessToken);
 
     if (refreshToken) {
-      this.storage.setItem('refresh_token', refreshToken);
+      await this.storage.setItem('refresh_token', refreshToken);
     }
 
     if (expiresIn) {
       const expiresInMilliSeconds = expiresIn * 1000;
       const now = new Date();
       const expiresAt = now.getTime() + expiresInMilliSeconds;
-      this.storage.setItem('expires_at', '' + expiresAt);
+      await this.storage.setItem('expires_at', '' + expiresAt);
     }
 
     if (grantedScopes) {
-      this.storage.setItem('granted_scopes', JSON.stringify(grantedScopes.split('+')));
+      await this.storage.setItem('granted_scopes', JSON.stringify(grantedScopes.split('+')));
     }
   }
 
@@ -303,13 +307,13 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     return [];
   }
 
-  setAdditionalAuthData(authData: any): void {
+  async setAdditionalAuthData(authData: any) {
     const additional = this.getAdditionalAuthData();
     for (const prop of additional) {
       if (authData[prop] != null) {
-        this.storage.setItem(prop, authData[prop]);
+        await this.storage.setItem(prop, authData[prop]);
       } else {
-        this.storage.removeItem(prop);
+        await this.storage.removeItem(prop);
       }
     }
   }
@@ -318,10 +322,10 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
   setAuthorize() {
   }
 
-  removeAdditionalAuthData(): void {
+  async removeAdditionalAuthData() {
     const authData = this.getAdditionalAuthData();
     for (const data of authData) {
-      this.storage.removeItem(data);
+      await this.storage.removeItem(data);
     }
   }
 

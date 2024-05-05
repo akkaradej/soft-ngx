@@ -8,7 +8,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 
-import { Observable, throwError, of, Subject, EMPTY } from 'rxjs';
+import { Observable, throwError, of, Subject, EMPTY, from } from 'rxjs';
 import { mergeMap, catchError, map } from 'rxjs/operators';
 
 import { SoftAuthInterceptorConfig } from './soft-auth.config';
@@ -39,53 +39,62 @@ export class SoftAuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const customRefreshToken = request.headers.get(SoftAuthHeader.CustomRefreshToken);
-    if (request.headers.has(SoftAuthHeader.CustomRefreshToken)) {
-      request = request.clone({
-        setHeaders: { [SoftAuthHeader.CustomRefreshToken]: '-' }
-      });
-    }
+    return from((async () => {
+      const isLoggedIn = await this.authService.isLoggedIn();
+      const accessToken = await this.authService.getAccessToken();
+      const refreshToken = await this.authService.getRefreshToken();
+      return {isLoggedIn, accessToken, refreshToken}
+    })()).pipe(
+      mergeMap(({isLoggedIn, accessToken, refreshToken}) => {
+        const customRefreshToken = request.headers.get(SoftAuthHeader.CustomRefreshToken);
+        if (request.headers.has(SoftAuthHeader.CustomRefreshToken)) {
+          request = request.clone({
+            setHeaders: { [SoftAuthHeader.CustomRefreshToken]: '-' }
+          });
+        }
 
-    if (request.headers.get(SoftAuthHeader.Authorization) === 'ACCESS_TOKEN') {
-      if (this.config.forceSendToken) {
-        request = this.setAuthHeader(request);
-      } else {
-        if (this.authService.isLoggedIn) {
-          request = this.setAuthHeader(request);
-        } else {
-          if (this.config.autoRefreshToken && (customRefreshToken || this.authService.getRefreshToken())) {
-            return this.refreshTokenAndRetry$(request, next, undefined, customRefreshToken);
-          }
-          if (this.config.loginScreenUrl) {
-            return this.redirectToLoginUrl$();
+        if (request.headers.get(SoftAuthHeader.Authorization) === 'ACCESS_TOKEN') {
+          if (this.config.forceSendToken) {
+            request = this.setAuthHeader(request, accessToken);
+          } else {
+            if (isLoggedIn) {
+              request = this.setAuthHeader(request, accessToken);
+            } else {
+              if (this.config.autoRefreshToken && (customRefreshToken || refreshToken)) {
+                return this.refreshTokenAndRetry$(request, next, undefined, customRefreshToken);
+              }
+              if (this.config.loginScreenUrl) {
+                return this.redirectToLoginUrl$();
+              }
+            }
           }
         }
-      }
-    }
 
-    return next.handle(request).pipe(
-      catchError(err => {
-        if (err.status === 401) {
-          if (this.config.autoRefreshToken && (customRefreshToken || this.authService.getRefreshToken())) {
-            return this.refreshTokenAndRetry$(request, next, err, customRefreshToken);
-          }
-          if (this.config.loginScreenUrl) {
-            return this.redirectToLoginUrl$();
-          }
-        }
-        return throwError(() => err);
-      }),
+        return next.handle(request).pipe(
+          catchError(err => {
+            if (err.status === 401) {
+              if (this.config.autoRefreshToken && (customRefreshToken || refreshToken)) {
+                return this.refreshTokenAndRetry$(request, next, err, customRefreshToken);
+              }
+              if (this.config.loginScreenUrl) {
+                return this.redirectToLoginUrl$();
+              }
+            }
+            return throwError(() => err);
+          }),
+        );
+      }) 
     );
   }
 
-  protected setAuthHeader(request: HttpRequest<any>, accessToken?: string): HttpRequest<any> {
+  protected setAuthHeader(request: HttpRequest<any>, accessToken: string): HttpRequest<any> {
     let scheme = this.authService.getAuthenticationScheme() || '';
     if (scheme) {
       scheme += ' ';
     }
     return request.clone({
       setHeaders: {
-        [SoftAuthHeader.Authorization]: scheme + (accessToken || this.authService.getAccessToken()),
+        [SoftAuthHeader.Authorization]: scheme + accessToken,
       },
     });
   }
@@ -101,50 +110,57 @@ export class SoftAuthInterceptor implements HttpInterceptor {
       }
     }
 
-    // init refresher
-    const refreshToken = customRefreshToken || this.authService.getRefreshToken();
-    this.refresher[refreshToken] = this.refresher[refreshToken] || new Subject<AuthData>();
+    return from((async () => {
+      const refreshToken = await this.authService.getRefreshToken();
+      return refreshToken;
+    })()).pipe(
+      mergeMap(_refreshToken => {
+        // init refresher
+        const refreshToken = customRefreshToken || _refreshToken;
+        this.refresher[refreshToken] = this.refresher[refreshToken] || new Subject<AuthData>();
 
-    // if refreshing, wait next refresher
-    if (this.isRefreshing[refreshToken]) {
-      // console.debug('Another request is waiting first request');
-      return this.refresher[refreshToken].pipe(
-        mergeMap(authData => {
-          // console.debug('Another request stop waiting');
-          if (authData) {
-            return this.continueRequest(next, request, authData);
-          } else if (this.config.loginScreenUrl) {
-            return EMPTY; // try to silent another request b/c first request will be redirect to loginScreenUrl
-          }
-          return this.errorRequest(next, request);
-        }),
-      );
-    } else {
-      // console.debug('First request start refresh token');
-      this.isRefreshing[refreshToken] = true;
-      return this.authService.requestRefreshToken$(undefined, customRefreshToken).pipe(
-        catchError(err => {
-          this.isRefreshing[refreshToken] = false;
-          this.refresher[refreshToken].next(null);
-          this.refresher[refreshToken].complete();
+        // if refreshing, wait next refresher
+        if (this.isRefreshing[refreshToken]) {
+          // console.debug('Another request is waiting first request');
+          return this.refresher[refreshToken].pipe(
+            mergeMap(authData => {
+              // console.debug('Another request stop waiting');
+              if (authData) {
+                return this.continueRequest(next, request, authData);
+              } else if (this.config.loginScreenUrl) {
+                return EMPTY; // try to silent another request b/c first request will be redirect to loginScreenUrl
+              }
+              return this.errorRequest(next, request);
+            }),
+          );
+        } else {
+          // console.debug('First request start refresh token');
+          this.isRefreshing[refreshToken] = true;
+          return this.authService.requestRefreshToken$(undefined, customRefreshToken).pipe(
+            catchError(err => {
+              this.isRefreshing[refreshToken] = false;
+              this.refresher[refreshToken].next(null);
+              this.refresher[refreshToken].complete();
 
-          if (!customRefreshToken && this.config.loginScreenUrl) {
-            return this.redirectToLoginUrl$();
-          }
-          return this.errorRequest(next, request);
-        }),
-        mergeMap((authData: AuthData) => {
-          // console.debug('First request finish refresh token');
-          // console.debug('refresh success:', isSuccess);
-          this.isRefreshing[refreshToken] = false;
-          this.refresher[refreshToken].next(authData);
-          this.refresher[refreshToken].complete();
+              if (!customRefreshToken && this.config.loginScreenUrl) {
+                return this.redirectToLoginUrl$();
+              }
+              return this.errorRequest(next, request);
+            }),
+            mergeMap((authData: AuthData) => {
+              // console.debug('First request finish refresh token');
+              // console.debug('refresh success:', isSuccess);
+              this.isRefreshing[refreshToken] = false;
+              this.refresher[refreshToken].next(authData);
+              this.refresher[refreshToken].complete();
 
-          // console.debug('First request execute with new token');
-          return this.continueRequest(next, request, authData);
-        }),
-      );
-    }
+              // console.debug('First request execute with new token');
+              return this.continueRequest(next, request, authData);
+            }),
+          );
+        }
+      })
+    );
   }
 
   protected continueRequest(next: HttpHandler, request: HttpRequest<any>, authData: AuthData) {
@@ -184,8 +200,11 @@ export class SoftAuthInterceptor implements HttpInterceptor {
   }
 
   protected redirectToLoginUrl$(): Observable<any> {
-    this.authService.removeAuthData();
-    window.location.href = this.config.loginScreenUrl;
-    return EMPTY;
+    return from(this.authService.removeAuthData()).pipe(
+      mergeMap(() => {
+        window.location.href = this.config.loginScreenUrl;
+        return EMPTY;
+      })
+    )
   }
 }
