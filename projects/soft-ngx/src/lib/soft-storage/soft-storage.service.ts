@@ -25,12 +25,16 @@ export class SoftStorageService {
     }
   }
 
-  get length(): number {
+  async length(): Promise<number> {
     return this.storage.length;
   }
 
-  key(index: number): string | null {
+  async key(index: number): Promise<string | null> {
     return this.storage.key(index);
+  }
+
+  async keys(index: number): Promise<string[]> {
+    return Object.keys(this.storage);
   }
 
   getItem(key: string): Promise<string | null> {
@@ -110,6 +114,23 @@ export class SoftStorageService {
     await this.removeItemTemporary(key);
   }
 
+  removeItemByPrefix(prefix: string): Promise<void> {
+    return this._removeItemฺByPrefix(prefix, this.storage);
+  }
+
+  removeItemPersistentByPrefix(prefix: string): Promise<void> {
+    return this._removeItem(prefix, this.config.persistentStorage);
+  }
+
+  removeItemTemporaryByPrefix(prefix: string): Promise<void> {
+    return this._removeItem(prefix, this.config.temporaryStorage);
+  }
+
+  async removeItemAnyByPrefix(prefix: string): Promise<void> {
+    await this.removeItemPersistentByPrefix(prefix);
+    await this.removeItemTemporaryByPrefix(prefix);
+  }
+
   clear(): Promise<void> {
     return this._clear(this.storage);
   }
@@ -154,6 +175,12 @@ export class SoftStorageService {
 
   private async _removeItem(key: string, storage: Storage): Promise<void> {
     return storage.removeItem(`${this.config.storagePrefix}${key}`);
+  }
+
+  private async _removeItemฺByPrefix(prefix: string, storage: Storage): Promise<void> {
+    Object.keys(storage)
+      .filter(x => x.startsWith(`${this.config.storagePrefix}${prefix}`))
+      .forEach(x => storage.removeItem(x));
   }
 
   private async _clear(storage: Storage): Promise<void> {
