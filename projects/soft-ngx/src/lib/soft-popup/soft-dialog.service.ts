@@ -1,4 +1,4 @@
-import { Injectable, ComponentRef, ComponentFactoryResolver, ApplicationRef, Injector, EmbeddedViewRef } from '@angular/core';
+import { Injectable, ComponentRef, ViewContainerRef } from '@angular/core';
 import { SoftDialog } from './soft-dialog.interface';
 import { SoftPopupAnimationModel } from './soft-popup.component';
 
@@ -7,23 +7,21 @@ import { SoftPopupAnimationModel } from './soft-popup.component';
 })
 export class SoftDialogService {
 
+  viewContainerRef: ViewContainerRef;
+
   private id = 0;
   private componentRefs: { [key: number]: ComponentRef<any> } = {};
-
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private applicationRef: ApplicationRef,
-    private injector: Injector,
-  ) { }
+  
+  setContainerRef(viewContainerRef: ViewContainerRef) {
+    this.viewContainerRef = viewContainerRef;
+  }
 
   addDialog<DataType = any>(component: any, data: DataType, animations: SoftPopupAnimationModel) {
+    if (!this.viewContainerRef) {
+      throw 'Please setContainerRef(viewContainerRef) e.g. dialogService.setContainerRef(viewContainerRef); // #app.component.ts';
+    }
     (document.activeElement as HTMLElement)?.blur();
-    const componentRef = this.componentFactoryResolver
-      .resolveComponentFactory<SoftDialog>(component)
-      .create(this.injector);
-    this.applicationRef.attachView(componentRef.hostView);
-    const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-    document.body.appendChild(domElem);
+    const componentRef = this.viewContainerRef.createComponent<SoftDialog>(component);;
     this.hideHtmlScrollbar();
 
     const id = ++this.id;
@@ -41,7 +39,6 @@ export class SoftDialogService {
 
   removeDialog(id: number): void {
     if (this.componentRefs[id]) {
-      this.applicationRef.detachView(this.componentRefs[id].hostView);
       this.resetHtmlScrollbar(this.componentRefs[id].instance.modalId);
       this.componentRefs[id].destroy();
       delete this.componentRefs[id];

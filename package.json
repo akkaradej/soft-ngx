@@ -20,7 +20,7 @@
     "@angular/router": "^13.3.11",
     "ngx-toastr": "^14.3.0",
     "placeholder-loading": "^0.6.0",
-    "rxjs": "~7.5.0",
+    "rxjs": "^7.8.1",
     "tippy.js": "^6.3.7",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.4"

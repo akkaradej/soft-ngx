@@ -43,11 +43,11 @@ export class AuthService extends SoftAuthServiceBase { // or implements SoftAuth
     this.can.viewTest = true;
   }
 
-  get isSuperAdmin(): boolean {
+  isSuperAdmin(): Promise<boolean> {
     return this.storage.getBoolean(AuthData.is_super_admin);
   }
 
-  get displayName(): string | null {
+  getDisplayName(): Promise<string | null> {
     return this.storage.getItem(AuthData.display_name);
   }
 

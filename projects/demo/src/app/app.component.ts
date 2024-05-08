@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
+import { SoftDialogService } from 'soft-ngx';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +7,10 @@ import { Component } from '@angular/core';
   styles: []
 })
 export class AppComponent {
+  constructor(
+    viewContainerRef: ViewContainerRef,
+    dialogService: SoftDialogService,
+  ) {
+    dialogService.setContainerRef(viewContainerRef);
+  }
 }

@@ -1,4 +1,4 @@
-import { Directive, TemplateRef, ViewContainerRef, ComponentFactoryResolver, Input, OnChanges, SimpleChanges, Inject, Type } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, Input, OnChanges, SimpleChanges, Inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DefaultSkeletonComponent } from './skeletons/default-skeleton.component';
 import { BarChartSkeletonComponent } from './skeletons/bar-chart-skeleton.component';
@@ -31,7 +31,6 @@ export class SoftSkelDirective implements OnChanges {
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
     @Inject(userRegisteredSkeletonComponentsToken) registeredSkeletonComponents: SoftSkeletonType,
     @Inject(userSoftAsyncUIConfigToken) userConfig: SoftAsyncUIConfig
   ) {
@@ -71,12 +70,12 @@ export class SoftSkelDirective implements OnChanges {
 
   private showSkeleton() {
     if (this.softSkelType) {
-      const componentRef = this.viewContainer.createComponent(this.componentFactoryResolver.resolveComponentFactory(this.builtInTypes[this.softSkelType]));
+      const componentRef = this.viewContainer.createComponent(this.builtInTypes[this.softSkelType]);
       (componentRef.instance as any).context = this.softSkelContext;
     } else if (this.softSkelTemplate) {
       this.viewContainer.createEmbeddedView(this.softSkelTemplate, this.softSkelContext);
     } else {
-      this.viewContainer.createComponent(this.componentFactoryResolver.resolveComponentFactory(this.builtInTypes.default));
+      this.viewContainer.createComponent(this.builtInTypes.default);
     }
   }
 

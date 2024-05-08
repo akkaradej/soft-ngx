@@ -1,4 +1,4 @@
-import { Directive, Inject, Input, ElementRef, Type, ComponentFactoryResolver, Injector, EmbeddedViewRef, OnInit, OnDestroy, OnChanges, SimpleChanges, ApplicationRef, ComponentRef } from '@angular/core';
+import { Directive, Inject, Input, ElementRef, Type, ViewContainerRef, EmbeddedViewRef, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { SoftAsyncUIConfig } from './soft-async-ui.config';
@@ -27,19 +27,15 @@ export class SoftBusyDirective extends BaseAsyncUI implements OnInit, OnChanges,
   constructor(
     el: ElementRef,
     @Inject(userSoftAsyncUIConfigToken) userConfig: SoftAsyncUIConfig,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private applicationRef: ApplicationRef,
-    private injector: Injector,
+    private viewContainerRef: ViewContainerRef,
   ) {
     super(el, userConfig);
   }
 
   ngOnInit() {
     // create componentRef
-    const componentRef = this.componentFactoryResolver
-      .resolveComponentFactory(this.busyComponent || DefaultBusySpinnerComponent)
-      .create(this.injector);
-    this.applicationRef.attachView(componentRef.hostView);
+    const componentRef = this.viewContainerRef
+      .createComponent(this.busyComponent || DefaultBusySpinnerComponent);
 
     // pass data
     componentRef.instance.data = this.busyData || {};
@@ -49,7 +45,6 @@ export class SoftBusyDirective extends BaseAsyncUI implements OnInit, OnChanges,
 
     // destroy componentRef
     window.setTimeout(() => {
-      this.applicationRef.detachView(componentRef.hostView);
       componentRef.destroy();
     });
   }
