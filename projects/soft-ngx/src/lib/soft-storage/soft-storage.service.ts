@@ -119,11 +119,11 @@ export class SoftStorageService {
   }
 
   removeItemPersistentByPrefix(prefix: string): Promise<void> {
-    return this._removeItem(prefix, this.config.persistentStorage);
+    return this._removeItemฺByPrefix(prefix, this.config.persistentStorage);
   }
 
   removeItemTemporaryByPrefix(prefix: string): Promise<void> {
-    return this._removeItem(prefix, this.config.temporaryStorage);
+    return this._removeItemฺByPrefix(prefix, this.config.temporaryStorage);
   }
 
   async removeItemAnyByPrefix(prefix: string): Promise<void> {
