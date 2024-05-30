@@ -33,7 +33,7 @@ export class SoftStorageService {
     return this.storage.key(index);
   }
 
-  async keys(index: number): Promise<string[]> {
+  async keys(): Promise<string[]> {
     return Object.keys(this.storage);
   }
 

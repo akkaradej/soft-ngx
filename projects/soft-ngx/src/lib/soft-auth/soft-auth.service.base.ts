@@ -66,7 +66,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
    * check is logged in or token expires
    */
   async isLoggedIn(): Promise<boolean> {
-    if (this.getAccessToken()) {
+    if (await this.getAccessToken()) {
       const expiresAt = await this.storage.getItem('expires_at');
       const now = new Date();
       if (expiresAt && parseInt(expiresAt, 10) < now.getTime()) {

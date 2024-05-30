@@ -185,7 +185,7 @@ export class SoftAuthInterceptor implements HttpInterceptor {
               .set(SoftAuthHeader.newRefreshToken, authData.refresh_token)
           });
         }
-        return of(event);
+        return event;
       })
     );
   }
