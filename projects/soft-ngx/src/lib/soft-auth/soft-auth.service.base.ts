@@ -58,7 +58,6 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     }
 
     this.config.refreshTokenUrl = this.config.refreshTokenUrl || this.config.tokenUrl;
-    this.setStorageDependOnRememberMe();
     this.setAuthorize();
   }
 
@@ -170,13 +169,15 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
       }
     }
 
+    let setRememberMe$;
     if (rememberMe) {
-      this.storage.setItemPersistent('remember_me', true);
+      setRememberMe$ = from(this.storage.setItemPersistent('remember_me', true));
     } else {
-      this.storage.setItemPersistent('remember_me', false);
+      setRememberMe$ = from(this.storage.setItemPersistent('remember_me', false));
     }
-
-    return this.requestToken(this.config.tokenUrl, body, customQuery);
+    return setRememberMe$.pipe(
+      mergeMap(() => this.requestToken(this.config.tokenUrl, body, customQuery))
+    );
   }
 
   /*
@@ -237,9 +238,11 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     }
 
     return this.http.post(url, body, { headers }).pipe(
+      mergeMap((response: AuthData) => from(this.setStorageDependOnRememberMe()).pipe(
+        map(() => response)
+      )),
       mergeMap((response: AuthData) => {
         if (response) {
-          this.setStorageDependOnRememberMe();
           if (!this.config.isOAuth) {
             response.access_token = response[this.authResponseKey.access_token];
             response.expires_in = response[this.authResponseKey.expires_in];

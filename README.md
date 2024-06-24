@@ -99,6 +99,18 @@ exports: [
 ## Example Configurations
 
 ```
+
+export function preloadStorage(storageService: SoftStorageService) {
+  return async function () {
+    const rememberMe = await storageService.getItemPersistent('remember_me');
+    if (rememberMe === 'true') {
+      storageService.usePersistent();
+    } else if (rememberMe === 'false') {
+      storageService.useTemporary();
+    }
+  };
+}
+
 export function initSoftApiClientConfig(): SoftApiClientConfig {
   return {
     dateRequestFormatter,
@@ -165,6 +177,7 @@ const authResponseKey: SoftAuthResponseKey = {
   //   { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
   // ]
   providers: [
+    { provide: APP_INITIALIZER, multi: true, useFactory: preloadStorage, deps: [SoftStorageService] },
     { provide: SoftApiErrorHandlerService, useClass: ApiErrorHandlerService },
     { provide: authServiceClassForSoftAuthInterceptorToken, useClass: AuthService },
     { provide: HTTP_INTERCEPTORS, useClass: SoftAuthInterceptor, multi: true },
