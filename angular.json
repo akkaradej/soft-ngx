@@ -145,6 +145,6 @@
   },
   "cli": {
     "analytics": false,
-    "packageManager": "yarn"
+    "packageManager": "bun"
   }
 }

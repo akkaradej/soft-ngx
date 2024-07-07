@@ -2,11 +2,11 @@
   "name": "soft-ngx",
   "version": "0.0.0",
   "scripts": {
-    "start": "npx ng serve demo",
-    "build_demo": "npx ng build demo",
-    "build_lib": "npx ng build soft-ngx",
+    "start": "bunx ng serve demo",
+    "build_demo": "bunx ng build demo",
+    "build_lib": "bunx ng build soft-ngx",
     "pack_lib": "cd dist/soft-ngx && npm pack",
-    "package": "npm run build_lib && npm run pack_lib"
+    "package": "bun run build_lib && bun run pack_lib"
   },
   "private": true,
   "dependencies": {
