@@ -144,6 +144,5 @@
   "cli": {
     "analytics": false,
     "packageManager": "yarn"
-  },
-  "defaultProject": "soft-ngx"
+  }
 }
