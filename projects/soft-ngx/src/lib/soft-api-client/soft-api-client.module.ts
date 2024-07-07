@@ -1,18 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { SoftApiClientConfig } from './soft-api-client.config';
 import { SoftApiClientService } from './soft-api-client.service';
 import { userSoftApiClientConfigToken } from './user-config.token';
 import { SoftApiErrorHandlerService } from './soft-api-error-handler.service';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-  ],
-})
+@NgModule({ imports: [CommonModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class SoftApiClientModule {
   static forRoot(
     config?: SoftApiClientConfig,

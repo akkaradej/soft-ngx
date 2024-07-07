@@ -1,12 +1,5 @@
 import { Injectable, Optional, Inject } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpInterceptor,
-  HttpEvent,
-  HttpResponse,
-  HttpErrorResponse,
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpInterceptor, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, throwError, of, Subject, EMPTY, from } from 'rxjs';
 import { mergeMap, catchError, map } from 'rxjs/operators';

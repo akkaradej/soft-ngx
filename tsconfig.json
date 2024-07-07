@@ -3,8 +3,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "suppressImplicitAnyIndexErrors": true,
     "noImplicitOverride": true,
@@ -14,7 +14,6 @@
     "noUncheckedIndexedAccess": false,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
