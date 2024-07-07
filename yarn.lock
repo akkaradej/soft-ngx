@@ -6753,7 +6753,7 @@ tree-kill@1.2.2:
 
 "trunks-ui@https://github.com/akkaradej/trunks-ui.git":
   version "0.7.0"
-  resolved "https://github.com/akkaradej/trunks-ui.git#1601a78647032f5462a158fe7221a581566a9952"
+  resolved "https://github.com/akkaradej/trunks-ui.git#24dc7ee51f2a9af31ad507331704b37945d0f0ec"
   dependencies:
     bulma "1.0.1"
 
