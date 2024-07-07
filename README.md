@@ -4,9 +4,11 @@
 
 Install package from a gzipped tarball 
 
-Download [soft-ngx-0.11.18-beta.tgz](https://github.com/akkaradej/soft-ngx/releases/download/v0.11.18-beta/soft-ngx-0.11.18-beta.tgz) to your project
+Download [soft-ngx-0.13.16-beta.tgz](https://github.com/akkaradej/soft-ngx/releases/download/v0.13.16-beta/soft-ngx-0.13.16-beta.tgz) to your project
 
-`yarn add file:soft-ngx-0.11.18-beta.tgz`
+`yarn add file:soft-ngx-0.13.16-beta.tgz`
+
+Trunks UI now support light theme only. Put data-theme="light" in html tag.
 
 ## Dependencies
 
@@ -15,28 +17,28 @@ softBusy - DefaultBusyComponent style with [Trunks UI](https://github.com/akkara
 softLoading - default loadingClass style with [Trunks UI](https://github.com/akkaradej/trunks-ui)\
 softSkel - Built-in skeleton components style with [Placeholder Loading](https://github.com/zalog/placeholder-loading), [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
-`@import "~placeholder-loading/src/scss/placeholder-loading.scss";`\
-`@import "~trunks-ui/trunks.scss";`
+`@use "placeholder-loading/src/scss/placeholder-loading.scss";`\
+`@use "trunks-ui";`
 
 ### SoftModalModule
 style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
-`@import "~trunks-ui/trunks.scss";`
+`@use "trunks-ui";`
 
 ### SoftPopupModule 
 toast() using [ngx-toastr](https://github.com/scttcper/ngx-toastr)\
 more style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
-`@import "~ngx-toastr/toastr.css;`\
-`@import "~trunks-ui/trunks.scss";`
+`@use "trunks-ui";`
+`@import "ngx-toastr/toastr.css;`\
 
 ### SoftTooltipModule 
 using [tippy.js](https://github.com/atomiks/tippyjs)\
 more style with [Trunks UI](https://github.com/akkaradej/trunks-ui)
 
-`@import "~tippy.js/dist/tippy.css";`\
-`@import "~placeholder-loading/src/scss/placeholder-loading.scss";`\
-`@import "~trunks-ui/trunks.scss";`
+`@use "placeholder-loading/src/scss/placeholder-loading.scss";`\
+`@use "trunks-ui";`
+`@import "tippy.js/dist/tippy.css";`\
 
 
 ## Usage
