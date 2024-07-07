@@ -125,7 +125,7 @@
           &lt;option
             *ngFor="let item of items"
             [ngValue]="item"&gt;
-            {{ item.name }<!---->}
+            {{ item.name }&#125;
           &lt;/option&gt;
         &lt;/select&gt;
       &lt;/div&gt;
@@ -188,9 +188,9 @@
           <strong>(loaded)="previewImage = $event"</strong>
           required/&gt;
 
-        File Name: {{ file?.name }<!---->}
-        File Size: {{ file?.size / 1024 / 1024 }<!---->} MB
-        &lt;img *ngIf="previewImage" src="{{ previewImage }<!---->}"&gt;
+        File Name: {{ file?.name }<!---->&#125;
+        File Size: {{ file?.size / 1024 / 1024 }<!---->&#125; MB
+        &lt;img *ngIf="previewImage" src="{{ previewImage }<!---->&#125;"&gt;
       </pre>
     </div>
   </div>
