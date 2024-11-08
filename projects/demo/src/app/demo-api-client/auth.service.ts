@@ -33,13 +33,9 @@ export class AuthService extends SoftAuthServiceBase { // or implements SoftAuth
   //   super(http, storage, userConfig, userAuthRequestKeyConfig, userAuthResponseKeyConfig);
   // }
 
-  override can: Can;
+  can = {} as Can;
 
-  override getAdditionalAuthData() {
-    return Object.keys(AuthData);
-  }
-
-  override setAuthorize() {
+  override async setAuthorize() {
     this.can.viewTest = true;
   }
 

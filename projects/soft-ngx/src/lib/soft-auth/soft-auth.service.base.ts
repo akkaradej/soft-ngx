@@ -14,8 +14,6 @@ import { WebHttpUrlEncodingCodec } from './encoder';
 })
 export class SoftAuthServiceBase implements SoftAuthServiceInterface {
 
-  public can = {} as any;
-
   protected config: Required<SoftAuthServiceConfig> = {
     authenticationScheme: 'Bearer',
     tokenUrl: '',
@@ -58,7 +56,6 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     }
 
     this.config.refreshTokenUrl = this.config.refreshTokenUrl || this.config.tokenUrl;
-    this.setAuthorize();
   }
 
   /*
@@ -97,8 +94,8 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     await this.storage.removeItem('expires_at');
     await this.storage.removeItem('claims_obj');
     await this.storage.removeItem('granted_scopes');
-    await this.storage.removeItemPersistent('remember_me');
     await this.removeAdditionalAuthData();
+    await this.storage.removeItemPersistent('remember_me');
   }
 
   /*
@@ -241,7 +238,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
       mergeMap((response: AuthData) => from(this.setStorageDependOnRememberMe()).pipe(
         map(() => response)
       )),
-      mergeMap((response: AuthData) => {
+      mergeMap(async (response: AuthData) => {
         if (response) {
           if (!this.config.isOAuth) {
             response.access_token = response[this.authResponseKey.access_token];
@@ -259,17 +256,16 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
 
           // not update storage for customRefreshToken
           if (customRefreshToken) {
-            return of(response);
+            return response;
           }
 
           if (claimsJson) {
             this.storage.setItem('claims_obj', claimsJson);
           }
-          this.storeAccessToken(response.access_token, response.refresh_token, response.expires_in, response.scope);
-          this.setAdditionalAuthData(response);
-          this.setAuthorize();
+
+          await this.storeAccessToken(response.access_token, response.refresh_token, response.expires_in, response.scope);
         }
-        return of(response);
+        return response;
       }),
     );
   }
@@ -305,31 +301,8 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     ];
   }
 
-  // override if any additional auth response data that need to keep
-  getAdditionalAuthData(): string[] {
-    return [];
-  }
-
-  async setAdditionalAuthData(authData: any) {
-    const additional = this.getAdditionalAuthData();
-    for (const prop of additional) {
-      if (authData[prop] != null) {
-        await this.storage.setItem(prop, authData[prop]);
-      } else {
-        await this.storage.removeItem(prop);
-      }
-    }
-  }
-
-  // override to set authorize into this.can
-  setAuthorize() {
-  }
-
+  // override to remove additional auth data
   async removeAdditionalAuthData() {
-    const authData = this.getAdditionalAuthData();
-    for (const data of authData) {
-      await this.storage.removeItem(data);
-    }
   }
 
   private padBase64(base64data: string): string {
