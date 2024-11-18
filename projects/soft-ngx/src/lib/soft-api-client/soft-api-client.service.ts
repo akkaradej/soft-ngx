@@ -142,6 +142,7 @@ export class SoftApiClientService {
       err.ignoreErrorHandler = () => {
         window.clearTimeout(handlerTimeout);
       };
+      this.apiErrorHandlerService.forceHandleError(err);
       return throwError(() => err);
     });
   }
