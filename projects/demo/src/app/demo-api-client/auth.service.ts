@@ -35,10 +35,6 @@ export class AuthService extends SoftAuthServiceBase { // or implements SoftAuth
 
   can = {} as Can;
 
-  override async setAuthorize() {
-    this.can.viewTest = true;
-  }
-
   isSuperAdmin(): Promise<boolean> {
     return this.storage.getBoolean(AuthData.is_super_admin);
   }
