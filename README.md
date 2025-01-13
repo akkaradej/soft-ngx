@@ -1,4 +1,4 @@
-# SoftNgx
+# SoftNgx Standard Storage 
 
 ## Installation
 

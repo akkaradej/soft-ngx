@@ -1,5 +1,5 @@
 {
-  "name": "soft-ngx",
+  "name": "soft-ngx-ss",
   "version": "0.18.3",
   "peerDependencies": {
     "@angular/common": ">=18.0.0",

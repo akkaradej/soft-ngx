@@ -1,5 +1,5 @@
 {
-  "name": "soft-ngx",
+  "name": "soft-ngx-ss",
   "version": "0.0.0",
   "scripts": {
     "start": "bunx ng serve demo",

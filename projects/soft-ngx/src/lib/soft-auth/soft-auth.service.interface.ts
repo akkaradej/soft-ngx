@@ -20,28 +20,28 @@ export interface SoftAuthServiceInterface {
   /*
    * check is logged in or token expires
    */
-  isLoggedIn: () => Promise<boolean>;
+  isLoggedIn: () => boolean;
 
   /*
    * logout remove token by call removeAuthData();
    * override to do more
    */
-  logout(): Promise<void>;
+  logout(): void;
 
   /*
    * remove token and auth data in storage
    */
-  removeAuthData(): Promise<void>;
+  removeAuthData(): void;
 
   /*
    * get access token
    */
-  getAccessToken(): Promise<string | null>;
+  getAccessToken(): string | null;
 
   /*
    * get refresh token
    */
-  getRefreshToken(): Promise<string | null>;
+  getRefreshToken(): string | null;
 
   /*
    * get authentication scheme
