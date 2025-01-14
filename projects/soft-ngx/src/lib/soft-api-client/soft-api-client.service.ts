@@ -59,37 +59,37 @@ export class SoftApiClientService {
   }
 
   get(url: string, params: Params = {}, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
-    return this.requestHelper('Get', url, { body: undefined, params, headers }, isPublic).pipe(
+    return this.requestHelper('get', url, { body: undefined, params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
   post(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
-    return this.requestHelper('Post', url, { body, params, headers }, isPublic).pipe(
+    return this.requestHelper('post', url, { body, params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
   put(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
-    return this.requestHelper('Put', url, { body, params, headers }, isPublic).pipe(
+    return this.requestHelper('put', url, { body, params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
   delete(url: string, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
-    return this.requestHelper('Delete', url, { params, headers }, isPublic).pipe(
+    return this.requestHelper('delete', url, { params, headers }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
   blobGet(url: string, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
-    return this.requestHelper('Get', url, { body: undefined, params, headers, responseType: 'blob' }, isPublic).pipe(
+    return this.requestHelper('get', url, { body: undefined, params, headers, responseType: 'blob' }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
 
   blobPost(url: string, body: any, params?: Params, headers?: HttpHeaders, isPublic?: boolean): Observable<any> {
-    return this.requestHelper('Post', url, { body, params, headers, responseType: 'blob' }, isPublic).pipe(
+    return this.requestHelper('post', url, { body, params, headers, responseType: 'blob' }, isPublic).pipe(
       this.httpErrorHandler(),
     );
   }
@@ -148,7 +148,7 @@ export class SoftApiClientService {
   }
 
   private requestHelper(
-    method: string, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<any> {
+    method: HttpMethod, url: string, options: HttpClientRequestOptions, isPublic?: boolean): Observable<any> {
     url = `${this.config.apiBaseUrl}${url}`;
 
     if (!options.responseType) {
@@ -159,16 +159,7 @@ export class SoftApiClientService {
       options.observe = 'response'; // need whole response
     }
 
-    if (options.params) {
-      // remove url params with undefined
-      options.params = Object.getOwnPropertyNames(options.params)
-        .filter((propName: string) => options.params![propName] !== undefined)
-        .reduce((acc, cur) => {
-          acc[cur] = options.params![cur];
-          return acc;
-        }, {} as { [key: string]: string });
-    }
-
+    this.formatRequest(method, options);
     return this.execute(method, url, options, isPublic);
   }
 
@@ -214,6 +205,34 @@ export class SoftApiClientService {
     );
   }
 
+  private formatRequest(method: HttpMethod, options: HttpClientRequestOptions) {
+    if (options.params) {
+      options.params = Object.getOwnPropertyNames(options.params)
+        // remove url params with undefined
+        .filter((propName: string) => options.params![propName] !== undefined)
+        .reduce((acc, cur) => {
+          const obj = options.params![cur] as any;
+          if (obj instanceof Date) {
+            // format date request params
+            if (this.config.dateRequestFormatter) {
+              acc[cur] = this.config.dateRequestFormatter(obj);
+            } else {
+              acc[cur] = obj.toISOString();
+            }
+          } else {
+            acc[cur] = options.params![cur];
+          }
+          return acc;
+        }, {} as { [key: string]: string });
+    }
+    // body
+    if (method === 'post' || method === 'put') {
+      if (options.body && !(options.body instanceof FormData) && options.responseType !== 'blob') {
+        options.body = this.iterateFormatDate(options.body);
+      }
+    }
+  }
+
   private formatResponse(body: any) {
     if (body !== '') {
       try {
@@ -245,5 +264,24 @@ export class SoftApiClientService {
       formattedHeaders[key.toLowerCase()] = value;
     }
     return formattedHeaders;
+  }
+
+  private iterateFormatDate(obj) {
+    let newObj;
+    if (Array.isArray(obj)) {
+      newObj = [];
+    } else {
+      newObj = {};
+    }
+    Object.keys(obj).forEach(key => {
+      if (obj[key] instanceof Date) {
+        newObj[key] = this.config.dateRequestFormatter(obj[key]);
+      } else if (typeof obj[key] === 'object' && !(obj[key] instanceof FormData) && obj[key]) {
+        newObj[key] = this.iterateFormatDate(obj[key]);
+      } else {
+        newObj[key] = obj[key];
+      }
+    });
+    return newObj;
   }
 }
