@@ -13,7 +13,7 @@ import {
   SoftNgxModule,
 
   // Interceptors
-  SoftAuthInterceptor, DateRequestInterceptor, NoCacheInterceptor,
+  SoftAuthInterceptor, NoCacheInterceptor,
 
   // Config Tokens
   userSoftApiClientConfigToken, userSoftAuthServiceConfigToken, userSoftAuthInterceptorConfigToken,
@@ -156,13 +156,11 @@ const customAuthResponseKey: SoftAuthResponseKey = {
   //// If use own AuthInterceptor, not need authServiceClassForSoftAuthInterceptorToken
   // providers: [
   //   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  //   { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
   //   { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
   // ]
   providers: [
     { provide: authServiceClassForSoftAuthInterceptorToken, useClass: AuthService },
     { provide: HTTP_INTERCEPTORS, useClass: SoftAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
     { provide: userSoftApiClientConfigToken, useFactory: initApiClientConfig },
     { provide: userSoftAsyncUIConfigToken, useFactory: initAsyncUIConfig },

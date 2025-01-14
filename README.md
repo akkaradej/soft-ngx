@@ -175,7 +175,6 @@ const authResponseKey: SoftAuthResponseKey = {
   //// If use own AuthInterceptor, not need authServiceClassForSoftAuthInterceptorToken
   // providers: [
   //   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  //   { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
   //   { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
   // ]
   providers: [
@@ -183,7 +182,6 @@ const authResponseKey: SoftAuthResponseKey = {
     { provide: SoftApiErrorHandlerService, useClass: ApiErrorHandlerService },
     { provide: authServiceClassForSoftAuthInterceptorToken, useClass: AuthService },
     { provide: HTTP_INTERCEPTORS, useClass: SoftAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
     { provide: userSoftApiClientConfigToken, useFactory: initSoftApiClientConfig },
     { provide: userSoftAuthServiceConfigToken, useFactory: initSoftAuthServiceConfig },
