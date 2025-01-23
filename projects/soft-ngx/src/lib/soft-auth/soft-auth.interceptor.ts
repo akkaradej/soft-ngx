@@ -32,12 +32,10 @@ export class SoftAuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return from((async () => {
-      const isLoggedIn = await this.authService.isLoggedIn();
-      const accessToken = await this.authService.getAccessToken();
-      const refreshToken = await this.authService.getRefreshToken();
-      return {isLoggedIn, accessToken, refreshToken}
-    })()).pipe(
+    const isLoggedIn = this.authService.isLoggedIn();
+    const accessToken = this.authService.getAccessToken();
+    const refreshToken = this.authService.getRefreshToken();
+    return of({isLoggedIn, accessToken, refreshToken}).pipe(
       mergeMap(({isLoggedIn, accessToken, refreshToken}) => {
         const customRefreshToken = request.headers.get(SoftAuthHeader.CustomRefreshToken);
         if (request.headers.has(SoftAuthHeader.CustomRefreshToken)) {
@@ -103,10 +101,8 @@ export class SoftAuthInterceptor implements HttpInterceptor {
       }
     }
 
-    return from((async () => {
-      const refreshToken = await this.authService.getRefreshToken();
-      return refreshToken;
-    })()).pipe(
+    const refreshToken = this.authService.getRefreshToken();
+    return of(refreshToken).pipe(
       mergeMap(_refreshToken => {
         // init refresher
         const refreshToken = customRefreshToken || _refreshToken;

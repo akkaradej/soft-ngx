@@ -181,7 +181,7 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
     if (!this.config.refreshTokenUrl) {
       throw new Error('refreshTokenUrl needs to be set');
     }
-    return from(this.getRefreshToken()).pipe(
+    return of(this.getRefreshToken()).pipe(
       mergeMap(_refreshToken => {
         const refreshToken = customRefreshToken || _refreshToken;
         if (!refreshToken) {
