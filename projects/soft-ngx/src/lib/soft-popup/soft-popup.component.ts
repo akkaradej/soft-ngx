@@ -60,8 +60,7 @@ export const softPopupAnimations = [
         (@backdrop.done)="onBackdropAnimationDone($event)"
         (click)="data.type == SoftPopupType.Confirm && !isLoading && onDismiss()"></div>
       <div
-        class="modal-card"
-        style="width: 350px;"
+        class="modal-card _popup-modal-card"
         [@card]="{ value: animationState, params: cardAnimations }"
         (@card.done)="onCardAnimationdropDone($event)">
         <header class="modal-card-head">
@@ -102,6 +101,11 @@ export const softPopupAnimations = [
       </div>
     </div>
   `,
+  styles: [`
+    .modal-card._popup-modal-card {
+      width: 350px;
+    }
+  `],
   animations: softPopupAnimations,
 })
 export class SoftPopupComponent implements SoftDialog {
