@@ -9,7 +9,8 @@ import { userRegisteredSkeletonComponentsToken, userSoftAsyncUIConfigToken } fro
 import { defaultConfig, SoftAsyncUIConfig, SoftSkeletonType } from './soft-async-ui.config';
 
 @Directive({
-  selector: '[softSkel]',
+    selector: '[softSkel]',
+    standalone: false
 })
 export class SoftSkelDirective implements OnChanges {
 

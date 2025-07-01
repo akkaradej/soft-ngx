@@ -3,7 +3,8 @@ import { Subscription } from 'rxjs';
 import { BaseAsyncDisabled } from './base-async-disabled';
 
 @Directive({
-  selector: '[softLoadingBtn]',
+    selector: '[softLoadingBtn]',
+    standalone: false
 })
 export class SoftLoadingBtnDirective extends BaseAsyncDisabled {
 

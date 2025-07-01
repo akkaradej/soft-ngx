@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
-  selector: 'bar-chart-skeleton',
-  template: `
+    selector: 'bar-chart-skeleton',
+    template: `
     <div class="is-flex is-align-end is-justify-evenly">
       <div class="ph-item"
         *ngFor="let barHeight of bars">
@@ -10,12 +10,13 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .ph-item {
       width: 7rem;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BarChartSkeletonComponent {
 

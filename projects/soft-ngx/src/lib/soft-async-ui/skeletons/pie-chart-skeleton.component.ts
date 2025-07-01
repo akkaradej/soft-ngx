@@ -1,13 +1,13 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
-  selector: 'pie-chart-skeleton',
-  template: `
+    selector: 'pie-chart-skeleton',
+    template: `
     <div class="ph-item" [style.width.px]="size" [style.height.px]="size">
       <div class="ph-avatar"></div>
     </div>
  `,
-  styles: [`
+    styles: [`
     .ph-item {
       margin: 0 auto;
     }
@@ -15,7 +15,8 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
       margin-bottom: 0;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PieChartSkeletonComponent {
 

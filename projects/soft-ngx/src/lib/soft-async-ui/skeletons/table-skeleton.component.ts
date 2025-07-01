@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
-  selector: 'table-skeleton',
-  template: `
+    selector: 'table-skeleton',
+    template: `
     <div class="ph-item">
       <div *ngFor="let i of numArray"
         class="ph-col-1"
@@ -23,7 +23,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .ph-item {
       padding: 0 10px;
     }
@@ -42,7 +42,8 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
       margin-bottom: 10px;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TableSkeletonComponent {
   numArray = [1, 2, 3, 4, 5, 6, 7, 8];

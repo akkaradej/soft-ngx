@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-demo-model',
-  templateUrl: './demo-model.component.html',
-  styleUrls: ['./demo-model.component.scss']
+    selector: 'app-demo-model',
+    templateUrl: './demo-model.component.html',
+    styleUrls: ['./demo-model.component.scss'],
+    standalone: false
 })
 export class DemoModelComponent implements OnInit {
 

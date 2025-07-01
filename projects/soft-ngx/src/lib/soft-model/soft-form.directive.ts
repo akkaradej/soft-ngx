@@ -21,7 +21,8 @@ if (!Element.prototype.closest) {
 
 
 @Directive({
-  selector: '[softForm]',
+    selector: '[softForm]',
+    standalone: false
 })
 export class SoftFormDirective {
 

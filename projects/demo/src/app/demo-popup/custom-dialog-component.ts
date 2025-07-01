@@ -3,8 +3,8 @@ import { SoftPopupComponent, SoftDialog } from 'soft-ngx';
 import { softPopupAnimations } from 'projects/soft-ngx/src/lib/soft-popup/soft-popup.component';
 
 @Component({
-  selector: 'app-custom-dialog',
-  template: `
+    selector: 'app-custom-dialog',
+    template: `
     <div [@.disabled]="!isAnimated"
       id="{{ modalId }}"
       class="modal is-active">
@@ -34,8 +34,9 @@ import { softPopupAnimations } from 'projects/soft-ngx/src/lib/soft-popup/soft-p
       <button class="modal-close is-large" (click)="onDismiss()"></button>
     </div>
   `,
-  styles: [],
-  animations: softPopupAnimations,
+    styles: [],
+    animations: softPopupAnimations,
+    standalone: false
 })
 export class CustomDialogComponent extends SoftPopupComponent implements SoftDialog {
 

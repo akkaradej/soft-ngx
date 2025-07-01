@@ -7,7 +7,8 @@ import { BaseAsyncUI } from './base-async-ui';
 import { DefaultBusySpinnerComponent } from './default-busy-spinner/default-busy-spinner.component';
 
 @Directive({
-  selector: '[softBusy]',
+    selector: '[softBusy]',
+    standalone: false
 })
 export class SoftBusyDirective extends BaseAsyncUI implements OnInit, OnChanges, OnDestroy {
 

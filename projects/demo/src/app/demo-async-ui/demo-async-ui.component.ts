@@ -4,9 +4,10 @@ import { EMPTY, of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-demo-async-ui',
-  templateUrl: './demo-async-ui.component.html',
-  styleUrls: ['./demo-async-ui.component.scss']
+    selector: 'app-demo-async-ui',
+    templateUrl: './demo-async-ui.component.html',
+    styleUrls: ['./demo-async-ui.component.scss'],
+    standalone: false
 })
 export class DemoAsyncUIComponent {
   isShow = true;

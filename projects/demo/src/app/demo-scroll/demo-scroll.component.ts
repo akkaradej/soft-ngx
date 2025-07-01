@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SoftScrollService } from 'soft-ngx';
 
 @Component({
-  selector: 'app-demo-scroll',
-  templateUrl: './demo-scroll.component.html',
-  styleUrls: ['./demo-scroll.component.scss']
+    selector: 'app-demo-scroll',
+    templateUrl: './demo-scroll.component.html',
+    styleUrls: ['./demo-scroll.component.scss'],
+    standalone: false
 })
 export class DemoScrollComponent implements OnInit {
 

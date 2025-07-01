@@ -2,12 +2,13 @@ import { Directive, ElementRef, Renderer2, Optional, Host, Input, forwardRef, Ho
 import { SelectControlValueAccessor, NgSelectOption, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-  selector: '[ngModel][softCompareBy]',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => SoftCompareByDirective),
-    multi: true,
-  }],
+    selector: '[ngModel][softCompareBy]',
+    providers: [{
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SoftCompareByDirective),
+            multi: true,
+        }],
+    standalone: false
 })
 export class SoftCompareByDirective extends SelectControlValueAccessor {
 
@@ -29,7 +30,10 @@ export class SoftCompareByDirective extends SelectControlValueAccessor {
   }
 }
 
-@Directive({ selector: 'option' })
+@Directive({
+    selector: 'option',
+    standalone: false
+})
 export class SoftCompareByOptionDirective extends NgSelectOption {
 
   constructor(

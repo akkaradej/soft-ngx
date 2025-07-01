@@ -7,8 +7,8 @@ import { userSoftPopupConfigToken } from '../soft-popup/user-config.token';
 import { SoftPopupConfig, defaultConfig } from '../soft-popup/soft-popup.config';
 
 @Component({
-  selector: 'soft-modal',
-  template: `
+    selector: 'soft-modal',
+    template: `
     <div
       [@.disabled]="!isAnimated"
       id="{{ modalId }}"
@@ -38,7 +38,8 @@ import { SoftPopupConfig, defaultConfig } from '../soft-popup/soft-popup.config'
       </div>
     </div>
   `,
-  animations: softPopupAnimations,
+    animations: softPopupAnimations,
+    standalone: false
 })
 export class SoftModalComponent implements OnInit, OnDestroy {
   @Input() modalClass = '';
@@ -178,8 +179,9 @@ export class SoftModalComponent implements OnInit, OnDestroy {
 
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'modal-title',
-  template: '<ng-content></ng-content>',
+    // tslint:disable-next-line:component-selector
+    selector: 'modal-title',
+    template: '<ng-content></ng-content>',
+    standalone: false
 })
 export class ModalTitleComponent { }

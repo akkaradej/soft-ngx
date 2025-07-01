@@ -5,9 +5,10 @@ import { SoftApiClientService, SoftStorageService } from 'soft-ngx';
 import { AuthService } from './auth.service';
 
 @Component({
-  selector: 'app-demo-api-client',
-  templateUrl: './demo-api-client.component.html',
-  styleUrls: ['./demo-api-client.component.scss']
+    selector: 'app-demo-api-client',
+    templateUrl: './demo-api-client.component.html',
+    styleUrls: ['./demo-api-client.component.scss'],
+    standalone: false
 })
 export class DemoApiClientComponent implements OnInit {
 

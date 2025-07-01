@@ -9,19 +9,20 @@ import {
 } from '@angular/forms';
 
 @Directive({
-  selector: 'input[type="file"][ngModel][softFileModel]',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: SoftFileModelDirective,
-      multi: true,
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: SoftFileModelDirective,
-      multi: true,
-    },
-  ],
+    selector: 'input[type="file"][ngModel][softFileModel]',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: SoftFileModelDirective,
+            multi: true,
+        },
+        {
+            provide: NG_VALIDATORS,
+            useExisting: SoftFileModelDirective,
+            multi: true,
+        },
+    ],
+    standalone: false
 })
 export class SoftFileModelDirective implements ControlValueAccessor, Validator {
 

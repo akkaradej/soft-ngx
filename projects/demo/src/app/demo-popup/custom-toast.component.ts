@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { Toast } from 'ngx-toastr';
 
 @Component({
-  selector: 'custom-toast-component',
-  template: `
+    selector: 'custom-toast-component',
+    template: `
     <div>
       <div>{{ message }}</div>
       <div class="text-right">
@@ -16,26 +16,21 @@ import { Toast } from 'ngx-toastr';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     :host {
       display: block;
     }
   `],
-  animations: [
-    trigger('flyInOut', [
-      state('inactive', style({ opacity: 0 })),
-      state('active', style({ opacity: 1 })),
-      state('removed', style({ opacity: 0 })),
-      transition(
-        'inactive => active',
-        animate('{{ easeTime }}ms {{ easing }}')
-      ),
-      transition(
-        'active => removed',
-        animate('{{ easeTime }}ms {{ easing }}')
-      )
-    ])
-  ],
+    animations: [
+        trigger('flyInOut', [
+            state('inactive', style({ opacity: 0 })),
+            state('active', style({ opacity: 1 })),
+            state('removed', style({ opacity: 0 })),
+            transition('inactive => active', animate('{{ easeTime }}ms {{ easing }}')),
+            transition('active => removed', animate('{{ easeTime }}ms {{ easing }}'))
+        ])
+    ],
+    standalone: false
 })
 export class CustomToastComponent extends Toast {
 

@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'summary-skeleton',
-  template: `
+    selector: 'summary-skeleton',
+    template: `
     <div class="ph-item">
       <div class="ph-col-12">
         <div class="ph-row">
@@ -17,7 +17,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .ph-item {
       padding: 0 10px;
     }
@@ -39,7 +39,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       border-radius: 8px;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SummarySkeletonComponent {
 

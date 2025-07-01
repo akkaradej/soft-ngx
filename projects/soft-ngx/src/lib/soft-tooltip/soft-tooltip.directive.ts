@@ -2,8 +2,9 @@ import { Directive, ElementRef, Output, EventEmitter, OnInit, OnDestroy, Input, 
 import tippy, { Placement } from 'tippy.js';
 
 @Directive({
-  selector: '[softTooltip]',
-  exportAs: 'softTooltip',
+    selector: '[softTooltip]',
+    exportAs: 'softTooltip',
+    standalone: false
 })
 export class SoftTooltipDirective implements OnInit, OnDestroy {
 

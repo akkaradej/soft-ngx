@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
-  selector: 'sample-skeleton',
-  template: `
+    selector: 'sample-skeleton',
+    template: `
     <div class="ph-item">
       <div class="ph-col-12">
         <div class="ph-row">
@@ -14,7 +14,8 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
       </div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SampleSkeletonComponent {
 

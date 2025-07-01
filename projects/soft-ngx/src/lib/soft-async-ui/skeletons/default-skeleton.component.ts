@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'default-skeleton',
-  template: `
+    selector: 'default-skeleton',
+    template: `
     <div class="ph-item">
       <div class="ph-col-12">
         <div class="ph-picture"></div>
@@ -19,7 +19,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       </div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DefaultSkeletonComponent {
 

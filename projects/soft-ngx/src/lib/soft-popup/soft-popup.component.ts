@@ -48,8 +48,8 @@ export const softPopupAnimations = [
 ];
 
 @Component({
-  selector: 'soft-popup',
-  template: `
+    selector: 'soft-popup',
+    template: `
     <div
       [@.disabled]="!isAnimated"
       id="{{ modalId }}"
@@ -102,7 +102,8 @@ export const softPopupAnimations = [
       </div>
     </div>
   `,
-  animations: softPopupAnimations,
+    animations: softPopupAnimations,
+    standalone: false
 })
 export class SoftPopupComponent implements SoftDialog {
 

@@ -7,9 +7,10 @@ import { CustomDialogComponent } from './custom-dialog-component';
 import { CustomToastComponent } from './custom-toast.component';
 
 @Component({
-  selector: 'app-demo-popup',
-  templateUrl: './demo-popup.component.html',
-  styleUrls: ['./demo-popup.component.scss']
+    selector: 'app-demo-popup',
+    templateUrl: './demo-popup.component.html',
+    styleUrls: ['./demo-popup.component.scss'],
+    standalone: false
 })
 export class DemoPopupComponent implements OnInit {
   products = [{ name: 'Product A' }, { name: 'Product B' }];
