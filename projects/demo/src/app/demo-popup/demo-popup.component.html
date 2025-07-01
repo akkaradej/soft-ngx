@@ -13,74 +13,74 @@
           <li>- simple alert, non-block popup</li>
           <li>- default autoClose = true (except danger color)</li>
           <li>- default position = bottom-left (top-full-width for danger color)
-          <li>- all position values = [top or bottom]-[left or right or center or full-width]
-        </ul>
-        <button
-          class="button"
-          (click)="toast()"
-        >
-          Toast
-        </button>
-      </div>
-      <pre>
-      {{'
-        # html
-        &lt;button 
-          class="button" 
-          (click)="toast()"
-        &gt;
-          Toast
-        &lt;/button&gt;
+            <li>- all position values = [top or bottom]-[left or right or center or full-width]
+            </ul>
+            <button
+              class="button"
+              (click)="toast()"
+              >
+              Toast
+            </button>
+          </div>
+          <pre>
+            {{'
+            # html
+            &lt;button
+            class="button"
+            (click)="toast()"
+            &gt;
+            Toast
+            &lt;/button&gt;
 
-        # ts
-        toast() {
-          this.popupService.toast(\'I\\\'m Important Toast\', \'danger\')
+            # ts
+            toast() {
+            this.popupService.toast(\'I\\\'m Important Toast\', \'danger\')
             .onHidden.subscribe(() => {
-              console.log(\'dismiss\');
+            console.log(\'dismiss\');
             });
-        
-          this.popupService.toast(\'I\\\'m Custom Toast\', \'info\', false, \'bottom-left\', CustomToastComponent)
+
+            this.popupService.toast(\'I\\\'m Custom Toast\', \'info\', false, \'bottom-left\', CustomToastComponent)
             .onAction.subscribe(remove => {
-              window.setTimeout(() => {
-                remove();
-              }, 1000);
+            window.setTimeout(() => {
+            remove();
+            }, 1000);
             });
-          
-          this.popupService.toast(\'I\\\'m Simple Toast\', \'success\');
-        }
-      '}}
-      </pre>
-    </div>
 
-    <div class="box">
-      <div class="block">
-        <h3 class="subtitle">
-          Alert
-        </h3>
-        <ul class="block">
-          <li>- optional to subscribe to be notified when dismiss</li>
-        </ul>
-        <button
-          class="button"
-          (click)="alert()"
-        >
-          Alert
-        </button>
+            this.popupService.toast(\'I\\\'m Simple Toast\', \'success\');
+          }
+          '}}
+        </pre>
       </div>
-      <pre>
-      {{'
-        # html
-        &lt;button class="button" 
-          (click)="alert()"
-        &gt;
-          Alert
-        &lt;/button&gt;
 
-        # ts
-        alert() {
+      <div class="box">
+        <div class="block">
+          <h3 class="subtitle">
+            Alert
+          </h3>
+          <ul class="block">
+            <li>- optional to subscribe to be notified when dismiss</li>
+          </ul>
+          <button
+            class="button"
+            (click)="alert()"
+            >
+            Alert
+          </button>
+        </div>
+        <pre>
+          {{'
+          # html
+          &lt;button class="button"
+          (click)="alert()"
+          &gt;
+          Alert
+          &lt;/button&gt;
+
+          # ts
+          alert() {
           '}}<strong>{{'this.popupService.alert'}}</strong>{{'(\'Hi! Everybody\', \'I\\\'m Alert Popup\', \'primary\');
         }
-      '}}
+        '}}
       </pre>
     </div>
 
@@ -96,25 +96,25 @@
           <button
             class="button"
             (click)="confirm()"
-          >
+            >
             Confirm
           </button>
           <button
             class="button"
             (click)="confirmActionSubLoading()"
-          >
+            >
             Confirm actionSub loading
           </button>
           <button
             class="button"
             (click)="confirmManualLoadingClose()"
-          >
+            >
             Confirm manual loading/close
           </button>
           <button
             class="button"
             (click)="confirmCustomText()"
-          >
+            >
             Custom Text
             <small>&nbsp;(and Agree at 2nd)</small>
           </button>
@@ -123,35 +123,35 @@
       <pre>
         # ts
         confirm() &#123;
-          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
-            .subscribe(result => &#123;
-              if (result) &#123;
-                window.alert('Sure!');
-              &#125;
-            &#125;);
+        <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
+        .subscribe(result => &#123;
+        if (result) &#123;
+        window.alert('Sure!');
+        &#125;
+        &#125;);
         &#125;
 
         confirmActionSubLoading() &#123;
-          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
-            .subscribe(result => &#123;
-              if (result) &#123;
-                result.actionSub = of(true).pipe(delay(1000)).subscribe();
-              &#125;
-            &#125;);
+        <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning')
+        .subscribe(result => &#123;
+        if (result) &#123;
+        result.actionSub = of(true).pipe(delay(1000)).subscribe();
+        &#125;
+        &#125;);
         &#125;
 
         confirmManualLoadingClose() &#123;
-          <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning', 'Sure', 'Not Sure', false)
-            .subscribe(result => &#123;
-              if (result) &#123;
-                result.loading();
-                of(true).pipe(delay(1000)).subscribe(() => &#123;
-                  result.close();
-                &#125;);
-              &#125;
-            &#125;);
+        <strong>this.popupService.confirm</strong>('Are your sure?', '', 'warning', 'Sure', 'Not Sure', false)
+        .subscribe(result => &#123;
+        if (result) &#123;
+        result.loading();
+        of(true).pipe(delay(1000)).subscribe(() => &#123;
+        result.close();
+        &#125;);
         &#125;
-    </pre>
+        &#125;);
+        &#125;
+      </pre>
     </div>
 
     <div class="box">
@@ -163,43 +163,44 @@
           <li>- like confirm with preset of deletion message, just give the name of deleted item</li>
         </ul>
         <ul class="is-spacing">
-          <li
-            *ngFor="let product of products"
-            class="is-spacing is-horizontal"
-          >
-            <span>{{ product.name }} -</span>
-            <button
-              class="button"
-              (click)="delete(product)"
-            >Confirm Delete</button>
-          </li>
+          @for (product of products; track product) {
+            <li
+              class="is-spacing is-horizontal"
+              >
+              <span>{{ product.name }} -</span>
+              <button
+                class="button"
+                (click)="delete(product)"
+              >Confirm Delete</button>
+            </li>
+          }
         </ul>
       </div>
       <pre>
-      # html
-      &lt;ul&gt;
+        # html
+        &lt;ul&gt;
         &lt;li *ngFor="let product of products"&gt;
-          &#123;&#123; product.name &#125;<!--  -->&#125; -
-          &lt;button class="button" 
-            (click)="delete(product)"&gt;
-            Confirm Delete
-          &lt;/button&gt;
+        &#123;&#123; product.name &#125;<!--  -->&#125; -
+        &lt;button class="button"
+        (click)="delete(product)"&gt;
+        Confirm Delete
+        &lt;/button&gt;
         &lt;/li&gt;
-      &lt;/ul&gt;
+        &lt;/ul&gt;
 
-      # ts
-      products = [&#123; name: 'Product A' &#125;, &#123; name: 'Product B' &#125;];
+        # ts
+        products = [&#123; name: 'Product A' &#125;, &#123; name: 'Product B' &#125;];
 
-      delete(product: any) &#123;
+        delete(product: any) &#123;
         <strong>this.popupService.confirmDelete</strong>(product.name)
-          .subscribe(result => &#123;
-            if (result) &#123;
-              this.products.splice(this.products.indexOf(product), 1);
-            &#125;
-          &#125;);
-      &#125;
-        
-    </pre>
+        .subscribe(result => &#123;
+        if (result) &#123;
+        this.products.splice(this.products.indexOf(product), 1);
+        &#125;
+        &#125;);
+        &#125;
+
+      </pre>
     </div>
 
     <div class="box">
@@ -213,26 +214,26 @@
         <button
           class="button"
           (click)="custom()"
-        >
+          >
           Custom
         </button>
       </div>
       <pre>
         # html
-        &lt;button class="button" 
-          (click)="custom()"
+        &lt;button class="button"
+        (click)="custom()"
         &gt;
-          Custom
+        Custom
         &lt;/button&gt;
 
         # ts
         confirm() &#123;
-          <strong>this.popupService.custom</strong>(CustomDialogComponent, &#123; say: 'hello' &#125;
-            .subscribe(result => &#123;
-              if (result) &#123;
-                window.alert('Sure!');
-              &#125;
-            &#125;);
+        <strong>this.popupService.custom</strong>(CustomDialogComponent, &#123; say: 'hello' &#125;
+        .subscribe(result => &#123;
+        if (result) &#123;
+        window.alert('Sure!');
+        &#125;
+        &#125;);
         &#125;
       </pre>
     </div>

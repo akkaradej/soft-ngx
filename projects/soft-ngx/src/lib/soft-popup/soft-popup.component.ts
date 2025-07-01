@@ -58,7 +58,7 @@ export const softPopupAnimations = [
         class="modal-background"
         [@backdrop]="{ value: animationState, params: backdropAnimations }"
         (@backdrop.done)="onBackdropAnimationDone($event)"
-        (click)="data.type == SoftPopupType.Confirm && !isLoading && onDismiss()"></div>
+      (click)="data.type == SoftPopupType.Confirm && !isLoading && onDismiss()"></div>
       <div
         class="modal-card"
         style="width: 350px;"
@@ -69,39 +69,45 @@ export const softPopupAnimations = [
             [class.push-0]="data.type != SoftPopupType.Confirm">
             {{ data.title }}
           </p>
-          <button 
-            *ngIf="data.type == SoftPopupType.Confirm"
-            type="button" class="delete" aria-label="close"
-            [style.pointer-events]="closeButtonPointerEvents()"
-            (click)="onDismiss()">
-          </button>
+          @if (data.type == SoftPopupType.Confirm) {
+            <button
+              type="button" class="delete" aria-label="close"
+              [style.pointer-events]="closeButtonPointerEvents()"
+              (click)="onDismiss()">
+            </button>
+          }
         </header>
         <section class="modal-card-body text-center">
-          <p *ngIf="data.message" class="block is-pre-wrap">{{ data.message }}</p>
-          <div *ngIf="data.type == SoftPopupType.Alert">
-            <button 
-              class="button is-fat is-{{ data.colorVar }}" 
-              [class.is-loading]="isLoading"
+          @if (data.message) {
+            <p class="block is-pre-wrap">{{ data.message }}</p>
+          }
+          @if (data.type == SoftPopupType.Alert) {
+            <div>
+              <button
+                class="button is-fat is-{{ data.colorVar }}"
+                [class.is-loading]="isLoading"
               (click)="onConfirm()">{{ data.agreeText }}</button>
-          </div>
-          <div 
-            *ngIf="data.type == SoftPopupType.Confirm" 
-            class="buttons is-centered"
-            [class.is-flex-row-reverse]="!data.isAgreeFirst">
-            <button 
-              class="button is-fat is-{{ data.colorVar }}"
-              [class.is-loading]="isLoading"
+            </div>
+          }
+          @if (data.type == SoftPopupType.Confirm) {
+            <div
+              class="buttons is-centered"
+              [class.is-flex-row-reverse]="!data.isAgreeFirst">
+              <button
+                class="button is-fat is-{{ data.colorVar }}"
+                [class.is-loading]="isLoading"
               (click)="onConfirm()">{{ data.agreeText }}</button>
-            &nbsp;
-            <button 
-              class="button is-fat is-light" 
-              [disabled]="isLoading"
+              &nbsp;
+              <button
+                class="button is-fat is-light"
+                [disabled]="isLoading"
               (click)="onDismiss()">{{ data.disagreeText }}</button>
-          </div>
+            </div>
+          }
         </section>
       </div>
     </div>
-  `,
+    `,
     animations: softPopupAnimations,
     standalone: false
 })

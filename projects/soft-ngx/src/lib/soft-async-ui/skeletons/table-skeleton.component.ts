@@ -4,25 +4,27 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
     selector: 'table-skeleton',
     template: `
     <div class="ph-item">
-      <div *ngFor="let i of numArray"
-        class="ph-col-1"
-        [class.is-hidden-mobile]="i > mobileNum">
-        <div class="ph-row">
-          <div class="ph-col-12 big"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
-          <div class="ph-col-12"></div>
+      @for (i of numArray; track i) {
+        <div
+          class="ph-col-1"
+          [class.is-hidden-mobile]="i > mobileNum">
+          <div class="ph-row">
+            <div class="ph-col-12 big"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+            <div class="ph-col-12"></div>
+          </div>
         </div>
-      </div>
+      }
     </div>
-  `,
+    `,
     styles: [`
     .ph-item {
       padding: 0 10px;

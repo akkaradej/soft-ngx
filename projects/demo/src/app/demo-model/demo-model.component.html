@@ -14,7 +14,7 @@
       <form
         class="block"
         (softForm)="save($event)"
-      >
+        >
         <div class="field">
           <div class="control">
             <input
@@ -22,7 +22,7 @@
               class="input"
               ngModel
               required
-            >
+              >
           </div>
         </div>
         <button class="button">Submit</button>
@@ -37,48 +37,50 @@
 
         <soft-modal #modal>
           <modal-title>Required input #2</modal-title>
-          <form
-            (softForm)="save($event)"
-            *ngIf="modal.isOpen"
-          >
-            <div
-              class="field"
-              *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"
-            >
-              <div class="control">
-                <input
-                  name="first-{{ i }}"
-                  class="input"
-                  ngModel
-                  [required]="i === 2"
-                  placeholder="{{ i }}#"
-                >
+          @if (modal.isOpen) {
+            <form
+              (softForm)="save($event)"
+              >
+              @for (i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; track i) {
+                <div
+                  class="field"
+                  >
+                  <div class="control">
+                    <input
+                      name="first-{{ i }}"
+                      class="input"
+                      ngModel
+                      [required]="i === 2"
+                      placeholder="{{ i }}#"
+                      >
+                  </div>
+                </div>
+              }
+              <div class="buttons is-centered">
+                <button class="button">Submit</button>
               </div>
-            </div>
-            <div class="buttons is-centered">
-              <button class="button">Submit</button>
-            </div>
-          </form>
+            </form>
+          }
         </soft-modal>
       </div>
 
       <pre class="block">
-      # html
-      &lt;form <strong>(softForm)="save($event)"</strong>&gt;
+        # html
+        &lt;form <strong>(softForm)="save($event)"</strong>&gt;
         &lt;div class="field"&gt;
-          &lt;div class="control"&gt;
-            &lt;input name="first" class="input" ngModel required&gt;
-          &lt;/div&gt;
+        &lt;div class="control"&gt;
+        &lt;input name="first" class="input" ngModel required&gt;
         &lt;/div&gt;
-      &lt;/form&gt;
+        &lt;/div&gt;
+        &lt;/form&gt;
 
-      # ts
-      save(form) &#123;
+        # ts
+        save(form) &#123;
         if (form.invalid) &#123;
-          return;
+        return;
         &#125;
         // do after form valid
-      &#125;
+        &#125;
       </pre>
 
     </div>
@@ -97,43 +99,44 @@
             name="items"
             [(ngModel)]="selectedItem"
             [softCompareBy]="'id'"
-          >
+            >
             <option
               [disabled]="true"
               [hidden]="true"
               [ngValue]="undefined"
             >-- select --</option>
-            <option
-              *ngFor="let item of items"
-              [ngValue]="item"
-            >
-              {{ item.name }}
-            </option>
+            @for (item of items; track item) {
+              <option
+                [ngValue]="item"
+                >
+                {{ item.name }}
+              </option>
+            }
           </select>
         </div>
       </div>
       <pre>
-      # html
-      &lt;div class="select"&gt;
+        # html
+        &lt;div class="select"&gt;
         &lt;select
-          name="items"
-          [(ngModel)]="selectedItem"
-          <strong
-          >[softCompareBy]="'id'"</strong>
+        name="items"
+        [(ngModel)]="selectedItem"
+        <strong
+        >[softCompareBy]="'id'"</strong>
         &gt;
-          &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
-          &lt;option
-            *ngFor="let item of items"
-            [ngValue]="item"&gt;
-            &#123;&#123; item.name &#125;<!-- -->&#125;
-          &lt;/option&gt;
+        &lt;option [disabled]="true" [hidden]="true" [ngValue]="undefined"&gt;-- select --&lt;/option&gt;
+        &lt;option
+        *ngFor="let item of items"
+        [ngValue]="item"&gt;
+        &#123;&#123; item.name &#125;<!-- -->&#125;
+        &lt;/option&gt;
         &lt;/select&gt;
-      &lt;/div&gt;
+        &lt;/div&gt;
 
-      # ts
-      items = [&#123; id: 1, name: 'item 1' &#125;, &#123; id: 2, name: 'item 2' &#125;, &#123; id: 3, name: 'item 3' &#125;];
-      selectedItem = &#123; id: 2, whatever: 'just matched with id' &#125;;
-    </pre>
+        # ts
+        items = [&#123; id: 1, name: 'item 1' &#125;, &#123; id: 2, name: 'item 2' &#125;, &#123; id: 3, name: 'item 3' &#125;];
+        selectedItem = &#123; id: 2, whatever: 'just matched with id' &#125;;
+      </pre>
     </div>
 
 
@@ -153,7 +156,7 @@
           #form="ngForm"
           (ngSubmit)="upload(form)"
           [class.submitted]="form.submitted"
-        >
+          >
           [maxSize]="1" (MB)
           <input
             type="file"
@@ -165,28 +168,30 @@
             [maxSize]="1"
             (loaded)="previewImage = $event"
             required
-          />
+            />
           <p>File Name: {{ file?.name }}</p>
           <p>File Size: {{ file?.size / 1024 / 1024 }} MB</p>
-          <div *ngIf="previewImage ">
-            <img
-              class="brick"
-              src="{{ previewImage }}"
-            >
-          </div>
+          @if (previewImage ) {
+            <div>
+              <img
+                class="brick"
+                src="{{ previewImage }}"
+                >
+            </div>
+          }
           <button class="button">Submit</button>
         </form>
       </div>
       <pre>
         &lt;<strong>input type="file"</strong>
-          class="input"
-          name="file"
-          accept="image/*"
-          <strong>softFileModel</strong>
-          <strong>[(ngModel)]="file"</strong>
-          <strong>[maxSize]="1"</strong>
-          <strong>(loaded)="previewImage = $event"</strong>
-          required/&gt;
+        class="input"
+        name="file"
+        accept="image/*"
+        <strong>softFileModel</strong>
+        <strong>[(ngModel)]="file"</strong>
+        <strong>[maxSize]="1"</strong>
+        <strong>(loaded)="previewImage = $event"</strong>
+        required/&gt;
 
         File Name: {{ file?.name }<!---->&#125;
         File Size: {{ file?.size / 1024 / 1024 }<!---->&#125; MB

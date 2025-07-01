@@ -4,12 +4,14 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
     selector: 'bar-chart-skeleton',
     template: `
     <div class="is-flex is-align-end is-justify-evenly">
-      <div class="ph-item"
-        *ngFor="let barHeight of bars">
-        <div class="ph-picture" [style.height.px]="barHeight"></div>
-      </div>
+      @for (barHeight of bars; track barHeight) {
+        <div class="ph-item"
+          >
+          <div class="ph-picture" [style.height.px]="barHeight"></div>
+        </div>
+      }
     </div>
-  `,
+    `,
     styles: [`
     .ph-item {
       width: 7rem;

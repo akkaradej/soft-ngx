@@ -9,14 +9,16 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
           <div class="ph-col-12 _total"></div>
         </div>
       </div>
-      <div *ngFor="let i of [1,2,3,4,5]"
-        class="ph-col-2">
-        <div class="ph-row">
-          <div class="ph-col-12 _status"></div>
+      @for (i of [1,2,3,4,5]; track i) {
+        <div
+          class="ph-col-2">
+          <div class="ph-row">
+            <div class="ph-col-12 _status"></div>
+          </div>
         </div>
-      </div>
+      }
     </div>
-  `,
+    `,
     styles: [`
     .ph-item {
       padding: 0 10px;

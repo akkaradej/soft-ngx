@@ -31,267 +31,268 @@
 
       .parent
       <div class="parent box">
-        <div
-          *ngIf="isShow"
-          [softBusy]="busy"
-          [busyDelay]="delay"
-          [busyContainer]="container"
-          [busyContainerMinHeight]="minHeight"
-        >
-          <br> Long loading content
-          <br>
-          <br>
+        @if (isShow) {
+          <div
+            [softBusy]="busy"
+            [busyDelay]="delay"
+            [busyContainer]="container"
+            [busyContainerMinHeight]="minHeight"
+            >
+            <br> Long loading content
+              <br>
+                <br>
+                </div>
+              }
+              <div>Some Content</div>
+            </div>
+
+            <div class="block is-spacing is-horizontal">
+              <label>Loading:</label>
+              <input
+                type="number"
+                [(ngModel)]="loadingTime"
+                (ngModelChange)="destroyContent()"
+                />
+
+              <label>Delay:</label>
+              <input
+                type="number"
+                [(ngModel)]="delay"
+                (ngModelChange)="destroyContent()"
+                />
+
+              <button
+                class="button is-primary"
+                [disabled]="!isShow"
+                (click)="load()"
+              >Load</button>
+
+              <button
+                class="button"
+                [class.is-primary]="!isShow"
+                [class.is-danger]="isShow"
+                (click)="toggle()"
+              >{{ isShow ? 'Destroy' : 'Create' }} Content</button>
+            </div>
+
+            <div class="block is-horizontal">
+              <div class="block is-horizontal">
+                <label class="brick">Container:</label>
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="container"
+                    [value]="undefined"
+                    [(ngModel)]="container"
+                    (ngModelChange)="destroyContent()"
+                    />
+                  <span>self</span>
+                </label>
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="container"
+                    [value]="'.parent'"
+                    [(ngModel)]="container"
+                    (ngModelChange)="destroyContent()"
+                    />
+                  <span>.parent</span>
+                </label>
+              </div>
+
+              <div class="block is-horizontal">
+                <label class="brick">Container Min Height:</label>
+                <input
+                  type="number"
+                  [(ngModel)]="minHeight"
+                  (ngModelChange)="destroyContent()"
+                  />
+              </div>
+            </div>
+
+            <pre>
+              # html
+              &lt;div <strong>
+              [softBusy]="busy"
+              [busyDelay]="delay"
+              [busyContainer]="container"
+              [busyContainerMinHeight]="minHeight"
+              [busyComponent]="customSpinnerComponent" // example
+              [busyData]="&#123; text: 'Please Wait...' &#125;"  // example
+            </strong>&gt;
+            Long loading content
+            &lt;/div&gt;
+
+            # ts
+            load() &#123;
+            this.busy = of(&#123;&#125;).pipe(delay(this.loadingTime)).subscribe();
+            &#125;
+          </pre>
         </div>
-        <div>Some Content</div>
-      </div>
 
-      <div class="block is-spacing is-horizontal">
-        <label>Loading:</label>
-        <input
-          type="number"
-          [(ngModel)]="loadingTime"
-          (ngModelChange)="destroyContent()"
-        />
+        <div class="box">
+          <h3 class="subtitle">
+            softSkel
+          </h3>
+          <ul class="block">
+            <li>- skeleton/placeholder loading apply to container</li>
+            <li>- remove content at inital state like *ngIf</li>
+            <li>- bring content back when finished</li>
+            <li>- give a subscription to determine loading state</li>
+            <li>- give a registered type or a template ref, otherwise default skeleton will show</li>
+            <li>- give a context object to pass custom data</li>
+            <li>- built-in types are:</li>
+            <li class="push-left-1"> > 'bar-chart' with context: &#123; count: number &#125;</li>
+            <li class="push-left-1"> > 'pie-chart' with context: &#123; size: number &#125;</li>
+            <li class="push-left-1"> > 'summary'</li>
+            <li class="push-left-1"> > 'table'</li>
+            <li>- there are 2 ways to register new type:</li>
+            <li class="push-left-1"> > option 1 - add SoftSkeletonType to userRegisteredSkeletonComponentsToken</li>
+            <li class="push-left-1"> > option 2 - add SoftSkeletonType to SoftAsyncUIModule.forRoot() at 2nd parameter</li>
+            <li>- config</li>
+            <li class="push-left-1">> default skelDelay=300ms</li>
+            <li class="push-left-1">> default skelMinDisplayTime=400ms</li>
+          </ul>
 
-        <label>Delay:</label>
-        <input
-          type="number"
-          [(ngModel)]="delay"
-          (ngModelChange)="destroyContent()"
-        />
 
-        <button
-          class="button is-primary"
-          [disabled]="!isShow"
-          (click)="load()"
-        >Load</button>
+          <div class="box">
+            <p>*softSkel="dataSub; delay: 0" (instant display)</p>
+            <div *softSkel="dataSub; delay: 0; type: 'sample'; context: { count: 2 }">
+              <p>long loading content</p>
+              <p>content content content content content content</p>
+            </div>
+          </div>
+          <div class="box">
+            <p>*softSkel (default delay)</p>
+            <div *softSkel="dataSub; type: 'sample'; context: { count: 2 }">
+              <p>long loading content</p>
+              <p>content content content content content content</p>
+            </div>
+          </div>
+          <div class="buttons">
+            <button
+              class="button"
+              (click)="getData()"
+              >
+              Load
+            </button>
+          </div>
+          <pre>
+            # html
+            &lt;div class="box"&gt;
+            &lt;div <strong>*softSkel="dataSub; type: 'sample'; context: &#123; count: 2 &#125;"</strong>&gt;
+            &lt;p>long loading content&lt;/p&gt;
+            &lt;p>content content content content content content&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;button
+            class="button"
+            (click)="getData()"
+            &gt;
+            Click here
+            &lt;/button&gt;
 
-        <button
-          class="button"
-          [class.is-primary]="!isShow"
-          [class.is-danger]="isShow"
-          (click)="toggle()"
-        >{{ isShow ? 'Destroy' : 'Create' }} Content</button>
-      </div>
-
-      <div class="block is-horizontal">
-        <div class="block is-horizontal">
-          <label class="brick">Container:</label>
-          <label class="radio">
-            <input
-              type="radio"
-              name="container"
-              [value]="undefined"
-              [(ngModel)]="container"
-              (ngModelChange)="destroyContent()"
-            />
-            <span>self</span>
-          </label>
-          <label class="radio">
-            <input
-              type="radio"
-              name="container"
-              [value]="'.parent'"
-              [(ngModel)]="container"
-              (ngModelChange)="destroyContent()"
-            />
-            <span>.parent</span>
-          </label>
+            # ts
+            getData() &#123;
+            this.dataSub = of(&#123;&#125;).pipe(delay(3000)).subscribe();
+            &#125;
+          </pre>
         </div>
 
-        <div class="block is-horizontal">
-          <label class="brick">Container Min Height:</label>
-          <input
-            type="number"
-            [(ngModel)]="minHeight"
-            (ngModelChange)="destroyContent()"
-          />
+
+        <div class="box">
+          <h3 class="subtitle">
+            softLoading & softLoadingBtn & softDisabled
+          </h3>
+          <ul class="block">
+            <li>- loading/disabled state apply to element e.g. button</li>
+            <li>- give a subscription or promise or boolean to determine loading/disabled state</li>
+            <li>- loading state apply both loading/disabled to element</li>
+            <li>- softLoadingBtn apply loading only clicked element.</li>
+            <li>- existing disabled property is not affected (still disabled)</li>
+          </ul>
+          <div class="buttons">
+            <button
+              class="button"
+              [softLoading]="loadingSub"
+              (click)="testLoading()"
+              >
+              softLoading
+            </button>
+            <button
+              class="button"
+              [softLoadingBtn]="loadingSub"
+              (click)="testLoading()"
+              >
+              softLoadingBtn
+            </button>
+            <button
+              class="button"
+              [softLoadingBtn]="loadingSub"
+              (click)="testLoading()"
+              >
+              another softLoadingBtn
+            </button>
+            <button
+              class="button"
+              [softDisabled]="loadingSub"
+              >
+              softDisabled
+            </button>
+            <button
+              class="button"
+              [softDisabled]="loadingSub"
+              disabled
+              >
+              softDisabled with disabled
+            </button>
+          </div>
+          <pre>
+            # html
+            &lt;button
+            class="button"
+            <strong>[softLoading]="loadingSub"</strong>
+            (click)="testLoading()"
+            &gt;
+            softLoading
+            &lt;/button&gt;
+
+            &lt;button
+            class="button"
+            <strong>[softLoadingBtn]="loadingSub"</strong>
+            (click)="testLoading()"
+            &gt;
+            softLoadingBtn
+            &lt;/button&gt;
+
+            &lt;button
+            class="button"
+            <strong>[softLoadingBtn]="loadingSub"</strong>
+            (click)="testLoading()"
+            &gt;
+            another softLoadingBtn
+            &lt;/button&gt;
+
+            &lt;button
+            class="button"
+            <strong>[softDisabled]="loadingSub"</strong>
+            &gt;
+            softDisabled
+            &lt;/button&gt;
+
+            &lt;button
+            class="button"
+            <strong>[softDisabled]="loadingSub"</strong>
+            disabled
+            &gt;
+            softDisabled with disabled
+            &lt;/button&gt;
+
+            # ts
+            testLoading() &#123;
+            this.loadingSub = of(&#123;&#125;).pipe(delay(3000)).subscribe();
+            &#125;
+          </pre>
         </div>
       </div>
-
-      <pre>
-      # html
-      &lt;div <strong>
-        [softBusy]="busy"
-        [busyDelay]="delay"
-        [busyContainer]="container"
-        [busyContainerMinHeight]="minHeight"
-        [busyComponent]="customSpinnerComponent" // example
-        [busyData]="&#123; text: 'Please Wait...' &#125;"  // example
-      </strong>&gt;
-        Long loading content
-      &lt;/div&gt;
-
-      # ts
-      load() &#123;
-        this.busy = of(&#123;&#125;).pipe(delay(this.loadingTime)).subscribe();
-      &#125;
-    </pre>
-    </div>
-
-    <div class="box">
-      <h3 class="subtitle">
-        softSkel
-      </h3>
-      <ul class="block">
-        <li>- skeleton/placeholder loading apply to container</li>
-        <li>- remove content at inital state like *ngIf</li>
-        <li>- bring content back when finished</li>
-        <li>- give a subscription to determine loading state</li>
-        <li>- give a registered type or a template ref, otherwise default skeleton will show</li>
-        <li>- give a context object to pass custom data</li>
-        <li>- built-in types are:</li>
-        <li class="push-left-1"> > 'bar-chart' with context: &#123; count: number &#125;</li>
-        <li class="push-left-1"> > 'pie-chart' with context: &#123; size: number &#125;</li>
-        <li class="push-left-1"> > 'summary'</li>
-        <li class="push-left-1"> > 'table'</li>
-        <li>- there are 2 ways to register new type:</li>
-        <li class="push-left-1"> > option 1 - add SoftSkeletonType to userRegisteredSkeletonComponentsToken</li>
-        <li class="push-left-1"> > option 2 - add SoftSkeletonType to SoftAsyncUIModule.forRoot() at 2nd parameter</li>
-        <li>- config</li>
-        <li class="push-left-1">> default skelDelay=300ms</li>
-        <li class="push-left-1">> default skelMinDisplayTime=400ms</li>
-      </ul>
-
-
-      <div class="box">
-        <p>*softSkel="dataSub; delay: 0" (instant display)</p>
-        <div *softSkel="dataSub; delay: 0; type: 'sample'; context: { count: 2 }">
-          <p>long loading content</p>
-          <p>content content content content content content</p>
-        </div>
-      </div>
-      <div class="box">
-        <p>*softSkel (default delay)</p>
-        <div *softSkel="dataSub; type: 'sample'; context: { count: 2 }">
-          <p>long loading content</p>
-          <p>content content content content content content</p>
-        </div>
-      </div>
-      <div class="buttons">
-        <button
-          class="button"
-          (click)="getData()"
-        >
-          Load
-        </button>
-      </div>
-      <pre>
-      # html
-      &lt;div class="box"&gt;
-        &lt;div <strong>*softSkel="dataSub; type: 'sample'; context: &#123; count: 2 &#125;"</strong>&gt;
-          &lt;p>long loading content&lt;/p&gt;
-          &lt;p>content content content content content content&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;button
-        class="button"
-        (click)="getData()"
-      &gt;
-        Click here
-      &lt;/button&gt;
-
-      # ts
-      getData() &#123;
-        this.dataSub = of(&#123;&#125;).pipe(delay(3000)).subscribe();
-      &#125;
-      </pre>
-    </div>
-
-
-    <div class="box">
-      <h3 class="subtitle">
-        softLoading & softLoadingBtn & softDisabled
-      </h3>
-      <ul class="block">
-        <li>- loading/disabled state apply to element e.g. button</li>
-        <li>- give a subscription or promise or boolean to determine loading/disabled state</li>
-        <li>- loading state apply both loading/disabled to element</li>
-        <li>- softLoadingBtn apply loading only clicked element.</li>
-        <li>- existing disabled property is not affected (still disabled)</li>
-      </ul>
-      <div class="buttons">
-        <button
-          class="button"
-          [softLoading]="loadingSub"
-          (click)="testLoading()"
-        >
-          softLoading
-        </button>
-        <button
-          class="button"
-          [softLoadingBtn]="loadingSub"
-          (click)="testLoading()"
-        >
-          softLoadingBtn
-        </button>
-        <button
-          class="button"
-          [softLoadingBtn]="loadingSub"
-          (click)="testLoading()"
-        >
-          another softLoadingBtn
-        </button>
-        <button
-          class="button"
-          [softDisabled]="loadingSub"
-        >
-          softDisabled
-        </button>
-        <button
-          class="button"
-          [softDisabled]="loadingSub"
-          disabled
-        >
-          softDisabled with disabled
-        </button>
-      </div>
-      <pre>
-      # html
-      &lt;button
-        class="button"
-        <strong>[softLoading]="loadingSub"</strong>
-        (click)="testLoading()"
-      &gt;
-        softLoading
-      &lt;/button&gt;
-
-      &lt;button
-        class="button"
-        <strong>[softLoadingBtn]="loadingSub"</strong>
-        (click)="testLoading()"
-      &gt;
-        softLoadingBtn
-      &lt;/button&gt;
-
-      &lt;button
-        class="button"
-        <strong>[softLoadingBtn]="loadingSub"</strong>
-        (click)="testLoading()"
-      &gt;
-        another softLoadingBtn
-      &lt;/button&gt;
-
-      &lt;button
-        class="button"
-        <strong>[softDisabled]="loadingSub"</strong>
-      &gt;
-        softDisabled
-      &lt;/button&gt;
-
-      &lt;button
-        class="button"
-        <strong>[softDisabled]="loadingSub"</strong>
-        disabled
-      &gt;
-        softDisabled with disabled
-      &lt;/button&gt;
-
-      # ts
-      testLoading() &#123;
-        this.loadingSub = of(&#123;&#125;).pipe(delay(3000)).subscribe();
-      &#125;
-    </pre>
-    </div>
-  </div>
-</section>
+    </section>
