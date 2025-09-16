@@ -12,7 +12,7 @@
         "@angular/platform-browser-dynamic": "^20.0.6",
         "@angular/router": "^20.0.6",
         "ngx-toastr": "^19.0.0",
-        "placeholder-loading": "^0.6.0",
+        "placeholder-loading": "^0.7.0",
         "rxjs": "^7.8.1",
         "tippy.js": "^6.3.7",
         "tslib": "^2.8.1",
@@ -895,7 +895,7 @@
 
     "pkg-dir": ["pkg-dir@8.0.0", "", { "dependencies": { "find-up-simple": "^1.0.0" } }, "sha512-4peoBq4Wks0riS0z8741NVv+/8IiTvqnZAr8QGgtdifrtpdXbNw/FxRS1l6NFqm4EMzuS0EDqNNx4XGaz8cuyQ=="],
 
-    "placeholder-loading": ["placeholder-loading@0.6.0", "", {}, "sha512-KdUnwa3AEuXlem7QeSi4qtny+QfiACUh0P0iYskJBwfg3LtAUMQFyd9L21ysdBQ65KbK6tZ4VsKPkcF3mULwMQ=="],
+    "placeholder-loading": ["placeholder-loading@0.7.0", "", {}, "sha512-C9M9dra5nZF/qfFF0trA3dZTQ2j6qxxoAnqWcyF+bKWhoTQIiCYIptj9BTTuihdQjm9M/vIbbYtTEvvT+8etEg=="],
 
     "postcss": ["postcss@8.5.3", "", { "dependencies": { "nanoid": "^3.3.8", "picocolors": "^1.1.1", "source-map-js": "^1.2.1" } }, "sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A=="],
 
