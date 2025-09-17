@@ -8,18 +8,15 @@ import { SoftDialogService } from './soft-dialog.service';
 import { userSoftPopupConfigToken } from './user-config.token';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [
-    SoftPopupComponent,
-  ],
-  entryComponents: [
-    SoftPopupComponent,
-  ],
-  exports: [
-    SoftPopupComponent,
-  ],
+    imports: [
+        CommonModule,
+    ],
+    declarations: [
+        SoftPopupComponent,
+    ],
+    exports: [
+        SoftPopupComponent,
+    ]
 })
 export class SoftPopupModule {
   static forRoot(

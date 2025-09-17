@@ -93,66 +93,58 @@ const customAuthResponseKey: SoftAuthResponseKey = {
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-
-    // Demo Component
-    DemoApiClientComponent,
-    DemoModalComponent,
-    DemoModelComponent,
-    DemoPipeComponent,
-    DemoPopupComponent,
-    DemoScrollComponent,
-    DemoUIStateComponent,
-    CustomDialogComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-
-    // Single import at AppModule or CoreModule
-    SoftNgxModule.forRoot(AuthService),
-
-    //// Single import at SharedModule // => for lazy loading module
-    // SoftNgxModule
-
-    //// Selective import at AppModule or CoreModule
-    // SoftApiClientModule.forRoot(),
-    // SoftAuthModule.forRoot(AuthService),
-    // SoftPopupModule.forRoot(),
-    // SoftScrollModule.forRoot(),
-    // SoftStorageModule.forRoot(),
-    // SoftUIStateModule.forRoot(),
-    // SoftModalModule, // => for non-lazy loading module only
-    // SoftModelModule, // => for non-lazy loading module only
-    // SoftPipeModule, // => for non-lazy loading module only
-    // SoftTooltipModule, // => for non-lazy loading module only
-
-    //// Selective import at SharedModule // => for lazy loading module
-    // SoftModalModule,
-    // SoftModelModule,
-    // SoftPipeModule,
-    // SoftTooltipModule,
-    // SoftUIStateModule,
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
-    { provide: userSoftApiClientConfigToken, useFactory: initApiClientConfig },
-    { provide: userSoftAuthServiceConfigToken, useFactory: initAuthServiceConfig },
-    { provide: userSoftAuthInterceptorConfigToken, useFactory: initAuthInterceptorConfigToken },
-    { provide: userSoftAuthRequestKeyToken, useValue: customAuthRequestKey },
-    { provide: userSoftAuthResponseKeyToken, useValue: customAuthResponseKey },
-    { provide: userSoftPopupConfigToken, useFactory: initPopupConfig },
-    { provide: userSoftStorageConfigToken, useFactory: initStorageConfig },
-    AuthService,
-  ],
-  bootstrap: [
-    AppComponent
-  ],
-  entryComponents: [
-    CustomDialogComponent,
-  ]
+    declarations: [
+        AppComponent,
+        // Demo Component
+        DemoApiClientComponent,
+        DemoModalComponent,
+        DemoModelComponent,
+        DemoPipeComponent,
+        DemoPopupComponent,
+        DemoScrollComponent,
+        DemoUIStateComponent,
+        CustomDialogComponent,
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        // Single import at AppModule or CoreModule
+        SoftNgxModule.forRoot(AuthService),
+        //// Single import at SharedModule // => for lazy loading module
+        // SoftNgxModule
+        //// Selective import at AppModule or CoreModule
+        // SoftApiClientModule.forRoot(),
+        // SoftAuthModule.forRoot(AuthService),
+        // SoftPopupModule.forRoot(),
+        // SoftScrollModule.forRoot(),
+        // SoftStorageModule.forRoot(),
+        // SoftUIStateModule.forRoot(),
+        // SoftModalModule, // => for non-lazy loading module only
+        // SoftModelModule, // => for non-lazy loading module only
+        // SoftPipeModule, // => for non-lazy loading module only
+        // SoftTooltipModule, // => for non-lazy loading module only
+        //// Selective import at SharedModule // => for lazy loading module
+        // SoftModalModule,
+        // SoftModelModule,
+        // SoftPipeModule,
+        // SoftTooltipModule,
+        // SoftUIStateModule,
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: DateRequestInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: NoCacheInterceptor, multi: true },
+        { provide: userSoftApiClientConfigToken, useFactory: initApiClientConfig },
+        { provide: userSoftAuthServiceConfigToken, useFactory: initAuthServiceConfig },
+        { provide: userSoftAuthInterceptorConfigToken, useFactory: initAuthInterceptorConfigToken },
+        { provide: userSoftAuthRequestKeyToken, useValue: customAuthRequestKey },
+        { provide: userSoftAuthResponseKeyToken, useValue: customAuthResponseKey },
+        { provide: userSoftPopupConfigToken, useFactory: initPopupConfig },
+        { provide: userSoftStorageConfigToken, useFactory: initStorageConfig },
+        AuthService,
+    ],
+    bootstrap: [
+        AppComponent
+    ]
 })
 export class AppModule { }
