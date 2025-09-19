@@ -234,7 +234,17 @@ export class SoftAuthServiceBase implements SoftAuthServiceInterface {
       headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
     }
 
-    return this.http.post(url, body, { headers }).pipe(
+    return this.http.post(url, body, { headers, responseType: 'text' }).pipe(
+      map(body => {
+        if (body !== '') {
+          try {
+            return JSON.parse(body);
+          } catch (error) {
+            return body;
+          }
+        }
+        return '';
+      }),
       mergeMap((response: AuthData) => from(this.setStorageDependOnRememberMe()).pipe(
         map(() => response)
       )),
