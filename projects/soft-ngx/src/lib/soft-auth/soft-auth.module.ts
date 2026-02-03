@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { SoftStorageModule } from '../soft-storage/soft-storage.module';
@@ -13,7 +13,7 @@ import {
 } from './user-config.token';
 
 @NgModule({ imports: [CommonModule,
-        SoftStorageModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        SoftStorageModule], providers: [provideHttpClient(withInterceptorsFromDi(), withFetch())] })
 export class SoftAuthModule {
   static forRoot(
     config: {
